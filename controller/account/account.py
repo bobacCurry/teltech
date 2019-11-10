@@ -1,18 +1,40 @@
 from flask import Blueprint, request, current_app
 
+from model import User
+
 account = Blueprint('account',__name__)
 
 @account.before_request
 
-def before_request():
+# def before_request():
 
-	return '22222222'
+# 	return '22222222'
 
-@account.route('/login',methods=['POST'])
+@account.route('/register',methods=['POST'])
 
-def login():
+def register():
 
-	return '111111'
+	data = request.form
+
+	try:
+	
+		data['name'],data['password'],data['username']
+	
+	except Exception as e:
+		
+		return { "code":0, "msg":"注册数据缺失" }
+
+	if not data['name'] or not data['password'] or not data['username'] :
+		
+		return { "code":0, "msg":"注册数据缺失" }
+
+	user = User.User()
+
+	user.insert_one({})
+
+	return '注册成功'
+
+
 
 # @account.route('/test/<test>',methods=['POST','GET'])
 

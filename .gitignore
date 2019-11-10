@@ -2,4 +2,6 @@ venv/
 
 *.log
 
+static/
+
 __pycache__
