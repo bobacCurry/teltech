@@ -19,6 +19,8 @@ class User(Base):
 			"job":"",
 
 			"role":1,
+
+			"status":1
 		}
 
 		self.timeStamp = True
@@ -26,6 +28,8 @@ class User(Base):
 	def insert_one(self,document):
 		
 		doc = dict(self.scheme, **document)
+
+		print(doc)
 
 		if self.timeStamp :
 			
@@ -42,3 +46,18 @@ class User(Base):
 			return False
 
 		return True
+
+	def find_one(self,document):
+			
+		if not document['account'] or not document['password'] :
+			
+			return False
+
+		try:
+			
+			pass
+			
+		except Exception as e:
+
+			raise
+			
