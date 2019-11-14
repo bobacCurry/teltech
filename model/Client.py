@@ -1,36 +1,20 @@
 from model.Base import Base
 
 from datetime import datetime
-
+# 手机客户端
 class Client(Base):
 	
 	def __init__(self):
 
-		Base.__init__(self,'Client')
+		Base.__init__(self,'Chat')
 
 		self.scheme = {
-			# 用户id
-			"uid":"",
-			# 服务类型
-			"cat":0,
-			# 文本类型
+			# 群类型
 			"type":0,
-			# 服务等级
-			"level":1,
-			# chatid
-			"chat":[],
-			# 文案
-			"text":"",
-			# 图片
-			"media":"",
-			# 介绍
-			"caption":"",
-			# 发送时间
-			"minute":[],
-			# 服务状态
-			"status":0,
-			# 到期时间
-			"deadline":""
+			# 手机号
+			"phone":0,
+			# 状态
+			"status":0
 		}
 
 		self.timeStamp = True

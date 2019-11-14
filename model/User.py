@@ -43,8 +43,6 @@ class User(Base):
 			
 			exist = self.client.find_one({"account": document['account']})
 
-			print(exist)
-
 			if exist :
 
 				return { "success":False, "msg":'账号已尽注册过' }				
