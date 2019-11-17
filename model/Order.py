@@ -1,18 +1,20 @@
 from model.Base import Base
 
 from datetime import datetime
-# 手机客户端
-class Client(Base):
+# 订单
+class Order(Base):
 	
 	def __init__(self):
 
-		Base.__init__(self,'Chat')
+		Base.__init__(self,'Order')
 
 		self.scheme = {
-			# 手机号
-			"phone":0,
-			# 群类型
-			"type":0,
+			# clientid
+			"cid":"",
+			# 时长（天）
+			"days":0,
+			# 备注
+			"memo":"",
 			# 状态
 			"status":0
 		}

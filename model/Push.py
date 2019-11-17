@@ -15,8 +15,6 @@ class Push(Base):
 			"cat":0,
 			# 文本类型
 			"type":0,
-			# 服务等级
-			"level":1,
 			# chatid
 			"chat":[],
 			# 文案
