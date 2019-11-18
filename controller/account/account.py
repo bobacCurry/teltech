@@ -4,21 +4,25 @@ from model.User import User
 
 from hashlib import md5
 
-import time
+from controller.account.auth import token_encode,token_decode
+
+# import time
 
 # pyjwt
 
-import jwt
+# import jwt
 
-import json
+# import json
 
 account = Blueprint('account',__name__)
 
-token_dict = { 'time':time.time(), 'info':'' }
+# token_dict = { 'time':time.time(), 'info':'' }
 
-headers = { 'alg': "HS256", 'kid': "TelTech" }
+# headers = { 'alg': "HS256", 'kid': "TelTech" }
 
-jwt_ket = 'TelTech'
+# jwt_ket = 'TelTech'
+
+
 
 @account.route('/register',methods=['POST'])
 def register():
@@ -31,17 +35,15 @@ def register():
 	
 	except Exception as e:
 		
-		return { "code":0, "msg":"注册数据缺失" }
+		return { "success":False, "msg":"注册数据缺失" }
 
 	if not data['account'] or not data['password'] or not data['username'] :
 		
-		return { "code":0, "msg":"注册数据缺失" }
+		return { "success":False, "msg":"注册数据缺失" }
 
 	user = User()
 
 	ret = user.insert_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"username":data['username']})
-
-	print(ret)
 
 	if not ret['success'] :
 
@@ -49,7 +51,7 @@ def register():
 		
 		return {'success':False,'msg':ret['msg']}
 
-	return {'success':False,'msg':'注册成功'}
+	return {'success':True,'msg':'注册成功'}
 
 
 @account.route('/login',methods=['POST'])
@@ -63,21 +65,23 @@ def login():
 	
 	except Exception as e:
 		
-		return { "code":0, "msg":"登陆数据缺失" }
+		return { "success":False, "msg":"登陆数据缺失" }
 
 	user = User()
 
 	ret = user.find_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest()})
 
-	if not ret['success'] or not ret['msg']:
+	# if not ret['success'] or not ret['msg']:
 
-		current_app.logger.info(ret['msg'])
+	# 	current_app.logger.info(ret['msg'])
 		
-		return {'success':False,'msg':'登录失败'}
+	# 	return {'success':False,'msg':'登录失败'}
 
-	token_dict['info'] = json.dumps(ret['msg'])
+	# token_dict['info'] = json.dumps(ret['msg'])
 
-	token = jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii') 
+	token = token_encode(ret['msg'])
+
+	# jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii') 
 
 	return token
 
@@ -89,28 +93,37 @@ def get_info():
 	try:
 	
 		token = request.args.get('token')
-	
+
 	except Exception as e:
 		
-		return { "code":0, "msg":"token数据缺失" }
+		return { "success":False, "msg":"token数据缺失" }
 
-	try:# 需要解析的 jwt 密钥   使用和加密时相同的算法
+	data = token_decode(token)
 
-	    data = jwt.decode(token, jwt_ket, algorithms=['HS256'])
+	if not data['success'] :
+		
+		current_app.logger.info(str(data['msg']))
 
-	    now = time.time()
+	return data
+	# try:
 
-	    if (now - data['time'])/1000 > 3600*24*7 :
+	    # data = jwt.decode(token, jwt_ket, algorithms=['HS256'])
 
-	    	return {'success':False,'msg':'token过期'}
+	    # now = time.time()
 
-	    return json.loads(data['info'])
+	    # if (now - data['time'])/1000 > 3600*24*7 :
 
-	except Exception as e:# 如果 jwt 被篡改过; 或者算法不正确; 如果设置有效时间, 过了有效期; 或者密钥不相同; 都会抛出相应的异常
+	    # 	return {'success':False,'msg':'token过期'}
 
-	    current_app.logger.info(e)
+	    # return json.loads(data['info'])
 
-	    return {'success':False,'msg':'获取信息失败'}
+
+
+	# except Exception as e:
+
+	#     current_app.logger.info(e)
+
+	#     return {'success':False,'msg':'获取信息失败'}
 
 
 

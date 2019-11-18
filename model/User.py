@@ -31,8 +31,6 @@ class User(Base):
 		
 		doc = dict(self.scheme, **document)
 
-		print(doc)
-
 		if self.timeStamp :
 			
 			timeStamp  = { "created_at":datetime.now(),"updated_at":datetime.now() }
