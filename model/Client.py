@@ -21,4 +21,4 @@ class Client(Base):
 
 	def insert_one(self,document):
 
-		
+		return '11111'

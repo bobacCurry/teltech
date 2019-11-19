@@ -39,13 +39,13 @@ class User(Base):
 
 		try:
 			
-			exist = self.client.find_one({"account": document['account']})
+			exist = self.db.find_one({"account": document['account']})
 
 			if exist :
 
 				return { "success":False, "msg":'账号已尽注册过' }				
 
-			self.client.insert_one(doc)
+			self.db.insert_one(doc)
 
 			return {"success":True}
 
@@ -53,20 +53,22 @@ class User(Base):
 			
 			return { "success":False, "msg":str(e) }
 
-	def find_one(self,document):
+	def find_one(self,query):
 			
-		if not document['account'] or not document['password']:
-			
-			return False
-
 		try:
 			
-			msg = self.client.find_one({"account": document['account'],"password": document['password'],"status":1},{"password":0,"status":0,"created_at":0,"updated_at":0})
+			msg = self.db.find_one(query,{ "password":0, "status":0, "created_at":0, "updated_at":0 })
 			
+			if not msg:
+				
+				return { "success":False, "msg":"用户信息不存在" }
+
 			msg['_id'] = str(msg['_id'])
 
 			return { "success":True, "msg":msg }
 
 		except Exception as e:
 
-			return { "success":False, "msg":e }
+			return { "success":False, "msg":str(e) }
+
+

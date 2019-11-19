@@ -23,4 +23,4 @@ class Order(Base):
 
 	def insert_one(self,document):
 
-		
+		return '11111'

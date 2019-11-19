@@ -4,25 +4,22 @@ from model.User import User
 
 from hashlib import md5
 
+from bson import ObjectId
+
 from controller.account.auth import token_encode,token_decode
-
-# import time
-
-# pyjwt
-
-# import jwt
-
-# import json
 
 account = Blueprint('account',__name__)
 
-# token_dict = { 'time':time.time(), 'info':'' }
+@account.before_request
+def before_request():
 
-# headers = { 'alg': "HS256", 'kid': "TelTech" }
+	request.user = None
 
-# jwt_ket = 'TelTech'
+	user = token_decode(request.headers.get("token"))
 
-
+	if user['success']:
+		
+		request.user = user['msg']
 
 @account.route('/register',methods=['POST'])
 def register():
@@ -53,7 +50,6 @@ def register():
 
 	return {'success':True,'msg':'注册成功'}
 
-
 @account.route('/login',methods=['POST'])
 def login():
 	
@@ -62,6 +58,10 @@ def login():
 	try:
 	
 		data['account'],data['password']
+
+		if not data['account'] or not data['password']:
+			
+			return { "success":False, "msg":"登陆数据缺失" }
 	
 	except Exception as e:
 		
@@ -69,64 +69,31 @@ def login():
 
 	user = User()
 
-	ret = user.find_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest()})
+	ret = user.find_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"status":1})
 
-	# if not ret['success'] or not ret['msg']:
-
-	# 	current_app.logger.info(ret['msg'])
+	if not ret['success']:
 		
-	# 	return {'success':False,'msg':'登录失败'}
+		return { "success":False, "msg":"用户信息不存在" }
 
-	# token_dict['info'] = json.dumps(ret['msg'])
+	token_ret = token_encode({"_id":ret["msg"]["_id"]})
 
-	token = token_encode(ret['msg'])
-
-	# jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii') 
-
-	return token
+	return token_ret
 
 @account.route('/get_info',methods=['GET'])
 def get_info():
 
-	token = None
+	print(request.user)
 
-	try:
-	
-		token = request.args.get('token')
 
-	except Exception as e:
+	if not request.user:
 		
-		return { "success":False, "msg":"token数据缺失" }
+		return { "success":False, "msg":"token缺失" }
 
-	data = token_decode(token)
+	user = User()
 
-	if not data['success'] :
-		
-		current_app.logger.info(str(data['msg']))
+	ret = user.find_one({"_id":ObjectId(request.user["_id"])})
 
-	return data
-	# try:
-
-	    # data = jwt.decode(token, jwt_ket, algorithms=['HS256'])
-
-	    # now = time.time()
-
-	    # if (now - data['time'])/1000 > 3600*24*7 :
-
-	    # 	return {'success':False,'msg':'token过期'}
-
-	    # return json.loads(data['info'])
-
-
-
-	# except Exception as e:
-
-	#     current_app.logger.info(e)
-
-	#     return {'success':False,'msg':'获取信息失败'}
-
-
-
+	return ret
 
 # @account.before_request
 
@@ -134,16 +101,3 @@ def get_info():
 
 # 	return '22222222'
 
-# @account.route('/test/<test>',methods=['POST','GET'])
-
-# def test(test):
-
-# 	method = request.method
-
-# 	path = request.path
-
-# 	what = request.args.get('what')
-
-# 	current_app.logger.info('info log')
-
-# 	return {"path":path,"method":method,"test":test,"what":what}

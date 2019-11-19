@@ -18,12 +18,22 @@ def token_encode(info):
 
 	token_dict['info'] = json.dumps(info)
 
-	token = jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii')
+	try:
 
-	return token
+		token = jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii')
+
+		return {'success':True,'msg':token}
+	
+	except Exception as e:
+		
+		return {'success':False,'msg':str(e)}
 
 def token_decode(token):
 	
+	if not token:
+		
+		return {'success':False,'msg':'token缺失'}
+
 	now = time.time()
 
 	try :
@@ -38,4 +48,6 @@ def token_decode(token):
 
 	except Exception as e:
 
-		return {'success':False,'msg':e}
+		return {'success':False,'msg':str(e)}
+
+

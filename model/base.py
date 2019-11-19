@@ -20,4 +20,4 @@ class Base:
 		
 		self.collection = collection
 	
-		self.client = client[collection]
+		self.db = client[collection]
