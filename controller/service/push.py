@@ -34,7 +34,11 @@ def before_request():
 @push.route('/get',methods=['GET'])
 def get():
 
-	return '1111111'
+	push = Push()
+
+	data = push.find({"uid":request.user['_id']})
+
+	return data
 
 @push.route('/add',methods=['POST'])
 def add():
@@ -76,7 +80,7 @@ def remove():
 
 	push = Push()
 
-	ret = push.remove({"_id":ObjectId(data['id'])})
+	ret = push.remove({"uid":request.user['_id'],"_id":ObjectId(data['id'])})
 
 	return ret
 

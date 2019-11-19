@@ -55,13 +55,23 @@ class Push(Base):
 			
 			return { "success":False, "msg":str(e) }
 
-	def get_one(self,query):
+	def find_one(self,query):
 
-		return '11111'
+		return '111111'
 
-	def get(self,query):
+	def find(self,query):
 
-		return '11111'
+		data = self.db.find(query,{"created_at":0,"updated_at":0})
+
+		data_filter = []
+
+		for x in data:
+
+			x["_id"] = str(x["_id"])
+			
+			data_filter.append(x)
+
+		return {"success":True,"msg":data_filter}
 
 	def remove(self,query):
 
