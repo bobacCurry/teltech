@@ -57,8 +57,6 @@ def add():
 		
 		return { "success":False, "msg":"请求数据缺失" }
 
-	token = request.headers.get("token")
-
 	push = Push()
 
 	ret = push.insert_one({'uid':request.user['_id'],"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
@@ -84,12 +82,28 @@ def remove():
 
 	return ret
 
-@push.route('/edit',methods=['POST'])
-def edit():
+@push.route('/update',methods=['POST'])
+def update():
 
-	print(111111)
+	data = request.form
 
-	return '1111111'
+	try:
+	
+		data['_id'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
+
+		if (str(data['type'])=='0' and not data['text']) or (str(data['type'])=='1' and not data['media']):
+			
+			return { "success":False, "msg":"广告文案不得为空" }
+
+	except Exception as e:
+		
+		return { "success":False, "msg":"请求数据缺失" }
+
+	push = Push()
+
+	ret = push.update({"_id":ObjectId(data['_id'])},{"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+
+	return ret
 
 @push.route('/order',methods=['POST'])
 def order():

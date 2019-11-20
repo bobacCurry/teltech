@@ -87,4 +87,13 @@ class Push(Base):
 
 	def update(self,query,update):
 		
-		return '11111'
+		try:
+
+			self.db.update(query,{"$set":update})
+
+			return { "success":True, "msg":"更新成功" }
+
+		except Exception as e:
+
+			return { "success":False, "msg":str(e) }
+			
