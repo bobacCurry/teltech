@@ -1,6 +1,5 @@
 from model.Base import Base
 
-from datetime import datetime
 # 订单
 class Order(Base):
 	
@@ -9,6 +8,8 @@ class Order(Base):
 		Base.__init__(self,'Order')
 
 		self.scheme = {
+			# 服务类型
+			"type":"",
 			# clientid
 			"cid":"",
 			# 时长（天）
@@ -20,7 +21,3 @@ class Order(Base):
 		}
 
 		self.timeStamp = True
-
-	def insert_one(self,document):
-
-		return '11111'

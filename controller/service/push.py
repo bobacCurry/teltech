@@ -49,7 +49,11 @@ def add():
 	
 		data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
 
-		if (str(data['type'])=='0' and not data['text']) or (str(data['type'])=='1' and not data['media']):
+		if not str(data['type'])=='1' and not str(data['type'])=='2':
+			
+			return { "success":False, "msg":"文案类型有误" } 
+
+		if (str(data['type'])=='1' and not data['text']) or (str(data['type'])=='2' and not data['media']):
 			
 			return { "success":False, "msg":"广告文案不得为空" }
 
@@ -59,7 +63,7 @@ def add():
 
 	push = Push()
 
-	ret = push.insert_one({'uid':request.user['_id'],"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push.insert({'uid':request.user['_id'],"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
 
 	return ret
 
@@ -91,7 +95,7 @@ def update():
 	
 		data['_id'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
 
-		if (str(data['type'])=='0' and not data['text']) or (str(data['type'])=='1' and not data['media']):
+		if (str(data['type'])=='1' and not data['text']) or (str(data['type'])=='2' and not data['media']):
 			
 			return { "success":False, "msg":"广告文案不得为空" }
 
@@ -108,6 +112,12 @@ def update():
 @push.route('/order',methods=['POST'])
 def order():
 
-	print(111111)
+	data = request.form
 
 	return '1111111'
+
+
+
+
+
+
