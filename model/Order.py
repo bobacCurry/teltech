@@ -12,8 +12,12 @@ class Order(Base):
 			"type":"",
 			# clientid
 			"cid":"",
+			# userid
+			"uid":"",
 			# 时长（天）
 			"days":0,
+			# 数量
+			"num":0,
 			# 备注
 			"memo":"",
 			# 状态

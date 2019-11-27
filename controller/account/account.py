@@ -82,9 +82,6 @@ def login():
 @account.route('/get_info',methods=['GET'])
 def get_info():
 
-	print(request.user)
-
-
 	if not request.user:
 		
 		return { "success":False, "msg":"token缺失" }
@@ -100,4 +97,8 @@ def get_info():
 # def before_request():
 
 # 	return '22222222'
+
+
+
+
 

@@ -40,14 +40,16 @@ class Base:
 		return data_filter
 
 	def  id_to_obj(self, data):
-		
+
+		data_filter = data
+			
 		for key in data:
 			
 			if key=='_id':
 				
-				data[key] = ObjectId(data[key])
+				data_filter[key] = ObjectId(data_filter[key])
 
-		return data
+		return data_filter
 
 	def insert(self,document):
 
@@ -69,18 +71,52 @@ class Base:
 			
 			return { "success":False, "msg":str(e) }
 
-	def find(self,query):
+	def find(self,query,projection=None,skip=None,limit=None):
 
-		data = self.db.find(query,{"created_at":0,"updated_at":0})
+		try:
+			
+			query = self.id_to_obj(query)
 
-		data_filter = self.id_to_str(data)
+			data = self.db.find(query,projection)
 
-		return {"success":True,"msg":data_filter}
+			if skip:
+				
+				data.skip(skip)
+
+			if limit:
+				
+				data.limit(limit)
+
+			data_filter = self.id_to_str(data)
+
+			return data_filter
+		
+		except Exception as e:
+			
+			return []
+
+	def findOne(self,query,projection=None):
+
+		try:
+			
+			query = self.id_to_obj(query)
+
+			data = self.db.find_one(query,projection)
+
+			data["_id"] = str(data["_id"])
+
+			return data
+
+		except Exception as e:
+			
+			return ''
 
 	def remove(self,query):
 
+		query = self.id_to_obj(query)
+
 		try:
-		
+
 			self.db.remove(query)
 
 			return { "success":True, "msg":"删除成功" }
@@ -90,6 +126,8 @@ class Base:
 			return { "success":False, "msg":str(e) }
 
 	def update(self,query,document):
+
+		query = self.id_to_obj(query)
 
 		try:
 

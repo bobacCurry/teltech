@@ -1,5 +1,7 @@
 from model.Base import Base
 
+from datetime import datetime
+
 import time
 
 class Push(Base):
@@ -14,7 +16,7 @@ class Push(Base):
 			# 服务类型
 			"cat":0,
 			# 文本类型
-			"type":1,
+			"type":0,
 			# chatid
 			"chat":[],
 			# 文案

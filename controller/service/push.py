@@ -31,14 +31,15 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
+
 @push.route('/get',methods=['GET'])
 def get():
 
 	push = Push()
 
-	data = push.find({"uid":request.user['_id']})
+	data = push.find({"uid":request.user['_id']},{"created_at":0,"updated_at":0})
 
-	return data
+	return { "success":True, "msg":data }
 
 @push.route('/add',methods=['POST'])
 def add():
@@ -74,7 +75,7 @@ def remove():
 
 	try:
 
-		data['id']
+		data['_id']
 
 	except Exception as e:
 		
@@ -82,9 +83,10 @@ def remove():
 
 	push = Push()
 
-	ret = push.remove({"uid":request.user['_id'],"_id":ObjectId(data['id'])})
+	ret = push.remove({"uid":request.user['_id'],"_id":data['_id']})
 
 	return ret
+
 
 @push.route('/update',methods=['POST'])
 def update():
@@ -94,6 +96,10 @@ def update():
 	try:
 	
 		data['_id'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
+
+		if not data['_id']:
+			
+			return { "success":False, "msg":"数据缺失" }
 
 		if (str(data['type'])=='1' and not data['text']) or (str(data['type'])=='2' and not data['media']):
 			
@@ -109,13 +115,89 @@ def update():
 
 	return ret
 
-@push.route('/order',methods=['POST'])
-def order():
+
+@push.route('/addOrder',methods=['POST'])
+def addOrder():
 
 	data = request.form
 
-	return '1111111'
+	try:
 
+		data['type'],data['cid'],data['days'],data['memo']
+
+	except Exception as e:
+		
+		return { "success":False, "msg":"请求数据缺失" }
+
+	# 判断购买的服务是否存在
+
+	push = Push()
+
+	service = push.findOne({"_id":data['cid']},{"_id"})
+
+	if not service:
+		
+		return { "success":False, "msg":"购买的服务不存在" }
+
+	order = Order()
+
+	exist = order.findOne({"cid":data['cid'],"status":0},{"_id"})
+
+	if exist:
+		
+		return { "success":False, "msg":"订单已经存在，请不要重复提交" }
+
+	ret = order.insert({"type":data['type'],"cid":data['cid'],"uid":request.user['_id'],"days":data['days'],"memo":data['memo']})
+
+	return ret
+
+@push.route('/getOrder',methods=['GET'])
+def getOrder():
+
+	page = None
+
+	limit = None
+
+	try:
+
+		page = request.args.get("page")
+
+		limit = request.args.get("limit")
+
+		page = int(page)
+
+		limit = int(limit)
+
+		skip = (page-1)*limit
+
+		order = Order()
+
+		data = order.find({"uid":request.user['_id']},{"updated_at":0},skip=skip,limit=limit)
+
+		return { "success":True, "msg":data }
+
+	except Exception as e:
+		
+		return { "success":False, "msg":[] }
+		
+@push.route('/delOrder',methods=['POST'])
+def delOrder():
+
+	data = request.form
+
+	try:
+
+		data['_id']
+
+		order = Order()
+
+		ret = order.remove({"_id":data['_id']})
+
+		return ret
+
+	except Exception as e:
+		
+		return { "success":False, "msg":"删除失败" }
 
 
 
