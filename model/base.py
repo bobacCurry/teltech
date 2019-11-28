@@ -131,10 +131,12 @@ class Base:
 
 		try:
 
-			self.db.update(query,{"$set":update})
+			self.db.update(query,{"$set":document})
 
 			return { "success":True, "msg":"更新成功" }
 
 		except Exception as e:
+
+			print(e)
 
 			return { "success":False, "msg":str(e) }

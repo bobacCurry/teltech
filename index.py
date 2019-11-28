@@ -4,15 +4,19 @@ import logging
 
 from controller.account.account import account
 
-from controller.service.push import push
-
 from controller.account.auth import token_encode,token_decode
+
+from controller.service.push import service_push
+
+from controller.admin.order import admin_order
 
 app = Flask(__name__)
 
 app.register_blueprint(account,url_prefix='/account')
 
-app.register_blueprint(push,url_prefix='/service/push')
+app.register_blueprint(service_push,url_prefix='/service/push')
+
+app.register_blueprint(admin_order,url_prefix='/admin/order')
 
 if __name__ == '__main__':
 

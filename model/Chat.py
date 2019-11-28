@@ -10,15 +10,11 @@ class Chat(Base):
 
 		self.scheme = {
 			# 群类型
-			"type":0,
+			"type":'',
 			# 群名称
-			"chatid":0,
-			# 服务状态
+			"chatid":'',
+			# 状态
 			"status":0
 		}
 
-		self.timeStamp = True
-
-	def insert_one(self,document):
-
-		
+		self.timeStamp = False

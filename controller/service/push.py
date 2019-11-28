@@ -8,15 +8,17 @@ from model.Order import Order
 
 from model.Push import Push
 
+from model.Chat import Chat
+
 import time
 
 from bson import ObjectId
 
 from controller.account.auth import token_decode
 
-push = Blueprint('push',__name__)
+service_push = Blueprint('service_push',__name__)
 
-@push.before_request
+@service_push.before_request
 def before_request():
 
 	request.user = None
@@ -31,8 +33,7 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-
-@push.route('/get',methods=['GET'])
+@service_push.route('/get',methods=['GET'])
 def get():
 
 	push = Push()
@@ -41,7 +42,7 @@ def get():
 
 	return { "success":True, "msg":data }
 
-@push.route('/add',methods=['POST'])
+@service_push.route('/add',methods=['POST'])
 def add():
 
 	data = request.form
@@ -68,7 +69,7 @@ def add():
 
 	return ret
 
-@push.route('/remove',methods=['POST'])
+@service_push.route('/remove',methods=['POST'])
 def remove():
 
 	data = request.form
@@ -88,7 +89,7 @@ def remove():
 	return ret
 
 
-@push.route('/update',methods=['POST'])
+@service_push.route('/update',methods=['POST'])
 def update():
 
 	data = request.form
@@ -116,7 +117,7 @@ def update():
 	return ret
 
 
-@push.route('/addOrder',methods=['POST'])
+@service_push.route('/addOrder',methods=['POST'])
 def addOrder():
 
 	data = request.form
@@ -151,7 +152,7 @@ def addOrder():
 
 	return ret
 
-@push.route('/getOrder',methods=['GET'])
+@service_push.route('/getOrder',methods=['GET'])
 def getOrder():
 
 	page = None
@@ -180,7 +181,7 @@ def getOrder():
 		
 		return { "success":False, "msg":[] }
 		
-@push.route('/delOrder',methods=['POST'])
+@service_push.route('/delOrder',methods=['POST'])
 def delOrder():
 
 	data = request.form
@@ -199,6 +200,29 @@ def delOrder():
 		
 		return { "success":False, "msg":"删除失败" }
 
+@service_push.route('/addChat/<chatid>/<chatType>',methods=['POST'])
+def addChat(chatid,chatType):
+
+	chat = Chat()
+
+	exist = chat.findOne({"chatid":chatid,"type":chatType})
+
+	if exist:
+		
+		return { "success":False, "msg":"群名称已存在" }
+
+	ret = chat.insert({"chatid":chatid,"type":chatType})
+
+	return ret
+
+@service_push.route('/getChat/<chatType>',methods=['GET'])
+def getChat(chatType):
+
+	chat = Chat()
+
+	ret = chat.find({"type":chatType})
+
+	return { "success":True,"msg":ret }
 
 
 

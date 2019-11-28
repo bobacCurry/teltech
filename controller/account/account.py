@@ -4,8 +4,6 @@ from model.User import User
 
 from hashlib import md5
 
-from bson import ObjectId
-
 from controller.account.auth import token_encode,token_decode
 
 account = Blueprint('account',__name__)
@@ -40,7 +38,7 @@ def register():
 
 	user = User()
 
-	ret = user.insert_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"username":data['username']})
+	ret = user.insert({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"username":data['username']})
 
 	if not ret['success'] :
 
@@ -69,13 +67,13 @@ def login():
 
 	user = User()
 
-	ret = user.find_one({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"status":1})
+	ret = user.findOne({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"status":1},{ "password":0, "status":0, "created_at":0, "updated_at":0 })
 
-	if not ret['success']:
+	if not ret:
 		
 		return { "success":False, "msg":"用户信息不存在" }
 
-	token_ret = token_encode({"_id":ret["msg"]["_id"]})
+	token_ret = token_encode({"_id":ret["_id"],"role":ret["role"]})
 
 	return token_ret
 
@@ -88,9 +86,13 @@ def get_info():
 
 	user = User()
 
-	ret = user.find_one({"_id":ObjectId(request.user["_id"])})
+	ret = user.findOne({"_id":request.user["_id"]},{ "password":0, "status":0, "created_at":0, "updated_at":0 })
 
-	return ret
+	if not ret:
+		
+		return { "success":False, "msg":"用户不存在" }
+
+	return { "success":True, "msg":ret }
 
 # @account.before_request
 
