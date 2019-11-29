@@ -12,8 +12,6 @@ from model.Chat import Chat
 
 import time
 
-from bson import ObjectId
-
 from controller.account.auth import token_decode
 
 service_push = Blueprint('service_push',__name__)
@@ -112,7 +110,7 @@ def update():
 
 	push = Push()
 
-	ret = push.update({"_id":ObjectId(data['_id'])},{"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push.update({"_id":data['_id']},{"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
 
 	return ret
 
@@ -220,7 +218,7 @@ def getChat(chatType):
 
 	chat = Chat()
 
-	ret = chat.find({"type":chatType})
+	ret = chat.find({"type":chatType,"status":1})
 
 	return { "success":True,"msg":ret }
 

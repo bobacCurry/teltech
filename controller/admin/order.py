@@ -10,6 +10,8 @@ from model.Order import Order
 
 from model.Push import Push
 
+from model.Chat import Chat
+
 import random
 
 admin_order = Blueprint('admin_order',__name__)
@@ -110,22 +112,34 @@ def start_order(_id,):
 
 	return { "success":False, "msg":"订单开启成功" }
 
+@admin_order.route('/addChat/<_id>',methods=['POST'])
+def addChat(_id):
 
-@admin_order.route('/addChat',methods=['POST'])
-def addChat():
+	chat = Chat()
 
-	return 1111111
+	ret = chat.update({"_id":_id},{"status":1})
 
-@admin_order.route('/addChat',methods=['POST'])
-def getChat():
+	return ret
 
-	return 1111111
+@admin_order.route('/delChat/<_id>',methods=['POST'])
+def delChat(_id):
 
-@admin_order.route('/addChat',methods=['POST'])
-def delChat():
+	chat = Chat()
 
-	return 1111111
+	ret = chat.remove({"_id":_id})
 
+	return ret
+
+@admin_order.route('/getChat/<status>',methods=['GET'])
+def getChat(status):
+
+	print(status)
+
+	chat = Chat()
+
+	ret = chat.find({"status":int(status)})
+
+	return { "success":True,"msg":ret }
 
 
 

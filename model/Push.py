@@ -17,8 +17,12 @@ class Push(Base):
 			"cat":0,
 			# 文本类型
 			"type":0,
+			# 手机号
+			"phone":"",
 			# chatid
 			"chat":[],
+			# 需要forward的message
+			"message_id":0,
 			# 文案
 			"text":"",
 			# 图片
