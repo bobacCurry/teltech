@@ -10,6 +10,8 @@ from model.Push import Push
 
 from model.Chat import Chat
 
+from client.message import Message
+
 import time
 
 from controller.account.auth import token_decode
@@ -223,5 +225,19 @@ def getChat(chatType):
 	return { "success":True,"msg":ret }
 
 
+@service_push.route('/test/<phone>/<chatid>/<text>',methods=['POST'])
+def test(phone,chatid,text):
+
+	message = Message(phone)
+
+	ret = message.send_message(chatid,text)
+
+	if ret["success"]:
+		
+		return { "success":True,"msg":"发送成功" }
+
+	else:
+
+		return ret
 
 
