@@ -75,8 +75,8 @@ def get_order():
 		return { "success":False, "msg":[] }
 
 
-@admin_order.route('/start_order/<_id>',methods=['POST'])
-def start_order(_id,):
+@admin_order.route('/start_order/<_id>/<phone>',methods=['POST'])
+def start_order(_id,phone):
 
 	order_obj = Order()
 
@@ -90,15 +90,9 @@ def start_order(_id,):
 
 	push_obj = Push()
 
-	one = random.randint(0, 19)
+	minute = random.randint(0, 19)
 
-	two = one + 20
-
-	three = two + 20
-
-	minute = [one,two,three]
-
-	ret1 = push_obj.update({"_id":order['cid']},{"deadline":deadline,"status":1,"minute":minute})
+	ret1 = push_obj.update({"_id":order['cid']},{"deadline":deadline,"status":1,"minute":minute,"phone":phone})
 
 	if not ret1["success"]:
 		

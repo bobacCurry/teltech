@@ -10,6 +10,8 @@ class Index:
 	
 		self.is_authorized = True
 
+		self.phone = phone
+
 		try:
 			
 			is_authorized = self.app.connect()
@@ -21,3 +23,7 @@ class Index:
 		except Exception as e:
 
 			self.is_authorized = False
+
+
+
+	

@@ -30,7 +30,7 @@ class Push(Base):
 			# 介绍
 			"caption":"",
 			# 发送时间
-			"minute":[],
+			"minute":0,
 			# 服务状态
 			"status":0,
 			# 到期时间

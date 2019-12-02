@@ -239,5 +239,3 @@ def test(phone,chatid,text):
 	else:
 
 		return ret
-
-
