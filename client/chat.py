@@ -46,7 +46,6 @@ class Chat:
 			
 			return { "success":False,"msg":str(e) }
 
-
 	def get_dialogs(self):
 			
 		if not self.is_authorized:

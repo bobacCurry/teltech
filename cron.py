@@ -10,22 +10,32 @@ from client.message import Message
 
 from client.chat import Chat
 
+from model.Push import Push
+
+from model.Queue import Queue
+
 import sys
 
 now = datetime.datetime.now()
 
-def forward():
-	
-	message = Message('886985027138')
-
-	ret = message.forward_message('CBobac','me',5218)
+def forward(phone,chatid,message_id):
+	# 886985027138
+	message = Message(phone)
+	# CBobac 5218
+	ret = message.forward_message(chatid,'me',message_id)
 
 	print(ret)
 
+# 在队列中添加任务
 def add_job():
 
-	print(11111)
+	now = datetime.datetime.now()
 
+	minute = now.minute
+
+	print(minute)
+
+# 执行并且消除队列中的任务
 def clear_job():
 	
 	print(22222)

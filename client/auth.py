@@ -65,8 +65,6 @@ class Auth:
 			return {"success":True,"msg":"验证码发送成功"}
 		
 		except Exception as e:
-
-			print(e,111111)
 			
 			return {"success":False,"msg":str(e)}
 
@@ -76,13 +74,9 @@ class Auth:
 
 			ret = self.app.sign_in(self.phone_number,self.phone_code_hash,phone_code)
 
-			print(ret,2222)
-
 			return {"success":True,"msg":ret}
 
 		except Exception as e:
-
-			print(e,33333)
 
 			return {"success":False,"msg":str(e)}
 			

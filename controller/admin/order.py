@@ -12,6 +12,8 @@ from model.Push import Push
 
 from model.Chat import Chat
 
+from client.check import Check
+
 import random
 
 admin_order = Blueprint('admin_order',__name__)
@@ -75,8 +77,8 @@ def get_order():
 		return { "success":False, "msg":[] }
 
 
-@admin_order.route('/start_order/<_id>/<phone>',methods=['POST'])
-def start_order(_id,phone):
+@admin_order.route('/start_order/<_id>/<phone>/<minute>',methods=['POST'])
+def start_order(_id,phone,minute):
 
 	order_obj = Order()
 
@@ -86,13 +88,19 @@ def start_order(_id,phone):
 		
 		return  { "success":False, "msg":"暂无该待审核订单" }
 
+	check = Check(phone)
+
+	ret = check.authCheck()
+
+	if not ret["success"]:
+		
+		return ret
+
 	deadline = int(time()) + int(order['days'])*24*3600
 
 	push_obj = Push()
 
-	minute = random.randint(0, 19)
-
-	ret1 = push_obj.update({"_id":order['cid']},{"deadline":deadline,"status":1,"minute":minute,"phone":phone})
+	ret1 = push_obj.update({"_id":order['cid']},{"deadline":deadline,"minute":int(minute),"phone":phone})
 
 	if not ret1["success"]:
 		

@@ -88,7 +88,6 @@ def remove():
 
 	return ret
 
-
 @service_push.route('/update',methods=['POST'])
 def update():
 
@@ -116,89 +115,42 @@ def update():
 
 	return ret
 
+@service_push.route('/start/<_id>',methods=['POST'])
+def start(_id):
 
-@service_push.route('/addOrder',methods=['POST'])
-def addOrder():
+	push_obj = Push()
 
-	data = request.form
+	push = push_obj.findOne({"_id":_id})
 
-	try:
-
-		data['type'],data['cid'],data['days'],data['memo']
-
-	except Exception as e:
+	if not push:
 		
-		return { "success":False, "msg":"请求数据缺失" }
+		return { "success":False, "msg":"实例不存在" }
 
-	# 判断购买的服务是否存在
-
-	push = Push()
-
-	service = push.findOne({"_id":data['cid']},{"_id"})
-
-	if not service:
+	if not push["phone"]:
 		
-		return { "success":False, "msg":"购买的服务不存在" }
+		return { "success":False, "msg":"实力客户端未分配" }
 
-	order = Order()
+	if (str(push['type'])=='1' and not push['text']) or (str(push['type'])=='2' and not push['media']):
+			
+		return { "success":False, "msg":"广告文案不得为空" }
 
-	exist = order.findOne({"cid":data['cid'],"status":0},{"_id"})
+	message = Message(push["phone"])
 
-	if exist:
+	ret = message.send_message("me",push["text"])
+
+	if not ret["success"]:
 		
-		return { "success":False, "msg":"订单已经存在，请不要重复提交" }
-
-	ret = order.insert({"type":data['type'],"cid":data['cid'],"uid":request.user['_id'],"days":data['days'],"memo":data['memo']})
-
-	return ret
-
-@service_push.route('/getOrder',methods=['GET'])
-def getOrder():
-
-	page = None
-
-	limit = None
-
-	try:
-
-		page = request.args.get("page")
-
-		limit = request.args.get("limit")
-
-		page = int(page)
-
-		limit = int(limit)
-
-		skip = (page-1)*limit
-
-		order = Order()
-
-		data = order.find({"uid":request.user['_id']},{"updated_at":0},skip=skip,limit=limit)
-
-		return { "success":True, "msg":data }
-
-	except Exception as e:
-		
-		return { "success":False, "msg":[] }
-		
-@service_push.route('/delOrder',methods=['POST'])
-def delOrder():
-
-	data = request.form
-
-	try:
-
-		data['_id']
-
-		order = Order()
-
-		ret = order.remove({"_id":data['_id']})
-
 		return ret
 
-	except Exception as e:
+	message_id = ret["msg"]["message_id"]
+
+	ret = push_obj.update({"_id":_id},{"message_id":message_id,"status":1})
+
+	if not ret["success"]:
 		
-		return { "success":False, "msg":"删除失败" }
+		return ret
+
+	return { "success":True, "msg":"开启成功" }
 
 @service_push.route('/addChat/<chatid>/<chatType>',methods=['POST'])
 def addChat(chatid,chatType):
@@ -223,19 +175,3 @@ def getChat(chatType):
 	ret = chat.find({"type":chatType,"status":1})
 
 	return { "success":True,"msg":ret }
-
-
-@service_push.route('/test/<phone>/<chatid>/<text>',methods=['POST'])
-def test(phone,chatid,text):
-
-	message = Message(phone)
-
-	ret = message.send_message(chatid,text)
-
-	if ret["success"]:
-		
-		return { "success":True,"msg":"发送成功" }
-
-	else:
-
-		return ret
