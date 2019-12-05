@@ -33,8 +33,8 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-@service_order.route('/addOrder',methods=['POST'])
-def addOrder():
+@service_order.route('/add_order',methods=['POST'])
+def add_order():
 
 	data = request.form
 
@@ -68,8 +68,8 @@ def addOrder():
 
 	return ret
 
-@service_order.route('/getOrder',methods=['GET'])
-def getOrder():
+@service_order.route('/get_order',methods=['GET'])
+def get_order():
 
 	page = None
 
@@ -97,8 +97,8 @@ def getOrder():
 		
 		return { "success":False, "msg":[] }
 		
-@service_order.route('/delOrder',methods=['POST'])
-def delOrder():
+@service_order.route('/del_order',methods=['POST'])
+def del_order():
 
 	data = request.form
 

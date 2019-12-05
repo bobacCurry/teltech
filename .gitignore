@@ -7,3 +7,7 @@ static/
 __pycache__
 
 session/
+
+cron.log
+
+flask.log

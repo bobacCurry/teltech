@@ -7,7 +7,7 @@ class Queue(Base):
 	
 	def __init__(self):
 
-		Base.__init__(self,'User')
+		Base.__init__(self,'Queue')
 
 		self.scheme = {
 			# 文本类型
