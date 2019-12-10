@@ -26,19 +26,19 @@ def register():
 
 	try:
 	
-		data['account'],data['password'],data['username']
+		data['account'],data['password'],data['name']
 	
 	except Exception as e:
 		
 		return { "success":False, "msg":"注册数据缺失" }
 
-	if not data['account'] or not data['password'] or not data['username'] :
+	if not data['account'] or not data['password'] or not data['name'] :
 		
 		return { "success":False, "msg":"注册数据缺失" }
 
 	user = User()
 
-	ret = user.insert({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"username":data['username']})
+	ret = user.insert({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"name":data['name']})
 
 	if not ret['success'] :
 
@@ -73,7 +73,7 @@ def login():
 		
 		return { "success":False, "msg":"用户信息不存在" }
 
-	token_ret = token_encode({"_id":ret["_id"],"role":ret["role"]})
+	token_ret = token_encode({"user_id":ret["_id"],"name":ret["name"],"avatar":ret["avatar"],"access":ret["access"]})
 
 	return token_ret
 
@@ -84,15 +84,15 @@ def get_info():
 		
 		return { "success":False, "msg":"token缺失" }
 
-	user = User()
+	# user = User()
 
-	ret = user.findOne({"_id":request.user["_id"]},{ "password":0, "status":0, "created_at":0, "updated_at":0 })
+	# ret = user.findOne({"_id":request.user["_id"]},{ "password":0, "status":0, "created_at":0, "updated_at":0 })
 
-	if not ret:
+	# if not ret:
 		
-		return { "success":False, "msg":"用户不存在" }
+	# 	return { "success":False, "msg":"用户不存在" }
 
-	return { "success":True, "msg":ret }
+	return { "success":True, "msg":request.user }
 
 # @account.before_request
 

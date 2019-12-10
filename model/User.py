@@ -14,9 +14,13 @@ class User(Base):
 
 			"password":"",
 
-			"username":"",
+			"avatar":"",
+
+			"name":"",
 
 			"job":"",
+
+			"access":["client"],
 
 			"role":1,
 
