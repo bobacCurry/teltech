@@ -51,19 +51,19 @@ def register():
 @account.route('/login',methods=['POST'])
 def login():
 	
-	data = request.form
-
+	data = request.get_json()
+	print(data)
 	try:
 	
 		data['account'],data['password']
 
 		if not data['account'] or not data['password']:
 			
-			return { "success":False, "msg":"登陆数据缺失" }
+			return { "success":False, "msg":"登陆数据缺失" },500
 	
 	except Exception as e:
 		
-		return { "success":False, "msg":"登陆数据缺失" }
+		return { "success":False, "msg":"登陆数据缺失" },500
 
 	user = User()
 
@@ -71,7 +71,7 @@ def login():
 
 	if not ret:
 		
-		return { "success":False, "msg":"用户信息不存在" }
+		return { "success":False, "msg":"用户信息不存在" },500
 
 	token_ret = token_encode({"user_id":ret["_id"],"name":ret["name"],"avatar":ret["avatar"],"access":ret["access"]})
 
@@ -82,7 +82,7 @@ def get_info():
 
 	if not request.user:
 		
-		return { "success":False, "msg":"token缺失" }
+		return { "success":False, "msg":"token缺失" },500
 
 	# user = User()
 

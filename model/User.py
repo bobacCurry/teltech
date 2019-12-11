@@ -14,15 +14,13 @@ class User(Base):
 
 			"password":"",
 
-			"avatar":"",
+			"avatar":"http://m.imeitou.com/uploads/allimg/2019031709/eoyjh4zwlxd.jpg",
 
 			"name":"",
 
 			"job":"",
-
+			# client admin
 			"access":["client"],
-
-			"role":1,
 
 			"money":0,
 

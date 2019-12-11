@@ -27,7 +27,7 @@ def before_request():
 
 	if user['success']:
 		
-		if user['msg']['role']<100:
+		if "admin" not in user['msg']['access']:
 			
 			return { "success":False, "msg":"用户权限不足" }
 
@@ -60,6 +60,14 @@ def get_order():
 			
 			query = { "status":int(request.args.get("status")) }
 
+		if not page:
+			
+			page = 1
+
+		if not limit:
+			
+			limit = 20
+
 		page = int(page)
 
 		limit = int(limit)
@@ -70,10 +78,16 @@ def get_order():
 
 		data = order.find(query,{"updated_at":0},skip=skip,limit=limit)
 
+		if not data:
+			
+			data = []
+
 		return { "success":True, "msg":data }
 
 	except Exception as e:
-		
+
+		print(e)
+
 		return { "success":False, "msg":[] }
 
 

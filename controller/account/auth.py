@@ -22,11 +22,11 @@ def token_encode(info):
 
 		token = jwt.encode(token_dict, jwt_ket, algorithm="HS256", headers=headers).decode('ascii')
 
-		return {'success':True,'msg':token}
+		return {'success':True,'msg':'登陆成功','token':token}
 	
 	except Exception as e:
 		
-		return {'success':False,'msg':str(e)}
+		return {'success':False,'msg':str(e)},500
 
 def token_decode(token):
 	
