@@ -13,7 +13,9 @@ def before_request():
 
 	request.user = None
 
-	user = token_decode(request.headers.get("token"))
+	token = request.headers.get("token") or request.args.get("token")
+
+	user = token_decode(token)
 
 	if user['success']:
 		
@@ -92,7 +94,12 @@ def get_info():
 		
 	# 	return { "success":False, "msg":"用户不存在" }
 
-	return { "success":True, "msg":request.user }
+	return request.user
+
+@account.route('/logout',methods=['POST'])
+def logout():
+	
+	return { "success":True, "msg":"退出账号" }
 
 # @account.before_request
 
