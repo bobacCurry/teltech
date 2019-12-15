@@ -20,7 +20,7 @@ class User(Base):
 
 			"job":"",
 			# client admin
-			"access":["client"],
+			"access":["hr"],
 
 			"money":0,
 

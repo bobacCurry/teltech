@@ -24,7 +24,7 @@ def before_request():
 @account.route('/register',methods=['POST'])
 def register():
 
-	data = request.form
+	data = request.get_json()
 
 	try:
 	
@@ -54,7 +54,7 @@ def register():
 def login():
 	
 	data = request.get_json()
-	print(data)
+	
 	try:
 	
 		data['account'],data['password']
