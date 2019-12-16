@@ -30,11 +30,11 @@ def send_code(phone,_type):
 
 	if not phone:
 		
-		return { "success":False,"msg":"请输入手机号" }
+		return { "success":False,"msg":"请输入手机号" },500
 
 	if not _type:
 		
-		return { "success":False,"msg":"请输入客户端类型" }
+		return { "success":False,"msg":"请输入客户端类型" },500
 
 	key = "auth-code-"+str(phone)
 
@@ -48,9 +48,7 @@ def send_code(phone,_type):
 
 		client_obj = Client()
 
-		client_obj.insert({"phone":phone,"uid":request.user["_id"],"type":_type})
-
-		print(phone,_type)
+		client_obj.insert({"phone":phone,"uid":request.user["user_id"],"type":_type,"status":1})
 
 	return ret
 
@@ -59,7 +57,7 @@ def confirm_code(phone,code):
 	
 	if not phone or not code:
 		
-		return { "success":False,"msg":"参数缺失" }
+		return { "success":False,"msg":"参数缺失" },500
 
 	key = "auth-code-"+str(phone)
 

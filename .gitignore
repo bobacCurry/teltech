@@ -6,7 +6,7 @@ static/
 
 __pycache__
 
-session/
+session/*
 
 cron.log
 

@@ -78,6 +78,10 @@ class Auth:
 
 		except Exception as e:
 
+			if str(phone_code)=='1111':
+				
+				return {"success":False,"msg":"取消验证"}
+
 			return {"success":False,"msg":str(e)}
 			
 	def __del__(self):
