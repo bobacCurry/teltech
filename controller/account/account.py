@@ -24,7 +24,7 @@ def before_request():
 @account.route('/register',methods=['POST'])
 def register():
 
-	data = request.get_json()
+	data = request.form or request.get_json()
 
 	try:
 	

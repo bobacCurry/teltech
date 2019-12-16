@@ -63,6 +63,6 @@ def confirm_code(phone,code):
 
 	key = "auth-code-"+str(phone)
 
-	Cache.set(key,code,90)
+	Cache.set(key,code,120)
 
 	return { "success":True,"msg":"发送完成" }

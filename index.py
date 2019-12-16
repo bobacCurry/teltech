@@ -14,7 +14,11 @@ from controller.service.order import service_order
 
 from controller.service.auth import service_auth
 
+from controller.service.client import service_client
+
 from controller.admin.order import admin_order
+
+from controller.data.index import data_index
 
 app = Flask(__name__)
 
@@ -26,7 +30,11 @@ app.register_blueprint(service_order,url_prefix='/service/order')
 
 app.register_blueprint(service_auth,url_prefix='/service/auth')
 
+app.register_blueprint(service_client,url_prefix='/service/client')
+
 app.register_blueprint(admin_order,url_prefix='/admin/order')
+
+app.register_blueprint(data_index,url_prefix='/data')
 
 if __name__ == '__main__':
 

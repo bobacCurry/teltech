@@ -15,8 +15,12 @@ class Client(Base):
 			"uid":"",
 			# 群类型
 			"type":0,
-			# 状态
-			"status":0
+			# tg的用户名
+			"name":"",
+			# 状态 0 未开启 1 开启正常 2 spam 3 banned
+			"status":0,
+			#是否被服务占用
+			"used":0
 		}
 
 		self.timeStamp = False

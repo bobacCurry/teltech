@@ -30,7 +30,7 @@ class Auth:
 
 			num = 0
 
-			while num < 60:
+			while num < 120:
 
 				key = "auth-code-"+str(self.phone_number)
 
@@ -50,7 +50,7 @@ class Auth:
 
 				sleep(1)
 
-			return {"success":False,"msg":"验证失败"}
+			return {"success":False,"msg":"时间超时，验证失败"}
 
 		return {"success":False,"msg":"已经通过认证"}
 	
