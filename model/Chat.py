@@ -13,6 +13,8 @@ class Chat(Base):
 			"type":'',
 			# 群名称
 			"chatid":'',
+			# uid
+			"uid":'',
 			# 需要进群验证
 			"auth":0,
 			# 状态

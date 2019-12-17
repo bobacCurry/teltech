@@ -16,7 +16,11 @@ from controller.service.auth import service_auth
 
 from controller.service.client import service_client
 
+from controller.service.chat import service_chat
+
 from controller.admin.order import admin_order
+
+from controller.admin.chat import admin_chat
 
 from controller.data.index import data_index
 
@@ -32,7 +36,11 @@ app.register_blueprint(service_auth,url_prefix='/service/auth')
 
 app.register_blueprint(service_client,url_prefix='/service/client')
 
+app.register_blueprint(service_chat,url_prefix='/service/chat')
+
 app.register_blueprint(admin_order,url_prefix='/admin/order')
+
+app.register_blueprint(admin_chat,url_prefix='/admin/chat')
 
 app.register_blueprint(data_index,url_prefix='/data')
 

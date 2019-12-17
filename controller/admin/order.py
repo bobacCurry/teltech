@@ -128,35 +128,6 @@ def start_order(_id,phone,minute):
 
 	return { "success":False, "msg":"订单开启成功" }
 
-@admin_order.route('/addChat/<_id>',methods=['POST'])
-def addChat(_id):
-
-	chat = Chat()
-
-	ret = chat.update({"_id":_id},{"status":1})
-
-	return ret
-
-@admin_order.route('/delChat/<_id>',methods=['POST'])
-def delChat(_id):
-
-	chat = Chat()
-
-	ret = chat.remove({"_id":_id})
-
-	return ret
-
-@admin_order.route('/getChat/<status>',methods=['GET'])
-def getChat(status):
-
-	print(status)
-
-	chat = Chat()
-
-	ret = chat.find({"status":int(status)})
-
-	return { "success":True,"msg":ret }
-
 
 
 

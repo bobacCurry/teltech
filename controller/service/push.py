@@ -152,26 +152,3 @@ def start(_id):
 
 	return { "success":True, "msg":"开启成功" }
 
-@service_push.route('/addChat/<chatid>/<chatType>',methods=['POST'])
-def addChat(chatid,chatType):
-
-	chat = Chat()
-
-	exist = chat.findOne({"chatid":chatid,"type":chatType})
-
-	if exist:
-		
-		return { "success":False, "msg":"群名称已存在" }
-
-	ret = chat.insert({"chatid":chatid,"type":chatType})
-
-	return ret
-
-@service_push.route('/getChat/<chatType>',methods=['GET'])
-def getChat(chatType):
-
-	chat = Chat()
-
-	ret = chat.find({"type":chatType,"status":1})
-
-	return { "success":True,"msg":ret }
