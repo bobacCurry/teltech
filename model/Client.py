@@ -13,8 +13,8 @@ class Client(Base):
 			"phone":0,
 			# 用户id
 			"uid":"",
-			# 群类型
-			"type":0,
+			# 服务类型
+			"type":"",
 			# tg的用户名
 			"name":"",
 			# 状态 0 未开启 1 开启正常 2 spam 3 banned
