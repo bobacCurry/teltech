@@ -1,5 +1,9 @@
 from flask import Blueprint, request, current_app
 
+from controller.account.auth import token_decode
+
+from model.Chat import Chat
+
 admin_chat = Blueprint('admin_chat',__name__)
 
 @admin_chat.before_request
