@@ -48,17 +48,33 @@ def delChat(_id):
 
 	return ret
 
-@admin_chat.route('/get_chat/<status>/<page>/<limit>',methods=['GET'])
-def getChat(status,page,limit):
+@admin_chat.route('/get_chat/<page>/<limit>',methods=['GET'])
+def getChat(page,limit):
 
 	page = int(page)
 
 	limit = int(limit)
 
+	status = request.args.get("status")
+
+	_type = request.args.get("type")
+
 	skip = (page-1)*limit
+
+	query = {}
+
+	if status:
+		
+		query['status'] = int(status)
+
+	if _type:
+		
+		query['type'] = int(_type)
+
+	print(query)
 
 	chat = Chat()
 
-	ret = chat.find({"status":int(status)})
+	ret = chat.find(query,skip=skip,limit=limit)
 
 	return { "success":True,"msg":ret }
