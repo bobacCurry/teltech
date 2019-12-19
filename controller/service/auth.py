@@ -48,7 +48,11 @@ def send_code(phone,_type):
 
 		client_obj = Client()
 
-		client_obj.insert({"phone":phone,"uid":request.user["user_id"],"type":_type,"status":1})
+		exist = client_obj.findOne({"phone":phone})
+
+		if not exist:
+			
+			client_obj.insert({"phone":phone,"uid":request.user["user_id"],"type":_type,"status":1})
 
 	return ret
 
@@ -64,3 +68,19 @@ def confirm_code(phone,code):
 	Cache.set(key,code,120)
 
 	return { "success":True,"msg":"发送完成" }
+
+@service_auth.route('/logout/<phone>',methods=['POST'])
+def logout(phone):
+
+	auth_obj = Auth(phone)
+
+	ret = auth_obj.logout()
+
+	if ret["success"]:
+
+		client_obj = Client()
+
+		client_obj.remove({"phone":phone})
+
+	return ret
+

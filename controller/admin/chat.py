@@ -30,7 +30,7 @@ def before_request():
 		request.user = user['msg']
 
 
-@admin_chat.route('/addChat/<_id>/<auth>',methods=['POST'])
+@admin_chat.route('/add_chat/<_id>/<auth>',methods=['POST'])
 def addChat(_id,auth):
 
 	chat = Chat()
@@ -39,7 +39,7 @@ def addChat(_id,auth):
 
 	return ret
 
-@admin_chat.route('/delChat/<_id>',methods=['POST'])
+@admin_chat.route('/del_chat/<_id>',methods=['POST'])
 def delChat(_id):
 
 	chat = Chat()
@@ -48,11 +48,17 @@ def delChat(_id):
 
 	return ret
 
-@admin_chat.route('/getChat/<chatType>/<status>',methods=['GET'])
-def getChat(chatType,status):
+@admin_chat.route('/get_chat/<status>/<page>/<limit>',methods=['GET'])
+def getChat(status,page,limit):
+
+	page = int(page)
+
+	limit = int(limit)
+
+	skip = (page-1)*limit
 
 	chat = Chat()
 
-	ret = chat.find({"status":int(status),"type":int(chatType)})
+	ret = chat.find({"status":int(status)})
 
 	return { "success":True,"msg":ret }

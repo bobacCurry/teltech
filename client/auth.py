@@ -52,7 +52,7 @@ class Auth:
 
 			return {"success":False,"msg":"时间超时，验证失败"}
 
-		return {"success":False,"msg":"已经通过认证"}
+		return {"success":True,"msg":"已经通过认证"}
 	
 	def send_code(self):
 
@@ -83,7 +83,19 @@ class Auth:
 				return {"success":False,"msg":"取消验证"}
 
 			return {"success":False,"msg":str(e)}
+	
+	def logout(self):
+		
+		try:
+
+			ret = self.app.log_out()
+
+			return {"success":True,"msg":"实例已退出"}
+		
+		except Exception as e:
 			
+			return {"success":False,"msg":str(e)}		
+
 	def __del__(self):
 
 		self.app.disconnect()
