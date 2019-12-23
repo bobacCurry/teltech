@@ -53,7 +53,7 @@ def add_group_order():
 		
 		return { "success":False, "msg":"购买的服务不存在" }
 
-	if data['days'] not in [30,60,90]:
+	if data['days'] not in [30,60,90,120]:
 		
 		return { "success":False, "msg":"购买的天数不合法" }
 

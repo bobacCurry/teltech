@@ -12,7 +12,7 @@ from model.Chat import Chat
 
 from client.message import Message
 
-import time
+from time import time
 
 from controller.account.auth import token_decode
 
@@ -42,22 +42,36 @@ def get():
 
 	return { "success":True, "msg":data }
 
+@service_push.route('/get_one/<_id>',methods=['GET'])
+def getOne(_id):
+	
+	push = Push()
+
+	data = push.findOne({"_id":_id,"uid":request.user['user_id']},{"created_at":0,"updated_at":0,"message_id":0})
+
+	if not data:
+		
+		return { "success":False, "msg":data } 
+
+	return { "success":True, "msg":data }
+
+
 @service_push.route('/add',methods=['POST'])
 def add():
 
 	data = request.form or request.get_json()
 
-	client = Client()
+	client_obj = Client()
 
 	try:
 	
 		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute']
 
-		exist = client.findOne({"phone":data['phone'],"used":0})
+		exist = client_obj.findOne({"phone":data['phone'],'uid':request.user['user_id'],"used":0})
 
 		if not exist:
 			
-			return { "success":False, "msg":"TG实例不存在" },500
+			return { "success":False, "msg":"TG实例不存在或已被占用" },500
 
 		if not str(data['text_type'])=='0' and not str(data['text_type'])=='1':
 			
@@ -109,7 +123,7 @@ def add():
 
 	if ret['success']:
 		
-		client.update({"phone":data['phone']},{"used":1})
+		client_obj.update({"phone":data['phone']},{"used":1})
 
 	else:
 
@@ -130,32 +144,60 @@ def remove():
 		
 		return { "success":False, "msg":"请求数据缺失" }
 
-	push = Push()
+	push_obj = Push()
 
-	ret = push.remove({"uid":request.user['_id'],"_id":data['_id']})
+	ret = push_obj.remove({"uid":request.user['_id'],"_id":data['_id']})
 
 	return ret
 
-@service_push.route('/update',methods=['POST'])
-def update():
+@service_push.route('/update/<_id>',methods=['POST'])
+def update(_id):
 
-	data = request.form
+	data = request.form or request.get_json()
 
 	try:
 	
-		data['_id'],data['phone'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
+		data['phone'],data['text_type'],data['chat'],data['text'],data['media'],data['caption']
 
-		if not data['_id']:
+		if not str(data['text_type'])=='0' and not str(data['text_type'])=='1':
 			
-			return { "success":False, "msg":"数据缺失" }
+			return { "success":False, "msg":"文案类型有误" },500
 
-		if (str(data['type'])=='1' and not data['text']) or (str(data['type'])=='2' and not data['media']):
+		if (str(data['text_type'])=='0' and not data['text']) or (str(data['text_type'])=='1' and not data['media']):
 			
-			return { "success":False, "msg":"广告文案不得为空" }
+			return { "success":False, "msg":"广告文案不得为空" },500
+
+		if not str(data['minute']):
+			
+			return { "success":False, "msg":"请选择发送的时间" },500
+
+		if int(data['minute']) >= 20:
+		
+			return { "success":False, "msg":"发送的时间有误" },500
+
+		if len(data['chat']) == 0 :
+			
+			return { "success":False, "msg":"请选择发送的群组" },500
 
 	except Exception as e:
-		
+
 		return { "success":False, "msg":"请求数据缺失" }
+
+	push_obj = Push()
+
+	client_obj = Client()
+
+	push = push_obj.findOne({"_id":_id,'uid':request.user['user_id']})
+
+	if not push:
+		
+		return { "success":False, "msg":"服务实例不存在" }
+
+	client = client_obj.findOne({"phone":data['phone'],'uid':request.user['user_id']})
+
+	if not client or (client["used"] and (client["phone"] != push["phone"])):
+		
+		return { "success":False, "msg":"TG实例不合法" }
 
 	message = Message(data["phone"])
 
@@ -167,24 +209,46 @@ def update():
 
 	message_id = message_ret["msg"]["message_id"]
 
-	push = Push()
+	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
 
-	ret = push.update({"_id":data['_id']},{"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+
+	if ret["success"]:
+		
+		if client["phone"] != push['phone']:
+			
+			client_obj.update({"phone":push["phone"]},{"used":0})
+
+			client_obj.update({"phone":client["phone"]},{"used":1})
 
 	return ret
 
-@service_push.route('/start/<_id>',methods=['POST'])
-def start(_id):
+
+@service_push.route('/change_status/<_id>',methods=['POST'])
+def changeStatus(_id):
 
 	push_obj = Push()
 
-	push = push_obj.findOne({"_id":_id})
+	push = push_obj.findOne({"_id":_id,'uid':request.user['user_id']})
 
-	ret = push_obj.update({"_id":_id},{"status":1})
-
-	if not ret["success"]:
+	if not push:
 		
-		return ret
+		return { "success":False, "msg":"服务实例不存在" }
 
-	return { "success":True, "msg":"开启成功" }
+	if push["deadline"]<int(time()):
 
+		return { "success":False, "msg":"服务未购买或已过期" }
+
+	status = 0
+
+	if push["status"] == 0:
+		
+		status = 1
+
+	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"status":status})
+
+	if ret["success"]:
+		
+		ret["status"] = status
+
+	return ret
