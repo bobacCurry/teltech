@@ -23,9 +23,9 @@ now = datetime.datetime.now()
 clearing = False
 
 def forward(phone,chatid,message_id):
-	# 886985027138
+	
 	message = Message(phone)
-	# CBobac 5218
+	
 	ret = message.forward_message(chatid,'me',message_id)
 
 	print(ret)
@@ -41,13 +41,11 @@ def add_job():
 
 	queue = Queue()
 
-	pushs = push.find({"minute":minute,"status":1})
+	pushs = push.find({"minute":minute,"message_id":{"$ne":0},"status":1})
 
 	for push in pushs:
 
-		if (str(push['type'])=='1' and push['text']) or (str(push['type'])=='2' and push['media']):
-
-			queue.insert({"type":push["type"],"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"],"text":push["text"],"media":push["media"],"caption":push["caption"]})
+		queue.insert({"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"]})
 
 # 执行并且消除队列中的任务
 def clear_job():

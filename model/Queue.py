@@ -10,20 +10,12 @@ class Queue(Base):
 		Base.__init__(self,'Queue')
 
 		self.scheme = {
-			# 文本类型
-			"type":0,
 			# 手机号
 			"phone":"",
 			# chatid
 			"chat":[],
 			# 需要forward的message
-			"message_id":0,
-			# 文案
-			"text":"",
-			# 图片
-			"media":"",
-			# 介绍
-			"caption":""
+			"message_id":0
 		}
 
 		self.timeStamp = False
