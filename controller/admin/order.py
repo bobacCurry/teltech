@@ -44,17 +44,13 @@ def before_request():
 @admin_order.route('/get_order',methods=['GET'])
 def get_order():
 
-	page = None
-
-	limit = None
-
-	query = {}
-
 	try:
 
 		page = request.args.get("page")
 
-		limit = request.args.get("limit")
+		limit = 50
+
+		query = {}
 
 		if request.args.get("status"):
 			
@@ -64,13 +60,7 @@ def get_order():
 			
 			page = 1
 
-		if not limit:
-			
-			limit = 20
-
 		page = int(page)
-
-		limit = int(limit)
 
 		skip = (page-1)*limit
 
@@ -78,21 +68,15 @@ def get_order():
 
 		data = order.find(query,{"updated_at":0},skip=skip,limit=limit)
 
-		if not data:
-			
-			data = []
-
 		return { "success":True, "msg":data }
 
 	except Exception as e:
 
-		print(e)
-
 		return { "success":False, "msg":[] }
 
 
-@admin_order.route('/start_order/<_id>/<phone>/<minute>',methods=['POST'])
-def start_order(_id,phone,minute):
+@admin_order.route('/start_order/<_id>',methods=['POST'])
+def start_order(_id):
 
 	order_obj = Order()
 
@@ -102,19 +86,21 @@ def start_order(_id,phone,minute):
 		
 		return  { "success":False, "msg":"暂无该待审核订单" }
 
-	check = Check(phone)
+	push_obj = Push()
 
-	ret = check.authCheck()
+	push = push_obj.findOne({"_id":order["sid"]})
 
-	if not ret["success"]:
+	if not push:
 		
-		return ret
+		return  { "success":False, "msg":"服务不存在" }
 
 	deadline = int(time()) + int(order['days'])*24*3600
 
-	push_obj = Push()
+	if int(time()) < push["deadline"]:
+		
+		deadline = int(push["deadline"]) + int(order['days'])*24*3600
 
-	ret1 = push_obj.update({"_id":order['cid']},{"deadline":deadline,"minute":int(minute),"phone":phone})
+	ret1 = push_obj.update({"_id":order['sid']},{"deadline":deadline,"status":1})
 
 	if not ret1["success"]:
 		
@@ -126,7 +112,7 @@ def start_order(_id,phone,minute):
 		
 		return  { "success":False, "msg":"订单更新失败2" }
 
-	return { "success":False, "msg":"订单开启成功" }
+	return { "success":True, "msg":"订单开启成功" }
 
 
 

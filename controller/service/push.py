@@ -38,34 +38,82 @@ def get():
 
 	push = Push()
 
-	data = push.find({"uid":request.user['_id']},{"created_at":0,"updated_at":0})
+	data = push.find({"uid":request.user['user_id']},{"chat":0,"text":0,"media":0,"caption":0,"created_at":0,"updated_at":0,"message_id":0})
 
 	return { "success":True, "msg":data }
 
 @service_push.route('/add',methods=['POST'])
 def add():
 
-	data = request.form
+	data = request.form or request.get_json()
+
+	client = Client()
 
 	try:
 	
-		data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
+		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute']
 
-		if not str(data['type'])=='1' and not str(data['type'])=='2':
-			
-			return { "success":False, "msg":"文案类型有误" } 
+		exist = client.findOne({"phone":data['phone'],"used":0})
 
-		if (str(data['type'])=='1' and not data['text']) or (str(data['type'])=='2' and not data['media']):
+		if not exist:
 			
-			return { "success":False, "msg":"广告文案不得为空" }
+			return { "success":False, "msg":"TG实例不存在" },500
+
+		if not str(data['text_type'])=='0' and not str(data['text_type'])=='1':
+			
+			return { "success":False, "msg":"文案类型有误" },500
+
+		if (str(data['text_type'])=='0' and not data['text']) or (str(data['text_type'])=='1' and not data['media']):
+			
+			return { "success":False, "msg":"广告文案不得为空" },500
+
+		if not data['minute']:
+			
+			return { "success":False, "msg":"请选择发送的时间" },500
+
+		if int(data['minute']) >= 20:
+		
+			return { "success":False, "msg":"发送的时间有误" },500
+
+		if len(data['chat']) == 0 :
+			
+			return { "success":False, "msg":"请选择发送的群组" },500
 
 	except Exception as e:
 		
-		return { "success":False, "msg":"请求数据缺失" }
+		return { "success":False, "msg":"请求数据缺失" },500
+
+	message = Message(data['phone'])
+
+	message_ret = None
+
+	if str(data['text_type'])=='1':
+
+		message_ret = message.send_photo("me",data["media"],data["caption"])
+
+	else:
+
+		message_ret = message.send_message("me",data["text"])
+		
+	if not message_ret["success"]:
+		
+		return message_ret,500
+
+	message_id = message_ret["msg"]["message_id"]
+
+	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
 
 	push = Push()
 
-	ret = push.insert({'uid':request.user['_id'],"cat":data['cat'],'type':data['type'],'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push.insert({'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+
+	if ret['success']:
+		
+		client.update({"phone":data['phone']},{"used":1})
+
+	else:
+
+		return ret,500
 
 	return ret
 
@@ -95,7 +143,7 @@ def update():
 
 	try:
 	
-		data['_id'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
+		data['_id'],data['phone'],data['cat'],data['type'],data['chat'],data['text'],data['media'],data['caption']
 
 		if not data['_id']:
 			
@@ -108,6 +156,16 @@ def update():
 	except Exception as e:
 		
 		return { "success":False, "msg":"请求数据缺失" }
+
+	message = Message(data["phone"])
+
+	message_ret = message.send_message("me",data["text"])
+
+	if not message_ret["success"]:
+		
+		return message_ret
+
+	message_id = message_ret["msg"]["message_id"]
 
 	push = Push()
 
@@ -122,29 +180,7 @@ def start(_id):
 
 	push = push_obj.findOne({"_id":_id})
 
-	if not push:
-		
-		return { "success":False, "msg":"实例不存在" }
-
-	if not push["phone"]:
-		
-		return { "success":False, "msg":"实力客户端未分配" }
-
-	if (str(push['type'])=='1' and not push['text']) or (str(push['type'])=='2' and not push['media']):
-			
-		return { "success":False, "msg":"广告文案不得为空" }
-
-	message = Message(push["phone"])
-
-	ret = message.send_message("me",push["text"])
-
-	if not ret["success"]:
-		
-		return ret
-
-	message_id = ret["msg"]["message_id"]
-
-	ret = push_obj.update({"_id":_id},{"message_id":message_id,"status":1})
+	ret = push_obj.update({"_id":_id},{"status":1})
 
 	if not ret["success"]:
 		

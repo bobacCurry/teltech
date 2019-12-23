@@ -137,6 +137,4 @@ class Base:
 
 		except Exception as e:
 
-			print(e)
-
 			return { "success":False, "msg":str(e) }

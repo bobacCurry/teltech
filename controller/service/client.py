@@ -29,8 +29,16 @@ def getUserClient():
 
 	client = Client()
 
-	print(request.user["user_id"])
-
 	data = client.find({"uid":request.user["user_id"]})
 
 	return { "success":True, "msg":data }
+
+@service_client.route('/get_notused_client',methods=['GET'])
+def getNotUsed():
+	
+	client = Client()
+
+	data = client.find({"uid":request.user["user_id"],"used":0})
+
+	return { "success":True, "msg":data }
+

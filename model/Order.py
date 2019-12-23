@@ -9,9 +9,9 @@ class Order(Base):
 
 		self.scheme = {
 			# 服务类型
-			"type":"",
+			"type":0,
 			# clientid
-			"cid":"",
+			"sid":"",
 			# userid
 			"uid":"",
 			# 时长（天）

@@ -25,16 +25,12 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-@service_auth.route('/send_code/<phone>/<_type>',methods=['POST'])
-def send_code(phone,_type):
+@service_auth.route('/send_code/<phone>',methods=['POST'])
+def send_code(phone):
 
 	if not phone:
 		
 		return { "success":False,"msg":"请输入手机号" },500
-
-	if not _type:
-		
-		return { "success":False,"msg":"请输入客户端类型" },500
 
 	key = "auth-code-"+str(phone)
 
@@ -52,7 +48,7 @@ def send_code(phone,_type):
 
 		if not exist:
 			
-			client_obj.insert({"phone":phone,"uid":request.user["user_id"],"type":_type,"status":1})
+			client_obj.insert({"phone":phone,"uid":request.user["user_id"],"status":1})
 
 	return ret
 

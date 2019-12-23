@@ -14,9 +14,9 @@ class Push(Base):
 			# 用户id
 			"uid":"",
 			# 服务类型
-			"cat":0,
+			"chat_type":0,
 			# 文本类型
-			"type":0,
+			"text_type":0,
 			# 手机号
 			"phone":"",
 			# chatid
@@ -30,7 +30,7 @@ class Push(Base):
 			# 介绍
 			"caption":"",
 			# 发送时间
-			"minute":0,
+			"minute":[],
 			# 服务状态
 			"status":0,
 			# 到期时间

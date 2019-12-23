@@ -26,6 +26,20 @@ class Message:
 			
 			return { "success":False,"msg":str(e) }
 
+
+	def send_photo(self,chat_id,photo,caption):
+		
+		try:
+
+			ret = self.app.send_photo(chat_id, photo, caption=caption)
+
+			return { "success":True,"msg":ret }
+
+		except Exception as e:
+			
+			return { "success":False,"msg":str(e) }
+
+
 	def forward_message(self,chat_id,from_chat_id,message_ids):
 		
 		if not self.is_authorized:
