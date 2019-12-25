@@ -94,13 +94,13 @@ def start_order(_id):
 		
 		return  { "success":False, "msg":"服务不存在" }
 
-	deadline = int(time()) + int(order['days'])*24*3600
+	expire = int(time()) + int(order['days'])*24*3600
 
-	if int(time()) < push["deadline"]:
+	if int(time()) < push["expire"]:
 		
-		deadline = int(push["deadline"]) + int(order['days'])*24*3600
+		expire = int(push["expire"]) + int(order['days'])*24*3600
 
-	ret1 = push_obj.update({"_id":order['sid']},{"deadline":deadline,"status":1})
+	ret1 = push_obj.update({"_id":order['sid']},{"expire":expire,"status":1})
 
 	if not ret1["success"]:
 		

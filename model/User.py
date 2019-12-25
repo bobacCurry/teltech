@@ -21,6 +21,10 @@ class User(Base):
 			"job":"",
 			# client admin
 			"access":[],
+			# vip
+			"vip":0,
+			# vip到期时间 
+			"vip_expire":0,
 
 			"money":0,
 

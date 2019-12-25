@@ -34,7 +34,7 @@ class Push(Base):
 			# 服务状态
 			"status":0,
 			# 到期时间
-			"deadline":0
+			"expire":0
 		}
 
 		self.timeStamp = True

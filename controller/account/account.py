@@ -75,7 +75,7 @@ def login():
 		
 		return { "success":False, "msg":"用户信息不存在" },500
 
-	token_ret = token_encode({"user_id":ret["_id"],"name":ret["name"],"avatar":ret["avatar"],"access":ret["access"]})
+	token_ret = token_encode({"user_id":ret["_id"],"name":ret["name"],"avatar":ret["avatar"],"access":ret["access"],"vip":ret["vip"],"vip_expire":ret["vip_expire"],"money":ret["money"]})
 
 	return token_ret
 
@@ -96,16 +96,35 @@ def get_info():
 
 	return request.user
 
+@account.route('/reset_password',methods=['POST'])
+def reset_password():
+
+	data = request.form or request.get_json()
+
+	if not request.user:
+		
+		return { "success":False, "msg":"用户数据有误" },500
+
+	user = User()
+
+	exist = user.findOne({'_id':request.user['user_id'],"password":md5(data['old_password'].encode(encoding='utf-8')).hexdigest(),"status":1})
+
+	if not exist:
+		
+		return { "success":False, "msg":"账号与密码不符" },500
+
+	ret = user.update({'_id':request.user['user_id']},{"password":md5(data['new_password'].encode(encoding='utf-8')).hexdigest()})
+
+	if not ret["success"]:
+
+		return ret,500
+
+	return ret
+
 @account.route('/logout',methods=['POST'])
 def logout():
 	
 	return { "success":True, "msg":"退出账号" }
-
-# @account.before_request
-
-# def before_request():
-
-# 	return '22222222'
 
 
 
