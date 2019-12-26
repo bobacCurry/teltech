@@ -11,3 +11,5 @@ session/*
 cron.log
 
 flask.log
+
+env.py

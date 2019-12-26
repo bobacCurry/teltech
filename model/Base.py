@@ -4,19 +4,19 @@ from datetime import datetime
 
 from bson import ObjectId
 
-name = ""
+from env import dbuser,dbpassword,dburl,dbport,dbname
 
-password=""
+if dbuser:
+	
+	url = "mongodb://"+dbuser+':'+dbpassword+'@'+dburl+":"+dbport+"/"
 
-url="localhost"
+else:
 
-port="27017"
+	url = "mongodb://"+dburl+":"+dbport+"/"
 
-dbname="teltech"
+print(url)
 
-print("mongodb://"+url+":"+port+"/"+dbname)
-
-client = MongoClient("mongodb://"+url+":"+port+"/")[dbname]
+client = MongoClient(url)[dbname]
 
 class Base:
 	
