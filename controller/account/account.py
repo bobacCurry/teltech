@@ -73,7 +73,7 @@ def login():
 
 	if not ret:
 		
-		return { "success":False, "msg":"用户信息不存在" },500
+		return { "success":False, "msg":"密码输入错误" },500
 
 	token_ret = token_encode({"user_id":ret["_id"],"name":ret["name"],"avatar":ret["avatar"],"access":ret["access"],"vip":ret["vip"],"vip_expire":ret["vip_expire"],"money":ret["money"]})
 

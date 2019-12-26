@@ -1,7 +1,5 @@
 from model.Base import Base
 
-from datetime import datetime
-
 class User(Base):
 	
 	def __init__(self):

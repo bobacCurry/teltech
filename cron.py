@@ -70,10 +70,17 @@ def clear_job():
 
 		clearing = False
 
+# 自动加群 
+def add_chat():
+	
+	print(1111)
+
 scheduler = BlockingScheduler()
 
 scheduler.add_job(func=add_job, trigger='cron', minute='*')
 
 scheduler.add_job(func=clear_job, trigger='cron', second='*/2')
+
+scheduler.add_job(func=add_chat, trigger='cron', minute='*/15')
 
 scheduler.start()
