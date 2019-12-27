@@ -62,6 +62,21 @@ class Chat:
 			
 			return { "success":False,"msg":str(e) }
 
+	def add_chat(self,chatid):
+		
+		if not self.is_authorized:
+			
+			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
+
+		try:
+			
+			ret = app.join_chat(chatid)
+
+			return {'success':True,'msg':chatid}
+
+		except Exception as e:
+			
+			return {'success':False,'msg':str(e)}
 
 	def __del__(self):
 

@@ -16,7 +16,7 @@ class User(Base):
 
 			"name":"",
 
-			"job":"",
+			"job":0,
 			# client admin
 			"access":[],
 			# vip

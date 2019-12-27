@@ -15,6 +15,8 @@ class AddChat(Base):
 			success:[],
 			# 加入失败
 			fail:[],
+			# 加入失败
+			info:'',
 			# 0需要加入 1已经加完
 			status:0
 		}

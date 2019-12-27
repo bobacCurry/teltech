@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
 	app.debug = True
 
-	handler = logging.FileHandler('flask.log')
+	handler = logging.FileHandler('log/flask.log')
 
 	handler.setLevel(logging.DEBUG)
 
