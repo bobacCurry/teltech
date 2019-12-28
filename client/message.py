@@ -1,10 +1,10 @@
 from client.index import Index
 
-class Message:
+class Message(Index):
 
 	def __init__(self,phone):
 
-		Index.__init__(self,phone)
+		super().__init__(phone)
 
 	def send_message(self,chat_id,text,parse_mode="html"):
 

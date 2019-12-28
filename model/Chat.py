@@ -1,6 +1,5 @@
 from model.Base import Base
 
-from datetime import datetime
 # 群组
 class Chat(Base):
 	

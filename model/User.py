@@ -1,7 +1,5 @@
 from model.Base import Base
 
-from datetime import datetime
-
 class User(Base):
 	
 	def __init__(self):
@@ -18,7 +16,7 @@ class User(Base):
 
 			"name":"",
 
-			"job":"",
+			"job":0,
 			# client admin
 			"access":[],
 			# vip

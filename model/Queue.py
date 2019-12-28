@@ -1,8 +1,6 @@
 # push队列
 from model.Base import Base
 
-from datetime import datetime
-
 class Queue(Base):
 	
 	def __init__(self):

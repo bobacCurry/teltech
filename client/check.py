@@ -1,10 +1,10 @@
 from client.index import Index
 
-class Check:
+class Check(Index):
 
 	def __init__(self,phone):
 
-		Index.__init__(self,phone)
+		super().__init__(phone)
 
 	def authCheck(self):
 		

@@ -18,6 +18,8 @@ from controller.service.client import service_client
 
 from controller.service.chat import service_chat
 
+from controller.service.vip import service_vip
+
 from controller.admin.order import admin_order
 
 from controller.admin.chat import admin_chat
@@ -38,6 +40,8 @@ app.register_blueprint(service_client,url_prefix='/service/client')
 
 app.register_blueprint(service_chat,url_prefix='/service/chat')
 
+app.register_blueprint(service_vip,url_prefix='/service/vip')
+
 app.register_blueprint(admin_order,url_prefix='/admin/order')
 
 app.register_blueprint(admin_chat,url_prefix='/admin/chat')
@@ -48,7 +52,7 @@ if __name__ == '__main__':
 
 	app.debug = True
 
-	handler = logging.FileHandler('flask.log')
+	handler = logging.FileHandler('log/flask.log')
 
 	handler.setLevel(logging.DEBUG)
 

@@ -81,7 +81,7 @@ def add():
 			
 			return { "success":False, "msg":"广告文案不得为空" },500
 
-		if not data['minute']:
+		if not str(data['minute']):
 			
 			return { "success":False, "msg":"请选择发送的时间" },500
 
