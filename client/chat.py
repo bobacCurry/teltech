@@ -2,7 +2,7 @@ from client.index import Index
 
 class Chat(Index):
 
-	def __init__(phone):
+	def __init__(self,phone):
 
 		super().__init__(phone)
 
