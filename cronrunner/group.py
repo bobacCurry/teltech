@@ -90,8 +90,6 @@ class Group(Index):
 
 				self.logger(ret['msg'])
 
-				print(ret)
-
 		self.logger('添加群任务完成')
 
 	def add_runner(self,add_obj,add_item):
@@ -117,8 +115,6 @@ class Group(Index):
 		count = 0
 
 		for chatid in add_item['chatids']:
-
-			print(count)
 
 			if count>=5:
 				
