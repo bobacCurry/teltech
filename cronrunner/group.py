@@ -8,6 +8,8 @@ from model.AddChat import AddChat
 
 import datetime
 
+import time
+
 class Group(Index):
 
 	def __init__(self):
@@ -74,11 +76,11 @@ class Group(Index):
 
 			self.clearing = False
 
-	def add_chat(self):
+	def join_chat(self):
 		
 		add_obj = AddChat()
 
-		add_list = add_obj.find({status:0})
+		add_list = add_obj.find({'status':0})
 
 		if len(add_list):
 
@@ -88,6 +90,8 @@ class Group(Index):
 
 				self.logger(ret['msg'])
 
+				print(ret)
+
 		self.logger('添加群任务完成')
 
 	def add_runner(self,add_obj,add_item):
@@ -96,7 +100,7 @@ class Group(Index):
 
 		fail = add_item['fail']
 
-		chatids = add_item['chatids']
+		removeids = []
 
 		chat = self.chat(add_item['phone'])
 
@@ -114,29 +118,33 @@ class Group(Index):
 
 		for chatid in add_item['chatids']:
 
+			print(count)
+
 			if count>=5:
 				
 				break
 
-			chatids.remove(chatid)
+			ret = chat.join_chat(chatid)
 
-			try:
+			if '[420 FLOOD_WAIT_X]' in ret['msg']:
 
-				app.join_chat(chatid)
+				break
 
+			if ret['success']:
+				
 				success.append(chatid)
 
 				count=count+1
 
-			except Exception as e:
+				time.sleep(5)
 
-				print(e)
-				
+			else:
+
 				fail.append(chatid)
 
-				continue
+			removeids.append(chatid)
 
-			time.sleep(5)
+		chatids = [x for x in add_item['chatids'] if x not in removeids]
 
 		if len(chatids):
 			
@@ -144,6 +152,6 @@ class Group(Index):
 
 		else:
 
-			add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'status':1})
+			add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'msg':'执行完毕','status':1})
 
 		return {'success':True,'msg':add_item['phone']+'加群执行完毕'}

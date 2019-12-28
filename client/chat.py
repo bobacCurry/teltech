@@ -1,10 +1,10 @@
 from client.index import Index
 
-class Chat:
+class Chat(Index):
 
-	def __init__(self,phone):
+	def __init__(phone):
 
-		Index.__init__(self,phone)
+		super().__init__(phone)
 
 	def get_chat(self,chat_id):
 
@@ -62,7 +62,7 @@ class Chat:
 			
 			return { "success":False,"msg":str(e) }
 
-	def add_chat(self,chatid):
+	def join_chat(self,chatid):
 		
 		if not self.is_authorized:
 			
@@ -70,7 +70,7 @@ class Chat:
 
 		try:
 			
-			ret = app.join_chat(chatid)
+			ret = self.app.join_chat(chatid)
 
 			return {'success':True,'msg':chatid}
 

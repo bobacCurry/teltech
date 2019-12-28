@@ -1,10 +1,10 @@
 from client.index import Index
 
-class User:
+class User(Index):
 
 	def __init__(self,phone):
 
-		Index.__init__(self,phone)
+		super().__init__(phone)
 
 	def getMe(self):
 		

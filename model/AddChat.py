@@ -4,21 +4,22 @@ class AddChat(Base):
 	
 	def __init__(self):
 
-		Base.__init__(self,'Chat')
+		Base.__init__(self,'AddChat')
 
 		self.scheme = {
+			'uid':'',
 			# 实例
-			phone:'',
+			'phone':'',
 			# 准备加入
-			chatids:[],
+			'chatids':[],
 			# 加入成功
-			success:[],
+			'success':[],
 			# 加入失败
-			fail:[],
+			'fail':[],
 			# 加入失败
-			info:'',
+			'info':'',
 			# 0需要加入 1已经加完
-			status:0
+			'status':0
 		}
 
 		self.timeStamp = False
