@@ -42,3 +42,11 @@ def getNotUsed():
 
 	return { "success":True, "msg":data }
 
+@service_client.route('/restore/<phone>',methods=['POST'])
+def restore(phone):
+	
+	client = Client()
+
+	data = client.update({'uid':request.user['user_id'],'phone':phone},{'status':1})
+
+	return { "success":True, "msg":data }

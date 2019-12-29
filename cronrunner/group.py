@@ -6,6 +6,8 @@ from model.Queue import Queue
 
 from model.AddChat import AddChat
 
+from model.Client import Client
+
 import datetime
 
 import time
@@ -17,6 +19,14 @@ class Group(Index):
 		super().__init__()
 
 		self.clearing = False
+
+		self.client_obj = Client()
+
+		self.push_obj = Push()
+
+		self.queue_obj = Queue()
+
+		self.add_obj = AddChat()
 
 	def forward(self,phone,chatids,message_id):
 		
@@ -34,7 +44,15 @@ class Group(Index):
 
 			else:
 
-				log = log + '-' + chatid + '（' + str(ret['msg']) + '）'
+				log = log + '-' + chatid + '（' + ret['msg'] + '）'
+
+				if 'check @SpamBot' in ret['msg']:
+					
+					self.client_obj.update({'phone':phone},{'status':2})
+
+					self.push_obj.update({'phone':phone},{'status':0})
+
+					break
 
 		self.logger(log)
 
@@ -45,15 +63,11 @@ class Group(Index):
 
 		minute = now.minute
 
-		push = Push()
-
-		queue = Queue()
-
-		pushs = push.find({"minute":minute,"message_id":{"$ne":0},"status":1})
+		pushs = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1})
 
 		for push in pushs:
 
-			queue.insert({"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"]})
+			self.queue_obj.insert({"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"]})
 
 		self.logger(str(minute) + '分任务添加')
 
@@ -64,35 +78,31 @@ class Group(Index):
 
 			self.clearing = True
 
-			queue_obj = Queue()
-
-			queue = queue_obj.findOne({})
+			queue = self.queue_obj.findOne({})
 
 			if queue:
 					
 				self.forward(queue["phone"],queue["chat"],queue["message_id"])
 
-				queue_obj.remove({"_id":queue["_id"]})
+				self.queue_obj.remove({"_id":queue["_id"]})
 
 			self.clearing = False
 
 	def join_chat(self):
-		
-		add_obj = AddChat()
 
-		add_list = add_obj.find({'status':0})
+		add_list = self.add_obj.find({'status':0})
 
 		if len(add_list):
 
 			for add_item in add_list:
 				
-				ret = self.add_runner(add_obj,add_item)
+				ret = self.add_runner(add_item)
 
 				self.logger(ret['msg'])
 
 		self.logger('添加群任务完成')
 
-	def add_runner(self,add_obj,add_item):
+	def add_runner(self,add_item):
 
 		success = add_item['success']
 
@@ -108,7 +118,7 @@ class Group(Index):
 			
 			msg = '客户端验证失败'
 
-			add_obj.update({'_id':add_item['_id']},{'status':-1,'msg':msg})
+			self.add_obj.update({'_id':add_item['_id']},{'status':-1,'msg':msg})
 
 			return {'success':False,'msg':msg}
 		
@@ -144,10 +154,10 @@ class Group(Index):
 
 		if len(chatids):
 			
-			add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail})
+			self.add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail})
 
 		else:
 
-			add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'msg':'执行完毕','status':1})
+			self.add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'msg':'执行完毕','status':1})
 
 		return {'success':True,'msg':add_item['phone']+'加群执行完毕'}

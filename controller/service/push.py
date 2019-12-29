@@ -201,7 +201,16 @@ def update(_id):
 
 	message = Message(data["phone"])
 
-	message_ret = message.send_message("me",data["text"])
+	
+	message_ret = None
+
+	if str(data['text_type'])=='1':
+
+		message_ret = message.send_photo("me",data["media"],data["caption"])
+
+	else:
+
+		message_ret = message.send_message("me",data["text"])
 
 	if not message_ret["success"]:
 		
@@ -231,6 +240,14 @@ def changeStatus(_id):
 
 	push = push_obj.findOne({"_id":_id,'uid':request.user['user_id']})
 
+	client_obj = Client()
+
+	client = client_obj.findOne({'uid':request.user['user_id'],'phone':push['phone']})
+
+	if not client:
+		
+		return { "success":False, "msg":"该服务的TG账号不存在" }
+
 	if not push:
 		
 		return { "success":False, "msg":"服务实例不存在" }
@@ -244,6 +261,14 @@ def changeStatus(_id):
 	if push["status"] == 0:
 		
 		status = 1
+
+		if client['status']==2:
+			
+			return { "success":False, "msg":"TG账号已被禁言，请确认账号已解除禁言" }
+
+		if client['status']==3:
+			
+			return { "success":False, "msg":"TG账号已被ban，请确认账号是正常的" }
 
 	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"status":status})
 

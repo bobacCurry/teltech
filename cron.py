@@ -9,7 +9,7 @@ scheduler = BlockingScheduler()
 
 scheduler.add_job(func=group.add_job, trigger='cron', minute='*')
 
-scheduler.add_job(func=group.clear_job, trigger='cron', second='*/2')
+scheduler.add_job(func=group.clear_job, trigger='cron', second='*/3')
 
 scheduler.add_job(func=group.join_chat, trigger='cron', minute='*/12')
 

@@ -43,12 +43,11 @@ def addChat():
 
 	client_obj = Client()
 
-	client = client_obj.findOne({'phone':data['phone'],'uid':request.user['user_id'],'status':1})
+	client = client_obj.findOne({'phone':data['phone'],'uid':request.user['user_id'],'status':{'$in':[1,2]}})
 
 	if not client:
 		
-		return { "success":False, "msg":"请求数据缺失" }
-
+		return { "success":False, "msg":"TG账号未绑定" }
 
 	check_obj = Check(data['phone'])
 

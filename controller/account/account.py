@@ -13,7 +13,9 @@ def before_request():
 
 	request.user = None
 
-	token = request.headers.get("token") or request.args.get("token")
+	token = request.headers.get("token")
+
+	print(request.args.get("token"))
 
 	user = token_decode(token)
 
