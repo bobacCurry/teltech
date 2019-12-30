@@ -7,6 +7,8 @@ class Push(Base):
 		Base.__init__(self,'Push')
 
 		self.scheme = {
+			# title
+			"title":"",
 			# 用户id
 			"uid":"",
 			# 服务类型

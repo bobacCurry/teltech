@@ -65,7 +65,7 @@ def add():
 
 	try:
 	
-		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute']
+		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute'],data['title']
 
 		exist = client_obj.findOne({"phone":data['phone'],'uid':request.user['user_id'],"used":0})
 
@@ -119,7 +119,7 @@ def add():
 
 	push = Push()
 
-	ret = push.insert({'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
 
 	if ret['success']:
 		
@@ -157,7 +157,7 @@ def update(_id):
 
 	try:
 	
-		data['phone'],data['text_type'],data['chat'],data['text'],data['media'],data['caption']
+		data['phone'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['title']
 
 		if not str(data['text_type'])=='0' and not str(data['text_type'])=='1':
 			
@@ -220,7 +220,7 @@ def update(_id):
 
 	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
 
-	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
 
 	if ret["success"]:
 		
@@ -231,7 +231,6 @@ def update(_id):
 			client_obj.update({"phone":client["phone"]},{"used":1})
 
 	return ret
-
 
 @service_push.route('/change_status/<_id>',methods=['POST'])
 def changeStatus(_id):
