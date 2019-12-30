@@ -119,7 +119,7 @@ def add():
 
 	push = Push()
 
-	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption']})
+	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption']})
 
 	if ret['success']:
 		
@@ -220,7 +220,7 @@ def update(_id):
 
 	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
 
-	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
+	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
 
 	if ret["success"]:
 		

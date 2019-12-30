@@ -19,6 +19,8 @@ class Push(Base):
 			"phone":"",
 			# chatid
 			"chat":[],
+			# chatid的数量
+			"count":0,
 			# 需要forward的message
 			"message_id":0,
 			# 文案

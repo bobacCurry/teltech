@@ -63,7 +63,30 @@ class Group(Index):
 
 		minute = now.minute
 
-		pushs = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1})
+		minute1 = minute + 1
+
+		minute2 = minute + 2
+			
+		if minute==58:
+			
+			minute2 = 0
+
+		if minute==59:
+			
+			minute1 = 0
+
+			minute2 = 1
+
+		# 将群分割
+		slice_num = 30
+
+		pushs1 = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1})
+
+		pushs2 = self.push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1})
+
+		pushs3 = self.push_obj.find({"minute":minute2,"message_id":{"$ne":0},"count":{"$gt":slice_num*2},"status":1},{"phone":1,"chat":{"$slice":[slice_num*2,slice_num]},"message_id":1})
+
+		pushs = pushs1 + pushs2 + pushs3
 
 		for push in pushs:
 
