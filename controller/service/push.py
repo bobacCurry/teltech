@@ -85,7 +85,7 @@ def add():
 			
 			return { "success":False, "msg":"请选择发送的时间" },500
 
-		if int(data['minute']) >= 20:
+		if int(data['minute']) >= 30:
 		
 			return { "success":False, "msg":"发送的时间有误" },500
 
@@ -121,7 +121,7 @@ def add():
 
 	message_id = message_ret["msg"]["message_id"]
 
-	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
+	minute = [int(data['minute']),int(data['minute'])+30]
 
 	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption']})
 
@@ -175,7 +175,7 @@ def update(_id):
 			
 			return { "success":False, "msg":"请选择发送的时间" },500
 
-		if int(data['minute']) >= 20:
+		if int(data['minute']) >= 30:
 		
 			return { "success":False, "msg":"发送的时间有误" },500
 
@@ -226,7 +226,7 @@ def update(_id):
 
 	message_id = message_ret["msg"]["message_id"]
 
-	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
+	minute = [int(data['minute']),int(data['minute'])+30]
 
 	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
 
