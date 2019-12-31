@@ -38,7 +38,7 @@ def getNotUsed():
 	
 	client = Client()
 
-	data = client.find({"uid":request.user["user_id"],"used":0})
+	data = client.find({"uid":request.user["user_id"],"used":0,"status":1})
 
 	return { "success":True, "msg":data }
 
