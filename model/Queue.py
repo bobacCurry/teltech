@@ -13,7 +13,15 @@ class Queue(Base):
 			# chatid
 			"chat":[],
 			# 需要forward的message
-			"message_id":0
+			"message_id":0,
+
+			"text_type":0,
+
+			"text":'',
+
+			"media":'',
+
+			"caption":''
 		}
 
 		self.timeStamp = False

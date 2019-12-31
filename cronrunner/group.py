@@ -56,6 +56,62 @@ class Group(Index):
 
 		self.logger(log)
 
+	def send_text(self,phone,chatids,text):
+		
+		message = self.message(phone)
+
+		log = str(phone)
+
+		for chatid in chatids:
+			
+			ret = message.send_message(chatid,text)
+
+			if ret['success']:
+				
+				log = log + '-' + chatid + '（success）'
+
+			else:
+
+				log = log + '-' + chatid + '（' + ret['msg'] + '）'
+
+				if 'check @SpamBot' in ret['msg']:
+					
+					self.client_obj.update({'phone':phone},{'status':2})
+
+					self.push_obj.update({'phone':phone},{'status':0})
+
+					break
+
+		self.logger(log)
+
+	def send_media(self,phone,chatids,media,caption):
+		
+		message = self.message(phone)
+
+		log = str(phone)
+
+		for chatid in chatids:
+			
+			ret = message.send_photo(chatid,media,caption)
+
+			if ret['success']:
+				
+				log = log + '-' + chatid + '（success）'
+
+			else:
+
+				log = log + '-' + chatid + '（' + ret['msg'] + '）'
+
+				if 'check @SpamBot' in ret['msg']:
+					
+					self.client_obj.update({'phone':phone},{'status':2})
+
+					self.push_obj.update({'phone':phone},{'status':0})
+
+					break
+
+		self.logger(log)
+
 	# 在队列中添加任务
 	def add_job(self):
 
@@ -80,17 +136,17 @@ class Group(Index):
 		# 将群分割
 		slice_num = 30
 
-		pushs1 = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1})
+		pushs1 = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-		pushs2 = self.push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1})
+		pushs2 = self.push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-		pushs3 = self.push_obj.find({"minute":minute2,"message_id":{"$ne":0},"count":{"$gt":slice_num*2},"status":1},{"phone":1,"chat":{"$slice":[slice_num*2,slice_num]},"message_id":1})
+		pushs3 = self.push_obj.find({"minute":minute2,"message_id":{"$ne":0},"count":{"$gt":slice_num*2},"status":1},{"phone":1,"chat":{"$slice":[slice_num*2,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
 		pushs = pushs1 + pushs2 + pushs3
 
 		for push in pushs:
 
-			self.queue_obj.insert({"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"]})
+			self.queue_obj.insert({"phone":push["phone"],"chat":push["chat"],"message_id":push["message_id"],"text_type":push["text_type"],"text":push["text"],"media":push["media"],"caption":push["caption"]})
 
 		self.logger(str(minute) + '分任务添加')
 
@@ -104,8 +160,18 @@ class Group(Index):
 			queue = self.queue_obj.findOne({})
 
 			if queue:
+				
+				if queue["text_type"]==1 and queue["media"]!='':
 					
-				self.forward(queue["phone"],queue["chat"],queue["message_id"])
+					self.send_media(queue["phone"],queue["chat"],queue["media"],queue["caption"])
+
+				else :
+
+					if queue["text_type"]==0 and queue["text"]!='':
+
+						self.send_text(queue["phone"],queue["chat"],queue["text"])
+
+				# self.forward(queue["phone"],queue["chat"],queue["message_id"])
 
 				self.queue_obj.remove({"_id":queue["_id"]})
 
