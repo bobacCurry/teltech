@@ -99,6 +99,8 @@ def add():
 
 	message = Message(data['phone'])
 
+	push = Push()
+
 	message_ret = None
 
 	if str(data['text_type'])=='1':
@@ -111,13 +113,15 @@ def add():
 		
 	if not message_ret["success"]:
 		
+		if '[401 USER_DEACTIVATED_BAN]' in  message_ret["msg"]:
+			
+			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':3})
+
 		return message_ret,500
 
 	message_id = message_ret["msg"]["message_id"]
 
 	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
-
-	push = Push()
 
 	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption']})
 
@@ -214,6 +218,10 @@ def update(_id):
 
 	if not message_ret["success"]:
 		
+		if '[401 USER_DEACTIVATED_BAN]' in  message_ret["msg"]:
+			
+			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':3})
+
 		return message_ret
 
 	message_id = message_ret["msg"]["message_id"]
