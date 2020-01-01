@@ -14,11 +14,12 @@ class Index:
 
 		minute = datetime.now().minute
 
-		proxy_obj = Proxy()
+		# proxy_obj = Proxy()
 
-		proxy = proxy_obj.findOne({"minute":minute,"status":1},{"hostname":1,"port":1,"username":1,"password":1})
+		# proxy = proxy_obj.findOne({"minute":minute,"status":1},{"hostname":1,"port":1,"username":1,"password":1})
 	
-		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone,proxy=proxy)
+		# ,proxy=proxy
+		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone)
 
 		self.is_authorized = True
 
