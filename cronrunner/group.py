@@ -34,8 +34,16 @@ class Group(Index):
 
 		log = str(phone)
 
+		count = 0
+
 		for chatid in chatids:
-			
+
+			count = count + 1
+
+			if count%10 == 0:
+				
+				time.sleep(3)
+
 			ret = message.forward_message(chatid,'me',message_id)
 
 			if ret['success']:
@@ -172,18 +180,18 @@ class Group(Index):
 			queue = self.queue_obj.findOne({})
 
 			if queue:
+
+				self.forward(queue["phone"],queue["chat"],queue["message_id"])
 				
-				if queue["text_type"]==1 and queue["media"]!='':
+				# if queue["text_type"]==1 and queue["media"]!='':
 					
-					self.send_media(queue["phone"],queue["chat"],queue["media"],queue["caption"])
+				# 	self.send_media(queue["phone"],queue["chat"],queue["media"],queue["caption"])
 
-				else :
+				# else :
 
-					if queue["text_type"]==0 and queue["text"]!='':
+				# 	if queue["text_type"]==0 and queue["text"]!='':
 
-						self.send_text(queue["phone"],queue["chat"],queue["text"])
-
-				# self.forward(queue["phone"],queue["chat"],queue["message_id"])
+				# 		self.send_text(queue["phone"],queue["chat"],queue["text"])
 
 				self.queue_obj.remove({"_id":queue["_id"]})
 
