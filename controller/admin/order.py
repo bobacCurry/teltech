@@ -37,10 +37,6 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-	if user['success']:
-		
-		request.user = user['msg']
-
 @admin_order.route('/get_order',methods=['GET'])
 def get_order():
 

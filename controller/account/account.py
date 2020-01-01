@@ -15,8 +15,6 @@ def before_request():
 
 	token = request.headers.get("token")
 
-	print(request.args.get("token"))
-
 	user = token_decode(token)
 
 	if user['success']:

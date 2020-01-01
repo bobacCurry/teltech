@@ -71,7 +71,7 @@ class Base:
 			
 			return { "success":False, "msg":str(e) }
 
-	def find(self,query,projection=None,skip=None,limit=None):
+	def find(self,query,projection=None,skip=None,limit=None,sort=None):
 
 		try:
 			
@@ -86,6 +86,10 @@ class Base:
 			if limit:
 				
 				data.limit(limit)
+
+			if sort:
+
+				data.sort(sort)
 
 			data_filter = self.id_to_str(data)
 

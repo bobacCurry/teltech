@@ -25,11 +25,6 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-	if user['success']:
-		
-		request.user = user['msg']
-
-
 @admin_chat.route('/add_chat/<_id>/<auth>',methods=['POST'])
 def addChat(_id,auth):
 
