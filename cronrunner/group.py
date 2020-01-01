@@ -34,15 +34,7 @@ class Group(Index):
 
 		log = str(phone)
 
-		count = 0
-
 		for chatid in chatids:
-
-			count = count + 1
-
-			if count%10 == 0:
-				
-				time.sleep(3)
 
 			ret = message.forward_message(chatid,'me',message_id)
 
@@ -129,42 +121,42 @@ class Group(Index):
 
 		minute = now.minute
 
-		# minute1 = minute + 2
+		minute1 = minute + 2
 
-		# minute2 = minute + 4
+		minute2 = minute + 4
 			
-		# if minute==56:
+		if minute==56:
 			
-		# 	minute2 = 0
+			minute2 = 0
 
-		# if minute==57:
+		if minute==57:
 			
-		# 	minute2 = 1
+			minute2 = 1
 
-		# if minute==58:
+		if minute==58:
 			
-		# 	minute1 = 0
+			minute1 = 0
 
-		# 	minute2 = 2
+			minute2 = 2
 
-		# if minute==59:
+		if minute==59:
 			
-		# 	minute1 = 1
+			minute1 = 1
 
-		# 	minute2 = 3
+			minute2 = 3
 
-		# # 将群分割
-		# slice_num = 25
+		# 将群分割
+		slice_num = 25
 
-		# pushs1 = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
+		pushs1 = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-		# pushs2 = self.push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
+		pushs2 = self.push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-		# pushs3 = self.push_obj.find({"minute":minute2,"message_id":{"$ne":0},"count":{"$gt":slice_num*2},"status":1},{"phone":1,"chat":{"$slice":[slice_num*2,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
+		pushs3 = self.push_obj.find({"minute":minute2,"message_id":{"$ne":0},"count":{"$gt":slice_num*2},"status":1},{"phone":1,"chat":{"$slice":[slice_num*2,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-		# pushs = pushs1 + pushs2 + pushs3
+		pushs = pushs1 + pushs2 + pushs3
 
-		pushs = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":1,"message_id":1})
+		# pushs = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":1,"message_id":1})
 
 		for push in pushs:
 
