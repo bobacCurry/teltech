@@ -80,4 +80,4 @@ class Chat(Index):
 
 	def __del__(self):
 
-		self.app.disconnect()
+		self.app.stop()

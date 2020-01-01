@@ -60,8 +60,6 @@ class Message(Index):
 			
 			return { "success":False,"msg":str(e) }
 		
-
-
 	def __del__(self):
 
-		self.app.disconnect()
+		self.app.stop()
