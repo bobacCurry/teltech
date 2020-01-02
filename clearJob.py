@@ -66,8 +66,8 @@ queue = queue_obj.findOne({})
 
 if queue:
 
-	forward(queue["phone"],queue["chat"],queue["message_id"])
-	
 	queue_obj.remove({"_id":queue["_id"]})
+
+	forward(queue["phone"],queue["chat"],queue["message_id"])
 
 sys.exit()
