@@ -33,12 +33,6 @@ class Index:
 
 				self.is_authorized = False
 
-			else:
-
-				self.app.disconnect()
-
-				self.app.start()
-
 		except BaseException as e:
 
 			self.is_authorized = False
