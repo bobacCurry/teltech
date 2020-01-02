@@ -32,26 +32,26 @@ now = datetime.datetime.now()
 
 minute = now.minute
 
-minute1 = minute + 2
+# minute1 = minute + 2
 	
-if minute==58:
+# if minute==58:
 	
-	minute1 = 0
+# 	minute1 = 0
 
-if minute==59:
+# if minute==59:
 	
-	minute1 = 1
+# 	minute1 = 1
 
 # 将群分割
-slice_num = 30
+# slice_num = 30
 
-pushs1 = push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
+# pushs1 = push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":{"$slice":slice_num},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-pushs2 = push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
+# pushs2 = push_obj.find({"minute":minute1,"message_id":{"$ne":0},"count":{"$gt":slice_num*1},"status":1},{"phone":1,"chat":{"$slice":[slice_num*1,slice_num]},"message_id":1,"text_type":1,"text":1,"media":1,"caption":1})
 
-pushs = pushs1 + pushs2
+# pushs = pushs1 + pushs2
 
-# pushs = self.push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":1,"message_id":1})
+pushs = push_obj.find({"minute":minute,"message_id":{"$ne":0},"status":1},{"phone":1,"chat":1,"message_id":1})
 
 for push in pushs:
 
