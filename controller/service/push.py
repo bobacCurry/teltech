@@ -121,7 +121,27 @@ def add():
 
 	message_id = message_ret["msg"]["message_id"]
 
-	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
+	skip = [0,12,24,36,48]
+
+	minute1 = int(data['minute'])
+
+	minute2 = int(data['minute']) + 20
+
+	minute3 = int(data['minute']) + 40
+
+	if minute1 in skip:
+		
+		minute1 = minute1 + 2
+
+	if minute2 in skip:
+		
+		minute2 = minute2 + 2
+
+	if minute3 in skip:
+		
+		minute3 = minute3 + 2
+
+	minute = [minute1,minute2,minute3]
 
 	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption']})
 
@@ -226,7 +246,27 @@ def update(_id):
 
 	message_id = message_ret["msg"]["message_id"]
 
-	minute = [int(data['minute']),int(data['minute'])+20,int(data['minute'])+40]
+	skip = [0,12,24,36,48]
+
+	minute1 = int(data['minute'])
+
+	minute2 = int(data['minute']) + 20
+
+	minute3 = int(data['minute']) + 40
+
+	if minute1 in skip:
+		
+		minute1 = minute1 + 2
+
+	if minute2 in skip:
+		
+		minute2 = minute2 + 2
+
+	if minute3 in skip:
+		
+		minute3 = minute3 + 2
+
+	minute = [minute1,minute2,minute3]
 
 	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
 
