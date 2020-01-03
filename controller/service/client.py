@@ -8,6 +8,8 @@ from model.Client import Client
 
 from model.Push import Push
 
+from model.AddChat import AddChat
+
 import os
 
 service_client = Blueprint('service_client',__name__)
@@ -87,3 +89,17 @@ def restore(phone):
 	data = client.update({'uid':request.user['user_id'],'phone':phone},{'status':1})
 
 	return { "success":True, "msg":data }
+
+@service_client.route('/get_add_chat/<page>',methods=['GET'])
+def getAddChat(page):
+
+	limit = 50
+
+	skip = (int(page)-1)*limit
+
+	add_obj = AddChat()
+
+	data = add_obj.find({'uid':request.user['user_id']},skip=skip,limit=limit)
+
+	return {'success':True,'msg':data}
+
