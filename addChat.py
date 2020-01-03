@@ -85,7 +85,7 @@ def add_runner(add_item):
 
 	return {'success':True,'msg':add_item['phone']+'加群执行完毕'}
 
-add_list = add_obj.find({'status':0})
+add_list = add_obj.find({'status':0},limit=3)
 
 if len(add_list):
 
