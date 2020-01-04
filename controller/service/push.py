@@ -121,7 +121,7 @@ def add():
 
 	message_id = message_ret["msg"]["message_id"]
 
-	skip = [0,12,24,36,48]
+	skip = [0,1,12,13,24,25,36,37,48,49]
 
 	minute1 = int(data['minute'])
 
@@ -246,7 +246,7 @@ def update(_id):
 
 	message_id = message_ret["msg"]["message_id"]
 
-	skip = [0,12,24,36,48]
+	skip = [0,1,12,13,24,25,36,37,48,49]
 
 	minute1 = int(data['minute'])
 
