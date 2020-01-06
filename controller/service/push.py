@@ -65,7 +65,7 @@ def add():
 
 	try:
 	
-		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute'],data['title']
+		data['phone'],data['chat_type'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['minute'],data['title'],data['count']
 
 		exist = client_obj.findOne({"phone":data['phone'],'uid':request.user['user_id'],"used":0})
 
@@ -143,6 +143,14 @@ def add():
 
 	minute = [minute1,minute2,minute3]
 
+	if data['count'] == 2:
+		
+		minute = [minute1,minute2]
+
+	if data['count'] == 1:
+		
+		minute = [minute1]
+
 	ret = push.insert({'title':data['title'],'phone':data['phone'],'uid':request.user['user_id'],'message_id':message_id,"minute":minute,"chat_type":int(data['chat_type']),'text_type':int(data['text_type']),'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption']})
 
 	if ret['success']:
@@ -181,7 +189,7 @@ def update(_id):
 
 	try:
 	
-		data['phone'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['title']
+		data['phone'],data['text_type'],data['chat'],data['text'],data['media'],data['caption'],data['title'],data['count']
 
 		if not str(data['text_type'])=='0' and not str(data['text_type'])=='1':
 			
@@ -225,7 +233,6 @@ def update(_id):
 
 	message = Message(data["phone"])
 
-	
 	message_ret = None
 
 	if str(data['text_type'])=='1':
@@ -267,6 +274,14 @@ def update(_id):
 		minute3 = minute3 + 2
 
 	minute = [minute1,minute2,minute3]
+
+	if data['count'] == 2:
+		
+		minute = [minute1,minute2]
+
+	if data['count'] == 1:
+		
+		minute = [minute1]
 
 	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"phone":data["phone"],'text_type':int(data['text_type']),'message_id':message_id,"minute":minute,'chat':data['chat'],'count':len(data['chat']),'text':data['text'],'media':data['media'],'caption':data['caption'],"title":data['title']})
 
