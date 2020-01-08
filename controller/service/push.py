@@ -339,3 +339,36 @@ def changeStatus(_id):
 		ret["status"] = status
 
 	return ret
+
+@service_push.route('/del_push/<_id>',methods=['POST'])
+def delPush(_id):
+
+	push_obj = Push()
+
+	push = push_obj.findOne({"_id":_id,'uid':request.user['user_id']})
+
+	if not push:
+		
+		return { "success":False, "msg":"服务实例不存在" }
+
+	client_obj = Client()
+
+	client = client_obj.findOne({'uid':request.user['user_id'],'phone':push['phone']})
+
+	if not client:
+		
+		return { "success":False, "msg":"该服务的TG账号不存在" }
+
+	if push["expire"]>int(time()):
+
+		return { "success":False, "msg":"服务未过期，不可以删除" }
+
+	ret = push_obj.remove({"_id":_id,'uid':request.user['user_id']})
+
+	if not ret['success']:
+		
+		return { "success":False, "msg":"服务未过期，不可以删除" }
+
+	client_obj.update({'uid':request.user['user_id'],'phone':client['phone']},{'used':0})
+
+	return { "success":True, "msg":"服务已经删除" }
