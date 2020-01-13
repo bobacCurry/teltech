@@ -10,6 +10,10 @@ from controller.account.auth import token_decode
 
 service_group = Blueprint('service_group',__name__)
 
+def get_chat(chatid):
+	
+	pass
+
 @service_group.before_request
 def before_request():
 
@@ -25,9 +29,15 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-@service_push.route('/create_supergroup',methods=['GET'])
-def create_supergroup():
+@service_push.route('/create_group',methods=['POST'])
+def create_group():
 
 	group = Group()
 
 	return '111111'
+
+@service_push.route('/get_chat/<chatid>',methods=['GET'])
+def get_chat(chatid):
+	
+	pass
+

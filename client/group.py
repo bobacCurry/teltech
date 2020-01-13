@@ -1,5 +1,7 @@
 from client.index import Index
 
+from pyrogram import ChatPermissions
+
 class Group(Index):
 
 	def __init__(self,phone):
@@ -34,7 +36,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"请设置标题" }
 
@@ -52,12 +54,11 @@ class Group(Index):
 
 	def get_chat(self,chatid):
 
-
 		if not self.is_authorized:
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"请选择群" }
 
@@ -78,7 +79,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"设置群名称" }
 
@@ -99,7 +100,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"设置群名称" }
 
@@ -124,7 +125,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"设置群名称" }
 
@@ -149,7 +150,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"设置群名称" }
 		
@@ -168,13 +169,74 @@ class Group(Index):
 			return { "success":False,"msg":str(e) }
 
 
+	def set_chat_permissions(self,chatid,can_send_messages=True,can_send_media_messages=True,can_send_other_messages=True):
+
+		if not self.is_authorized:
+			
+			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
+
+		if not chatid or not chatid.strip():
+			
+			return { "success":True,"msg":"设置群名称" }
+		
+		try:
+			
+			ret = self.app.set_chat_permissions(chatid,ChatPermissions(can_send_messages,can_send_media_messages,can_send_other_messages))
+
+			return { "success":True,"msg":ret }
+
+		except Exception as e:
+			
+			return { "success":False,"msg":str(e) }
+
+
+	def get_chat_members(self,chatid,offset=0,limit=100,filter=None):
+
+		if not self.is_authorized:
+			
+			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
+
+		if not chatid or not chatid.strip():
+			
+			return { "success":True,"msg":"设置群名称" }
+		
+		try:
+			
+			ret = self.app.get_chat_members(chatid,offset=offset,limit=limit,filter=filter)
+
+			return { "success":True,"msg":ret }
+
+		except Exception as e:
+			
+			return { "success":False,"msg":str(e) }
+
+	def get_chat_members_count(self,chatid):
+
+		if not self.is_authorized:
+			
+			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
+
+		if not chatid or not chatid.strip():
+			
+			return { "success":True,"msg":"设置群名称" }
+		
+		try:
+			
+			ret = self.app.get_chat_members_count(chatid)
+
+			return { "success":True,"msg":ret }
+
+		except Exception as e:
+			
+			return { "success":False,"msg":str(e) }
+
 	def add_chat_members(self,chatid,users = []):
 
 		if not self.is_authorized:
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not chatid or chatid.strip():
+		if not chatid or not chatid.strip():
 			
 			return { "success":True,"msg":"设置群名称" }
 
