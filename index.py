@@ -56,14 +56,14 @@ if __name__ == '__main__':
 
 	app.debug = True
 
-	handler = logging.FileHandler('log/flask.log')
+	# handler = logging.FileHandler('log/flask.log')
 
-	handler.setLevel(logging.DEBUG)
+	# handler.setLevel(logging.DEBUG)
 
-	logging_format = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
+	# logging_format = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
 
-	handler.setFormatter(logging_format)
+	# handler.setFormatter(logging_format)
 
-	app.logger.addHandler(handler)
+	# app.logger.addHandler(handler)
 
 	app.run()

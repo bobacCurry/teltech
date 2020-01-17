@@ -29,15 +29,59 @@ def before_request():
 		
 		return { "success":False, "msg":"用户数据缺失" }
 
-@service_push.route('/create_group',methods=['POST'])
+@service_group.route('/create_group',methods=['POST'])
 def create_group():
 
 	group = Group()
 
 	return '111111'
 
-@service_push.route('/get_chat/<chatid>',methods=['GET'])
-def get_chat(chatid):
+@service_group.route('/get_chat_info/<chatid>',methods=['GET'])
+def get_chat_info(chatid):
 	
 	pass
 
+@service_group.route('/update_chat_username/<chatid>/<username>',methods=['POST'])
+def update_chat_username(chatid,username):
+
+	pass
+
+@service_group.route('/export_chat_invite_link/<chatid>',methods=['POST'])
+def export_chat_invite_link(chatid):
+
+	pass
+
+@service_group.route('/set_chat_photo/<chatid>',methods=['POST'])
+def set_chat_photo(chatid):
+
+	pass
+
+@service_group.route('/set_chat_title/<chatid>',methods=['POST'])
+def set_chat_title(chatid):
+
+	pass
+
+@service_group.route('/set_chat_description/<chatid>',methods=['POST'])
+def set_chat_description(chatid):
+
+	pass
+
+@service_group.route('/set_chat_permissions/<chatid>',methods=['POST'])
+def set_chat_permissions(chatid):
+
+	pass
+
+@service_group.route('/get_chat_members/<chatid>/<offset>/<limit>/<filter>',methods=['GET'])
+def get_chat_members(chatid,offset,limit,filter):
+
+	pass
+
+@service_group.route('/get_chat_members_count/<chatid>',methods=['GET'])
+def get_chat_members_count(chatid):
+
+	pass
+
+@service_group.route('/add_chat_members/<chatid>',methods=['GET'])
+def add_chat_members(chatid):
+
+	pass

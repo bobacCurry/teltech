@@ -12,7 +12,7 @@ class Index:
 
 	def __init__(self, phone):		
 
-		minute = datetime.now().minute
+		# minute = datetime.now().minute
 
 		# proxy_obj = Proxy()
 

@@ -72,6 +72,26 @@ class Group(Index):
 			
 			return { "success":False,"msg":str(e) }
 
+	def update_chat_username(self,chatid,username=None):
+		
+		if not self.is_authorized:
+			
+			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
+
+		if not chatid or not chatid.strip():
+			
+			return { "success":True,"msg":"请选择群" }
+
+		try:
+			
+			ret = self.app.update_chat_username(chatid,username)
+
+			return { "success":True,"msg":ret }
+
+		except Exception as e:
+			
+			return { "success":False,"msg":str(e) }		
+
 
 	def export_chat_invite_link(self,chatid):
 
