@@ -12,7 +12,11 @@ service_group = Blueprint('service_group',__name__)
 
 def get_chat(chatid):
 	
-	pass
+	group = Group()
+
+	ret = group.get_chat(chatid)
+
+	return ret
 
 @service_group.before_request
 def before_request():
@@ -32,19 +36,35 @@ def before_request():
 @service_group.route('/create_group',methods=['POST'])
 def create_group():
 
+	try:
+
+		data['title'],data['description']
+
+	except Exception as e:
+		
+		return { "success":False, "msg":"请求数据缺失" }
+
 	group = Group()
 
-	return '111111'
+	ret = group.create_supergroup(title,description)
+
+	return ret
 
 @service_group.route('/get_chat_info/<chatid>',methods=['GET'])
 def get_chat_info(chatid):
 	
-	pass
+	ret = get_chat(chatid)
+
+	return ret
 
 @service_group.route('/update_chat_username/<chatid>/<username>',methods=['POST'])
 def update_chat_username(chatid,username):
 
-	pass
+	group = Group()
+
+	ret = group.update_chat_username(chatid,username)
+
+	return ret
 
 @service_group.route('/export_chat_invite_link/<chatid>',methods=['POST'])
 def export_chat_invite_link(chatid):
