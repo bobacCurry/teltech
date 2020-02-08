@@ -1,22 +1,10 @@
 from model.AddMember import AddMember
 
-from client.group import Group
+import multiprocessing
 
 import sys
 
-add_member_obj = AddMember()
-
-add_item = add_member_obj.findOne({'status':0})
-
-status = 0
-
-phones = add_item['phone']
-
-uids = add_item['uids']
-
-success = add_item['success']
-
-fail = add_item['fail']
+from client.group import Group
 
 def adduser(phone,addids):
 	
@@ -61,6 +49,20 @@ def adduser(phone,addids):
 	print({'success':success,'fail':fail,'last':addids[i:]})
 
 	return {'success':success,'fail':fail,'last':addids[i:]}
+
+add_member_obj = AddMember()
+
+add_item = add_member_obj.findOne({'status':0})
+
+status = 0
+
+phones = add_item['phone']
+
+uids = add_item['uids']
+
+success = add_item['success']
+
+fail = add_item['fail']
 
 for phone in phones:
 
