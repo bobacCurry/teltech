@@ -12,14 +12,7 @@ class Index:
 
 	def __init__(self, phone):		
 
-		# minute = datetime.now().minute
-
-		# proxy_obj = Proxy()
-
-		# proxy = proxy_obj.findOne({"minute":minute,"status":1},{"hostname":1,"port":1,"username":1,"password":1})
-	
-		# ,proxy=proxy
-		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone)
+		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone,proxy=dict(hostname="127.0.0.1",port=1080))
 
 		self.is_authorized = True
 

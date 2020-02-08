@@ -6,6 +6,8 @@ from time import time
 
 from client.group import Group
 
+from model.Group import GroupModel
+
 from controller.account.auth import token_decode
 
 service_group = Blueprint('service_group',__name__)
@@ -47,6 +49,8 @@ def create_group():
 	group = Group()
 
 	ret = group.create_supergroup(title,description)
+
+	print(ret)
 
 	return ret
 

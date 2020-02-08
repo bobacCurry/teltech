@@ -142,3 +142,17 @@ class Base:
 		except Exception as e:
 
 			return { "success":False, "msg":str(e) }
+
+	def updatePush(self,query,document):
+
+		query = self.id_to_obj(query)
+
+		try:
+
+			self.db.update(query,{"$push":document})
+
+			return { "success":True, "msg":"更新成功" }
+
+		except Exception as e:
+
+			return { "success":False, "msg":str(e) }

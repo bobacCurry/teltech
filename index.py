@@ -28,6 +28,8 @@ from controller.admin.proxy import admin_proxy
 
 from controller.data.index import data_index
 
+from controller.group.addMember import group_add_member
+
 app = Flask(__name__)
 
 app.register_blueprint(account,url_prefix='/account')
@@ -52,18 +54,10 @@ app.register_blueprint(admin_proxy,url_prefix='/admin/proxy')
 
 app.register_blueprint(data_index,url_prefix='/data')
 
+app.register_blueprint(group_add_member,url_prefix='/group/add_member')
+
 if __name__ == '__main__':
 
 	app.debug = True
-
-	# handler = logging.FileHandler('log/flask.log')
-
-	# handler.setLevel(logging.DEBUG)
-
-	# logging_format = logging.Formatter('%(asctime)s - %(levelname)s - %(filename)s - %(funcName)s - %(lineno)s - %(message)s')
-
-	# handler.setFormatter(logging_format)
-
-	# app.logger.addHandler(handler)
 
 	app.run()

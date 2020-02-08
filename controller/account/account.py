@@ -92,14 +92,6 @@ def get_info():
 		
 		return { "success":False, "msg":"token缺失" },500
 
-	# user = User()
-
-	# ret = user.findOne({"_id":request.user["_id"]},{ "password":0, "status":0, "created_at":0, "updated_at":0 })
-
-	# if not ret:
-		
-	# 	return { "success":False, "msg":"用户不存在" }
-
 	return request.user
 
 @account.route('/reset_password',methods=['POST'])

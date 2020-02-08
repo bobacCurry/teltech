@@ -28,7 +28,6 @@ class Group(Index):
 			
 			return { "success":False,"msg":str(e) }
 
-
 	def delete_supergroup(self,chatid):
 
 
@@ -209,8 +208,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":str(e) }
 
-
-	def get_chat_members(self,chatid,offset=0,limit=100,filter=None):
+	def get_chat_members(self,chatid,offset=0,limit=100,filter='all'):
 
 		if not self.is_authorized:
 			
