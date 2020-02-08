@@ -10,7 +10,9 @@ class Auth:
 
 	def __init__(self, phone):
 
-		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone,proxy=dict(hostname="127.0.0.1",port=1080))
+		# ,proxy=dict(hostname="127.0.0.1",port=1080)
+
+		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone)
 
 		self.phone_code_hash = None
 
