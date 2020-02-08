@@ -228,7 +228,7 @@ def AddChatUser(chatid,_id):
 
 	for chat in chatinfo:
 		
-		if  chat['user']['username'] and chat['status'] == 'member' and not chat['user']['is_self'] and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['id'] not in uids and chat['user']['id'] not in success and chat['user']['id'] not in fail:
+		if  chat['user']['username'] and chat['status'] == 'member' and not chat['user']['is_self'] and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['username'] not in uids and chat['user']['username'] not in success and chat['user']['username'] not in fail:
 
 			uids.append(chat['user']['username'])
 
