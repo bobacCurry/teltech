@@ -36,13 +36,9 @@ def adduser(phone,addids):
 
 				break
 
-			elif '[400 USER_KICKED]' in addinfo['msg'] or '[403 USER_PRIVACY_RESTRICTED]' in addinfo['msg'] or '[403 USER_CHANNELS_TOO_MUCH]' in addinfo['msg'] or '[400 USER_NOT_MUTUAL_CONTACT]' in addinfo['msg']:
-
-				fail.append(uid)
-
 			else:
 
-				break
+				fail.append(uid)
 
 		i = i + 1
 
