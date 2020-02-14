@@ -33,9 +33,9 @@ let log = (error) => {
 	)
 }
 
-let work = schedule.scheduleJob('*/15 * * * * *', async () => {
+let work = schedule.scheduleJob('10 */12 * * * *', async () => {
 	
-	const cmd = 'python3 clearJob.py'
+	const cmd = 'python3 addChat.py'
 
 	const child = child_process.exec(cmd,{timeout:20000},function (error, stdout, stderr) {
 		
