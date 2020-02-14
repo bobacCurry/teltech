@@ -33,7 +33,7 @@ let log = (error) => {
 	)
 }
 
-let work = schedule.scheduleJob('*/10 * * * * *', async () => {
+let work = schedule.scheduleJob('*/15 * * * * *', async () => {
 	
 	const cmd = 'python3 clearJob.py'
 
