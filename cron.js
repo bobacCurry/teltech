@@ -90,4 +90,4 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 			log(`exit code ${code} child process exited with signal ${signal}`,childnum)
 		})	
 	}
-}
+})
