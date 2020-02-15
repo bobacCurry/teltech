@@ -33,11 +33,11 @@ let log = (error) => {
 	)
 }
 
-let work = schedule.scheduleJob('10 */12 * * * *', async () => {
+let addChat = schedule.scheduleJob('10 */12 * * * *', async () => {
 	
-	const cmd = 'python3 addChat.py'
+	const cmd_add = 'python3 addChat.py'
 
-	const child = child_process.exec(cmd,{timeout:20000},function (error, stdout, stderr) {
+	const child_addChat = child_process.exec(cmd_add,{timeout:100000},function (error, stdout, stderr) {
 		
 		if (error) {
 
@@ -50,8 +50,44 @@ let work = schedule.scheduleJob('10 */12 * * * *', async () => {
 		}
 	})
 
-	child.on('exit', (code, signal) => {
+	child_addChat.on('exit', (code, signal) => {
 
 		log(`exit code ${code} child process exited with signal ${signal}`)
 	})
 })
+
+let childnum = 0
+
+let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
+
+	if (childnum<2) {
+
+		childnum = childnum + 1
+
+		console.log(childnum,'执行')
+
+		const cmd_clear = 'python3 clearJob.py'
+
+		const child_clear = child_process.exec(cmd_clear,{timeout:20000},function (error, stdout, stderr) {
+		
+			if (error) {
+
+				log('child_error:' + JSON.stringify(error),childnum)
+			}
+
+			if(stdout){
+
+				log('child_stdout: ' + stdout,childnum)
+			}
+		})
+
+		child_clear.on('exit', (code, signal) => {
+
+			log(`exit code ${code} child process exited with signal ${signal}`,childnum)
+
+			childnum = childnum - 1
+
+			log(`exit code ${code} child process exited with signal ${signal}`,childnum)
+		})	
+	}
+}
