@@ -60,7 +60,7 @@ let childnum = 0
 
 let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 
-	if (childnum<1) {
+	if (childnum<2) {
 
 		childnum = childnum + 1
 
