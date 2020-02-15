@@ -72,14 +72,10 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 		
 			if (error) {
 
-				console.log(childnum,'执行错误')
-
 				log('child_error:' + JSON.stringify(error),childnum)
 			}
 
 			if(stdout){
-
-				console.log(childnum,'执行输出')
 
 				log('child_stdout: ' + stdout,childnum)
 			}
@@ -90,8 +86,6 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 			console.log(childnum,'结束执行')
 
 			childnum = childnum - 1
-
-			console.log(childnum,'推出线程')
 
 			log(`exit code ${code} child process exited with signal ${signal}`)
 		})	
