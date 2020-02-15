@@ -34,6 +34,8 @@ def logger(info):
 	
 	logging.info(info)
 
+	return
+
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
@@ -62,12 +64,20 @@ def forward(phone,chatids,message_id):
 
 	logger(log)
 
-queue = queue_obj.findOne({})
+	return
 
-if queue:
+def clear():
+	
+	queue = queue_obj.findOne({})
 
-	queue_obj.remove({"_id":queue["_id"]})
+	if queue:
 
-	forward(queue["phone"],queue["chat"],queue["message_id"])
+		queue_obj.remove({"_id":queue["_id"]})
+
+		forward(queue["phone"],queue["chat"],queue["message_id"])
+
+	return
+
+clear()
 
 sys.exit()
