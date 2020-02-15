@@ -60,11 +60,11 @@ let childnum = 0
 
 let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 
-	if (childnum<2) {
+	if (childnum<1) {
 
 		childnum = childnum + 1
 
-		console.log(childnum,'执行')
+		console.log(childnum,'开始执行')
 
 		const cmd_clear = 'python3 clearJob.py'
 
@@ -72,10 +72,14 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 		
 			if (error) {
 
+				console.log(childnum,'执行错误')
+
 				log('child_error:' + JSON.stringify(error),childnum)
 			}
 
 			if(stdout){
+
+				console.log(childnum,'执行输出')
 
 				log('child_stdout: ' + stdout,childnum)
 			}
@@ -83,11 +87,13 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 		child_clear.on('exit', (code, signal) => {
 
-			log(`exit code ${code} child process exited with signal ${signal}`,childnum)
+			console.log(childnum,'结束执行')
 
 			childnum = childnum - 1
 
-			log(`exit code ${code} child process exited with signal ${signal}`,childnum)
+			console.log(childnum,'推出线程')
+
+			log(`exit code ${code} child process exited with signal ${signal}`)
 		})	
 	}
 })
