@@ -34,6 +34,8 @@ def logger(info):
 	
 	logging.info(info)
 
+	return
+
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
@@ -43,6 +45,8 @@ def forward(phone,chatids,message_id):
 	for chatid in chatids:
 
 		ret = message.forward_message(chatid,'me',message_id)
+
+		print(ret)
 
 		if ret['success']:
 			
@@ -54,7 +58,15 @@ def forward(phone,chatids,message_id):
 
 			if 'check @SpamBot' in ret['msg']:
 				
-				client_obj.update({'phone':phone},{'status':2})
+				client_obj.update({'phone':phone},{'status':2,"used":0})
+
+				push_obj.update({'phone':phone},{'status':0})
+
+				break
+
+			elif '未验证' in ret["msg"]:
+
+				client_obj.update({'phone':phone},{'status':4,"used":0})
 
 				push_obj.update({'phone':phone},{'status':0})
 
@@ -62,12 +74,20 @@ def forward(phone,chatids,message_id):
 
 	logger(log)
 
-queue = queue_obj.findOne({})
+	return
 
-if queue:
+def clear():
+	
+	queue = queue_obj.findOne({})
 
-	queue_obj.remove({"_id":queue["_id"]})
+	if queue:
 
-	forward(queue["phone"],queue["chat"],queue["message_id"])
+		queue_obj.remove({"_id":queue["_id"]})
+
+		forward(queue["phone"],queue["chat"],queue["message_id"])
+
+	return
+
+clear()
 
 sys.exit()
