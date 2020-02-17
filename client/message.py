@@ -62,4 +62,10 @@ class Message(Index):
 		
 	def __del__(self):
 
-		self.app.stop()
+		try:
+			
+			self.app.stop()
+		
+		except Exception as e:
+			
+			print(e)

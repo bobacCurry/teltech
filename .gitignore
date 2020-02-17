@@ -13,3 +13,5 @@ cron.log
 flask.log
 
 env.py
+
+node_modules/
