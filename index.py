@@ -1,3 +1,4 @@
+# nohup python3 index.py>>flask_run.log 2>&1 &
 from flask import Flask,request,Blueprint
 
 from cache.index import Cache

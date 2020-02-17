@@ -33,32 +33,47 @@ let log = (error) => {
 	)
 }
 
-let addChat = schedule.scheduleJob('10 */12 * * * *', async () => {
+let addChat = schedule.scheduleJob('0 */10 * * * *', async () => {
 	
-	const cmd_add = 'python3 addChat.py'
+	const cmd_add_chat = 'python3 addChat.py'
 
-	const child_addChat = child_process.exec(cmd_add,{timeout:100000},function (error, stdout, stderr) {
-		
-		if (error) {
-
-			log('child_error:' + JSON.stringify(error))
-		}
-
-		if(stdout){
-			
-			log('child_stdout: ' + stdout)
-		}
-	})
+	const child_addChat = child_process.exec(cmd_add_chat,function (error, stdout, stderr) {})
 
 	child_addChat.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal}`)
+		log(`exit code ${code} child process exited with signal ${signal} -- addChat`)
+
+	})
+})
+
+let clearChat = schedule.scheduleJob('5 * * * * *', async () => {
+	
+	const cmd_clear_chat = 'python3 clearChat.py'
+
+	const child_clearChat = child_process.exec(cmd_clear_chat,function (error, stdout, stderr) {})
+
+	child_clearChat.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- clearChat`)
+
+	})
+})
+
+let addJob = schedule.scheduleJob('0 * * * * *', async () => {
+
+	const cmd_add_job = 'python3 addJob.py'
+
+	const child_addJob = child_process.exec(cmd_add_job,{},function (error, stdout, stderr) {})
+
+	child_addJob.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- addJob`)
 	})
 })
 
 let childnum = 0
 
-let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
+let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 	if (childnum<2) {
 
@@ -66,11 +81,11 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 		console.log(childnum,'开始执行')
 
-		const cmd_clear = 'python3 clearJob.py'
+		const cmd_clear_job = 'python3 clearJob.py'
 
 		// timeout:15000
 
-		const child_clear = child_process.exec(cmd_clear,{},function (error, stdout, stderr) {
+		const child_clearJob = child_process.exec(cmd_clear_job,{},function (error, stdout, stderr) {
 		
 			if (error) {
 
@@ -83,13 +98,13 @@ let clear = schedule.scheduleJob('*/10 * * * * *', async () => {
 			}
 		})
 
-		child_clear.on('exit', (code, signal) => {
+		child_clearJob.on('exit', (code, signal) => {
 
 			console.log(childnum,'结束执行')
 
 			childnum = childnum - 1
 
-			log(`exit code ${code} child process exited with signal ${signal}`)
+			log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
 		})	
 	}
 })
