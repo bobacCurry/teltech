@@ -63,7 +63,7 @@ def add_runner(add_item,clear):
 
 		if '[420 FLOOD_WAIT_X]' in ret['msg']:
 
-			nexttime = int(time.time())+600
+			nexttime = int(time.time())+300
 
 			clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
 
