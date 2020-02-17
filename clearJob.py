@@ -46,6 +46,8 @@ def forward(phone,chatids,message_id):
 
 		ret = message.forward_message(chatid,'me',message_id)
 
+		print(ret)
+
 		if ret['success']:
 			
 			log = log + '-' + chatid + '（success）'
@@ -56,7 +58,15 @@ def forward(phone,chatids,message_id):
 
 			if 'check @SpamBot' in ret['msg']:
 				
-				client_obj.update({'phone':phone},{'status':2})
+				client_obj.update({'phone':phone},{'status':2,"used":0})
+
+				push_obj.update({'phone':phone},{'status':0})
+
+				break
+
+			elif '未验证' in ret["msg"]:
+
+				client_obj.update({'phone':phone},{'status':4,"used":0})
 
 				push_obj.update({'phone':phone},{'status':0})
 
