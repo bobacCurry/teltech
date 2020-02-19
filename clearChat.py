@@ -54,6 +54,8 @@ def add_runner(add_item,clear):
 
 	ret = chat.join_chat(chatid)
 
+	logger(ret['msg'],'-------'+chatid)
+
 	if '[420 FLOOD_WAIT_X]' in ret['msg']:
 
 		nexttime = int(time.time())+600
