@@ -62,8 +62,6 @@ def add_runner(add_item,clear):
 
 		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
 
-		break
-
 	else:
 
 		if ret['success']:
