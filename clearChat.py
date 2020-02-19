@@ -35,8 +35,6 @@ def add_runner(add_item,clear):
 
 	fail = add_item['fail']
 
-	# removeids = []
-
 	chat = Chat(add_item['phone'])
 
 	auth = chat.authCheck()
@@ -58,7 +56,7 @@ def add_runner(add_item,clear):
 
 	if '[420 FLOOD_WAIT_X]' in ret['msg']:
 
-		nexttime = int(time.time())+300
+		nexttime = int(time.time())+600
 
 		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
 
@@ -73,6 +71,8 @@ def add_runner(add_item,clear):
 			fail.append(chatid)
 	
 	chatids = add_item['chatids'][1:]
+
+	# removeids = []
 
 	# count = 0
 
