@@ -33,7 +33,7 @@ let log = (error) => {
 	)
 }
 
-let addChat = schedule.scheduleJob('0 */10 * * * *', async () => {
+let addChat = schedule.scheduleJob('0 */3 * * * *', async () => {
 	
 	const cmd_add_chat = 'python3 addChat.py'
 
@@ -46,7 +46,7 @@ let addChat = schedule.scheduleJob('0 */10 * * * *', async () => {
 	})
 })
 
-let clearChat = schedule.scheduleJob('*/3 * * * * *', async () => {
+let clearChat = schedule.scheduleJob('*/10 * * * * *', async () => {
 	
 	const cmd_clear_chat = 'python3 clearChat.py'
 
