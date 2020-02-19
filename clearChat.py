@@ -35,7 +35,7 @@ def add_runner(add_item,clear):
 
 	fail = add_item['fail']
 
-	removeids = []
+	# removeids = []
 
 	chat = Chat(add_item['phone'])
 
@@ -50,44 +50,71 @@ def add_runner(add_item,clear):
 		clear_obj.remove({"_id":clear['_id']})
 
 		return {'success':False,'msg':msg}
-	
-	count = 0
 
-	for chatid in add_item['chatids']:
 
-		if count>=5:
+	chatid = add_item['chatids'][0]
+
+	ret = chat.join_chat(chatid)
+
+	if '[420 FLOOD_WAIT_X]' in ret['msg']:
+
+		nexttime = int(time.time())+300
+
+		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
+
+		break
+
+	else:
+
+		if ret['success']:
 			
-			break
-
-		ret = chat.join_chat(chatid)
-
-		if '[420 FLOOD_WAIT_X]' in ret['msg']:
-
-			nexttime = int(time.time())+300
-
-			clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
-
-			break
+			success.append(chatid)
 
 		else:
 
-			if ret['success']:
+			fail.append(chatid)
+	
+	chatids = add_item['chatids'][1:]
+
+	# count = 0
+
+	# for chatid in add_item['chatids']:
+
+	# 	if count>=5:
+			
+	# 		break
+
+	# 	ret = chat.join_chat(chatid)
+
+	# 	if '[420 FLOOD_WAIT_X]' in ret['msg']:
+
+	# 		nexttime = int(time.time())+300
+
+	# 		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
+
+	# 		break
+
+	# 	else:
+
+	# 		if ret['success']:
 				
-				success.append(chatid)
+	# 			success.append(chatid)
 
-				count=count+1
+	# 			count=count+1
 
-				time.sleep(5)
+	# 			time.sleep(5)
 
-			else:
+	# 		else:
 
-				fail.append(chatid)
+	# 			fail.append(chatid)
 
-			removeids.append(chatid)
+	# 		removeids.append(chatid)
 
-			clear_obj.remove({"_id":clear['_id']})
+	# 		clear_obj.remove({"_id":clear['_id']})
 
-	chatids = [x for x in add_item['chatids'] if x not in removeids]
+	# chatids = [x for x in add_item['chatids'] if x not in removeids]
+
+
 
 	if len(chatids):
 		
@@ -96,6 +123,8 @@ def add_runner(add_item,clear):
 	else:
 
 		add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'msg':'执行完毕','status':1})
+
+		clear_obj.remove({"_id":clear['_id']})
 
 	return {'success':True,'msg':add_item['phone']+'加群执行完毕'}
 
