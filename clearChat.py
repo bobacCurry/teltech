@@ -35,86 +35,47 @@ def add_runner(add_item,clear):
 
 	fail = add_item['fail']
 
+	removeids = []
+
 	chat = Chat(add_item['phone'])
 
-	auth = chat.authCheck()
+	count = 0
 
-	if not auth['success']:
-		
-		msg = '客户端验证失败'
+	for chatid in add_item['chatids']:
 
-		add_obj.update({'_id':add_item['_id']},{'status':-1,'msg':msg})
-
-		clear_obj.remove({"_id":clear['_id']})
-
-		return {'success':False,'msg':msg}
-
-
-	chatid = add_item['chatids'][0]
-
-	ret = chat.join_chat(chatid)
-
-	logger(ret['msg'],'-------'+chatid)
-
-	if '[420 FLOOD_WAIT_X]' in ret['msg']:
-
-		nexttime = int(time.time())+600
-
-		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
-
-	else:
-
-		if ret['success']:
+		if count>=5:
 			
-			success.append(chatid)
+			break
+
+		ret = chat.join_chat(chatid)
+
+		if '[420 FLOOD_WAIT_X]' in ret['msg']:
+
+			nexttime = int(time.time())+300
+
+			clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
+
+			break
 
 		else:
 
-			fail.append(chatid)
-	
-	chatids = add_item['chatids'][1:]
-
-	# removeids = []
-
-	# count = 0
-
-	# for chatid in add_item['chatids']:
-
-	# 	if count>=5:
-			
-	# 		break
-
-	# 	ret = chat.join_chat(chatid)
-
-	# 	if '[420 FLOOD_WAIT_X]' in ret['msg']:
-
-	# 		nexttime = int(time.time())+300
-
-	# 		clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
-
-	# 		break
-
-	# 	else:
-
-	# 		if ret['success']:
+			if ret['success']:
 				
-	# 			success.append(chatid)
+				success.append(chatid)
 
-	# 			count=count+1
+				count=count+1
 
-	# 			time.sleep(5)
+				time.sleep(5)
 
-	# 		else:
+			else:
 
-	# 			fail.append(chatid)
+				fail.append(chatid)
 
-	# 		removeids.append(chatid)
+			removeids.append(chatid)
 
-	# 		clear_obj.remove({"_id":clear['_id']})
+			clear_obj.remove({"_id":clear['_id']})
 
-	# chatids = [x for x in add_item['chatids'] if x not in removeids]
-
-
+	chatids = [x for x in add_item['chatids'] if x not in removeids]
 
 	if len(chatids):
 		
