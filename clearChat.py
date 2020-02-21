@@ -39,18 +39,6 @@ def add_runner(add_item,clear):
 
 	chat = Chat(add_item['phone'])
 
-	auth = chat.authCheck()
-
-	if not auth['success']:
-		
-		msg = '客户端验证失败'
-
-		add_obj.update({'_id':add_item['_id']},{'status':-1,'msg':msg})
-
-		clear_obj.remove({"_id":clear['_id']})
-
-		return {'success':False,'msg':msg}
-	
 	count = 0
 
 	for chatid in add_item['chatids']:
@@ -96,6 +84,8 @@ def add_runner(add_item,clear):
 	else:
 
 		add_obj.update({'_id':add_item['_id']},{'chatids':chatids,'success':success,'fail':fail,'msg':'执行完毕','status':1})
+
+		clear_obj.remove({"_id":clear['_id']})
 
 	return {'success':True,'msg':add_item['phone']+'加群执行完毕'}
 
