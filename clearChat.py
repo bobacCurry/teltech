@@ -44,36 +44,44 @@ def add_runner(add_item,clear):
 	for chatid in add_item['chatids']:
 
 		if count>=5:
+
+			clear_obj.remove({"_id":clear['_id']})
 			
 			break
 
-		ret = chat.join_chat(chatid)
+		ret0 = chat.send_message(chatid,'.')
 
-		if '[420 FLOOD_WAIT_X]' in ret['msg']:
+		if ret0['success'] == False and '[403 CHAT_WRITE_FORBIDDEN]' in ret0['msg']:
 
-			nexttime = int(time.time())+300
+			ret = chat.join_chat(chatid)
 
-			clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
+			if '[420 FLOOD_WAIT_X]' in ret['msg']:
 
-			break
+				nexttime = int(time.time())+300
 
-		else:
+				clear_obj.update({'_id':clear['_id']},{'nexttime':nexttime})
 
-			if ret['success']:
-				
-				success.append(chatid)
-
-				count=count+1
-
-				time.sleep(5)
+				break
 
 			else:
 
-				fail.append(chatid)
+				if ret['success']:
+					
+					success.append(chatid)
 
-			removeids.append(chatid)
+					count=count+1
 
-			clear_obj.remove({"_id":clear['_id']})
+					time.sleep(5)
+
+				else:
+
+					fail.append(chatid)
+
+		else:
+
+			success.append(chatid)
+
+		removeids.append(chatid)
 
 	chatids = [x for x in add_item['chatids'] if x not in removeids]
 

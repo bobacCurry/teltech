@@ -89,6 +89,8 @@ class Base:
 
 			if sort:
 
+				print(sort)
+
 				data.sort(sort)
 
 			data_filter = self.id_to_str(data)
