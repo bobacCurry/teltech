@@ -81,6 +81,6 @@ def getAddChat(page):
 
 	add_obj = AddChat()
 
-	data = add_obj.find({'uid':request.user['user_id']},skip=skip,limit=limit)
+	data = add_obj.find({'uid':request.user['user_id']},skip=skip,limit=limit,sort="_id")
 
 	return {'success':True,'msg':data}
