@@ -267,11 +267,11 @@ def update(_id):
 
 	if ret["success"]:
 		
-		if client["phone"] != push['phone']:
-			
-			client_obj.update({"phone":push["phone"]},{"used":0})
+		# if client["phone"] != push['phone']:
+					
+		client_obj.update({"phone":push["phone"]},{"used":0})
 
-			client_obj.update({"phone":client["phone"]},{"used":1})
+		client_obj.update({"phone":client["phone"]},{"used":1})
 
 	return ret
 
