@@ -56,7 +56,7 @@ def forward(phone,chatids,message_id):
 
 			if 'check @SpamBot' in ret['msg']:
 				
-				client_obj.update({'phone':phone},{'status':2,"used":0})
+				client_obj.update({'phone':phone},{'status':2})
 
 				push_obj.update({'phone':phone},{'status':0})
 
