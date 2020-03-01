@@ -27,6 +27,8 @@ from controller.admin.chat import admin_chat
 
 from controller.admin.proxy import admin_proxy
 
+from controller.admin.user import admin_user
+
 from controller.data.index import data_index
 
 from controller.group.addMember import group_add_member
@@ -52,6 +54,8 @@ app.register_blueprint(admin_order,url_prefix='/admin/order')
 app.register_blueprint(admin_chat,url_prefix='/admin/chat')
 
 app.register_blueprint(admin_proxy,url_prefix='/admin/proxy')
+
+app.register_blueprint(admin_user,url_prefix='/admin/user')
 
 app.register_blueprint(data_index,url_prefix='/data')
 

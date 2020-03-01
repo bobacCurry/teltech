@@ -28,7 +28,7 @@ def register():
 
 	try:
 	
-		data['account'],data['password'],data['name'],data['job']
+		data['account'],data['password'],data['name'],data['job'],data['vip']
 	
 	except Exception as e:
 		
@@ -46,7 +46,7 @@ def register():
 		
 		return {'success':False,'msg':"已存在相同的账号名称"} 
 
-	ret = user.insert({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"name":data['name'],"job":int(data['job'])})
+	ret = user.insert({"account":data['account'],"password":md5(data['password'].encode(encoding='utf-8')).hexdigest(),"name":data['name'],"job":int(data['job']),"vip":int(data['vip'])})
 
 	if not ret['success'] :
 

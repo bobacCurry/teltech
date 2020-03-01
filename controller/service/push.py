@@ -36,9 +36,23 @@ def before_request():
 @service_push.route('/get',methods=['GET'])
 def get():
 
+	limit = 50
+
+	page = request.args.get("page")
+
+	if page:
+		
+		skip = limit*(int(page)-1)
+
+	else:
+
+		skip = 0
+
+	status = request.args.get("status")
+
 	push = Push()
 
-	data = push.find({"uid":request.user['user_id']},{"chat":0,"text":0,"media":0,"caption":0,"created_at":0,"updated_at":0,"message_id":0})
+	data = push.find({"uid":request.user['user_id']},{"chat":0,"text":0,"media":0,"caption":0,"created_at":0,"updated_at":0,"message_id":0},skip=skip,limit=limit)
 
 	return { "success":True, "msg":data }
 
@@ -54,7 +68,6 @@ def getOne(_id):
 		return { "success":False, "msg":data } 
 
 	return { "success":True, "msg":data }
-
 
 @service_push.route('/add',methods=['POST'])
 def add():
@@ -335,9 +348,6 @@ def delPush(_id):
 
 	client = client_obj.findOne({'uid':request.user['user_id'],'phone':push['phone']})
 
-	if not client:
-		
-		return { "success":False, "msg":"该服务的TG账号不存在" }
 
 	if push["expire"]>int(time()):
 
@@ -349,6 +359,8 @@ def delPush(_id):
 		
 		return { "success":False, "msg":"服务未过期，不可以删除" }
 
-	client_obj.update({'uid':request.user['user_id'],'phone':client['phone']},{'used':0})
+	if client:
+
+		client_obj.update({'uid':request.user['user_id'],'phone':client['phone']},{'used':0})
 
 	return { "success":True, "msg":"服务已经删除" }

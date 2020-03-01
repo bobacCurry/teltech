@@ -13,7 +13,7 @@ class Client(Base):
 			# 用户id
 			"uid":"",
 			# tg的用户名
-			"name":"",
+			"info":"",
 			# 状态 1 开启正常 2 spam 3 banned
 			"status":1,
 			#是否被服务占用

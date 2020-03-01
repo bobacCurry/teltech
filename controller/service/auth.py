@@ -48,7 +48,11 @@ def send_code(phone):
 
 		if not exist:
 			
-			client_obj.insert({"phone":phone,"uid":request.user["user_id"],"status":1})
+			info = {'id':ret['msg']['id'],'username':ret['msg']['username'],'first_name':ret['msg']['first_name'],'is_deleted':ret['msg']['is_deleted']}
+
+			client_obj.insert({"phone":phone,"uid":request.user["user_id"],"status":1,"info":info})
+
+		return { "success":True,"msg":"验证成功" }
 
 	return ret
 

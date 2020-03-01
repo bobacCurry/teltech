@@ -40,13 +40,7 @@ class Auth:
 
 					ret = self.sign_in(Cache.get(key).decode())				
 
-					if ret["success"]:
-						
-						return {"success":True,"msg":"验证成功"}
-
-					else:
-
-						return ret
+					return ret
 
 				num+=1
 
