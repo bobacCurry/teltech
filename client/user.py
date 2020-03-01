@@ -21,3 +21,13 @@ class User(Index):
 		except Exception as e:
 			
 			return { "success":False,"msg":str(e) }
+
+	def __del__(self):
+
+		try:
+			
+			self.app.stop()
+		
+		except Exception as e:
+			
+			print(e)

@@ -10,6 +10,8 @@ from model.Push import Push
 
 from model.AddChat import AddChat
 
+from client.user import User
+
 import os
 
 service_client = Blueprint('service_client',__name__)
@@ -102,4 +104,25 @@ def getAddChat(page):
 	data = add_obj.find({'uid':request.user['user_id']},skip=skip,limit=limit)
 
 	return {'success':True,'msg':data}
+
+@service_client.route('/get_client/<phone>',methods=['GET'])
+def getClient(phone):
+
+	user_obj = User(phone)
+
+	ret = user_obj.getMe()
+
+	if ret['success']:
+		
+		info = {'id':ret['msg']['id'],'username':ret['msg']['username'],'first_name':ret['msg']['first_name'],'is_deleted':ret['msg']['is_deleted']}
+
+		client = Client()
+
+		client.update({'uid':request.user['user_id'],'phone':phone},{'info':info})
+
+		return { 'success':True,'msg':info }
+
+	else:
+
+		return { 'success':False,'msg':ret['msg'] }
 
