@@ -51,7 +51,9 @@ def add_runner(add_item,clear):
 
 		ret0 = chat.send_message(chatid,'.')
 
-		if ret0['success'] == False and '[403 CHAT_WRITE_FORBIDDEN]' in ret0['msg']:
+		# if ret0['success'] == False and '[403 CHAT_WRITE_FORBIDDEN]' in ret0['msg']:
+
+		if not ret0['success']:
 
 			ret = chat.join_chat(chatid)
 
