@@ -307,7 +307,7 @@ def changeStatus(_id):
 		
 		return { "success":False, "msg":"服务实例不存在" }
 
-	if push["expire"]<int(time()):
+	if push["expire"]<int(time()) and push["status"] == 0:
 
 		return { "success":False, "msg":"服务未购买或已过期" }
 
