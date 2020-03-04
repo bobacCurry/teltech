@@ -6,6 +6,8 @@ const child_process = require('child_process')
 
 const fs = require("fs");
 
+const env = require('./env.js')
+
 const file = path.join(__dirname, './log/cron.log')
 
 const date = new Date()
@@ -75,7 +77,11 @@ let childnum = 0
 
 let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
-	if (childnum<2) {
+	let maxnum = env.maxnum
+
+	console.log(maxnum)
+
+	if (childnum<maxnum) {
 
 		childnum = childnum + 1
 

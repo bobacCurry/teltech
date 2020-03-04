@@ -57,6 +57,6 @@ def getChat(chatType):
 
 	chat = Chat()
 
-	ret = chat.find({"type":int(chatType),"status":1},sort="_id")
+	ret = chat.find({"type":int(chatType),"status":1},{"uid":0,"type":0,"status":0},sort="_id")
 
 	return { "success":True,"msg":ret }
