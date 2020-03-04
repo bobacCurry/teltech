@@ -66,10 +66,8 @@ def getChat(page,limit):
 		
 		query['type'] = int(_type)
 
-	print(query)
-
 	chat = Chat()
 
-	ret = chat.find(query,skip=skip,limit=limit)
+	ret = chat.find(query,{"uid":0,"type":0,"status":0},skip=skip,limit=limit)
 
 	return { "success":True,"msg":ret }

@@ -14,4 +14,6 @@ flask.log
 
 env.py
 
+env.js
+
 node_modules/
