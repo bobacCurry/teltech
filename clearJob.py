@@ -76,7 +76,7 @@ def set_timeout(num, callback):
 
 def after_timeout():  # 超时后的处理函数
     
-    print('--------超时退出--------')
+	log('--------超时退出--------')
 
 @set_timeout(60, after_timeout)  # 限时 60 秒超时
 def forward(phone,chatids,message_id):
@@ -127,13 +127,7 @@ def clear():
 
 		queue_obj.remove({"_id":queue["_id"]})
 
-	try:
-		
-		forward(queue["phone"],queue["chat"],queue["message_id"])
-	
-	except Exception as e:
-		
-		logger(e)
+	forward(queue["phone"],queue["chat"],queue["message_id"])
     
 	return
 
