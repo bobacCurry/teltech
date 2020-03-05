@@ -92,6 +92,11 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 			if (error) {
 
 				log('child_error:' + JSON.stringify(error),childnum)
+
+				childnum = childnum - 1
+
+				console.log('child_error:' + JSON.stringify(error),childnum)
+
 			}
 
 			if(stdout){
