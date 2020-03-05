@@ -70,9 +70,9 @@ def forward(phone,chatids,message_id):
 
 				break
 
-	logger(log)
-
 	del message
+
+	logger(log)
 
 	return
 
