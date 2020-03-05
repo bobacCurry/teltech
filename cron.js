@@ -87,13 +87,13 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 		const cmd_clear_job = 'python3 clearJob.py'
 
-		const child_clearJob = child_process.exec(cmd_clear_job,{timeout:60000},function (error, stdout, stderr) {
+		// {timeout:60000},
+
+		const child_clearJob = child_process.exec(cmd_clear_job,{timeout:30000},function (error, stdout, stderr) {
 		
 			if (error) {
 
 				log('child_error:' + JSON.stringify(error),childnum)
-
-				childnum = childnum - 1
 
 				console.log('child_error:' + JSON.stringify(error),childnum)
 
