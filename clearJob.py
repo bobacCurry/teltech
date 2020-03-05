@@ -78,7 +78,9 @@ def after_timeout():  # 超时后的处理函数
     
 	log('--------超时退出--------')
 
-@set_timeout(60, after_timeout)  # 限时 60 秒超时
+	sys.exit()
+
+# @set_timeout(60, after_timeout)  # 限时 60 秒超时
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
