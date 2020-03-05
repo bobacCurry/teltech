@@ -80,7 +80,6 @@ def after_timeout():  # 超时后的处理函数
 
 	sys.exit()
 
-# @set_timeout(60, after_timeout)  # 限时 60 秒超时
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
@@ -121,6 +120,8 @@ def forward(phone,chatids,message_id):
 
 	return
 
+
+@set_timeout(60, after_timeout)  # 限时 60 秒超时
 def clear():
 	
 	queue = queue_obj.findOne({})
@@ -129,7 +130,7 @@ def clear():
 
 		queue_obj.remove({"_id":queue["_id"]})
 
-	forward(queue["phone"],queue["chat"],queue["message_id"])
+		forward(queue["phone"],queue["chat"],queue["message_id"])
     
 	return
 
