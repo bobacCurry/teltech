@@ -86,6 +86,8 @@ def clear():
 
 		forward(queue["phone"],queue["chat"],queue["message_id"])
 
+		logger('---------------结束--------------')
+
 	return
 
 clear()
