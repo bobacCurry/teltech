@@ -24,9 +24,6 @@ queue_obj = Queue()
 
 push_obj = Push()
 
-
-
-
 def logger(info):
 	
 	today=datetime.date.today()
