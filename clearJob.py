@@ -84,11 +84,7 @@ def clear():
 
 		queue_obj.remove({"_id":queue["_id"]})
 
-		logger(queue["_id"]+'---------------开始--------------')
-
 		forward(queue["phone"],queue["chat"],queue["message_id"])
-
-		logger(queue["_id"]+'---------------结束--------------')
 
 	return
 
