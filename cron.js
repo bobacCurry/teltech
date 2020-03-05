@@ -79,8 +79,6 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 	let maxnum = env.maxnum
 
-	console.log(maxnum)
-
 	if (childnum<maxnum) {
 
 		childnum = childnum + 1
@@ -89,9 +87,7 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
 		const cmd_clear_job = 'python3 clearJob.py'
 
-		// timeout:15000
-
-		const child_clearJob = child_process.exec(cmd_clear_job,{},function (error, stdout, stderr) {
+		const child_clearJob = child_process.exec(cmd_clear_job,{timeout:60000},function (error, stdout, stderr) {
 		
 			if (error) {
 
