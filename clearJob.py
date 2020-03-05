@@ -72,6 +72,8 @@ def forward(phone,chatids,message_id):
 
 	logger(log)
 
+	del message
+
 	return
 
 def clear():
