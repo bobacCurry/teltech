@@ -79,7 +79,7 @@ def forward(phone,chatids,message_id):
 
 				break
 
-			elif ('[403 CHAT_WRITE_FORBIDDEN]' in ret["msg"]) or ('[400 USERNAME_NOT_OCCUPIED]' in ret["msg"]) or ('Username not found' in ret["msg"]):
+			elif ('[403 CHAT_WRITE_FORBIDDEN]' in ret["msg"]) or ('[400' in ret["msg"]):
 
 				notin.append(chatid)
 
