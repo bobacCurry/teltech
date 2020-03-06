@@ -22,6 +22,8 @@ import signal
 
 import time
 
+import timeout_decorator
+
 client_obj = Client()
 
 queue_obj = Queue()
@@ -80,6 +82,7 @@ def after_timeout():  # 超时后的处理函数
 
 	sys.exit()
 
+@timeout_decorator.timeout(50, use_signals=False)
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
