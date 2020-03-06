@@ -14,8 +14,6 @@ else:
 
 	url = "mongodb://"+dburl+":"+dbport+"/"
 
-print(url)
-
 client = MongoClient(url)[dbname]
 
 class Base:
@@ -152,6 +150,20 @@ class Base:
 		try:
 
 			self.db.update(query,{"$push":document})
+
+			return { "success":True, "msg":"更新成功" }
+
+		except Exception as e:
+
+			return { "success":False, "msg":str(e) }
+
+	def updateSelf(self,query,document):
+
+		query = self.id_to_obj(query)
+
+		try:
+
+			self.db.update(query,document,False,True)
 
 			return { "success":True, "msg":"更新成功" }
 

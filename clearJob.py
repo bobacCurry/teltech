@@ -49,6 +49,8 @@ def forward(phone,chatids,message_id):
 
 	log = str(phone)
 
+	notin = []
+
 	for chatid in chatids:
 
 		ret = message.forward_message(chatid,'me',message_id)
@@ -76,6 +78,14 @@ def forward(phone,chatids,message_id):
 				push_obj.update({'phone':phone},{'status':0})
 
 				break
+
+			elif ('[403 CHAT_WRITE_FORBIDDEN]' in ret["msg"]) or ('[400 USERNAME_NOT_OCCUPIED]' in ret["msg"]) or ('Username not found' in ret["msg"]):
+
+				notin.append(chatid)
+
+	if len(notin):
+		
+		push_obj.updateSelf({'phone':phone},{'$pull':{'chat':{'$in':notin}}})
 
 	logger(log)
 
