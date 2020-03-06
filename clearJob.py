@@ -97,7 +97,7 @@ def clear():
 		
 		except Exception as e:
 			
-			logger(str(e))
+			logger(str(e)+'---'+queue["phone"])
 	return
 
 clear()
