@@ -128,8 +128,13 @@ def clear():
 
 		queue_obj.remove({"_id":queue["_id"]})
 
-		forward(queue["phone"],queue["chat"],queue["message_id"])
-    
+		try:
+
+			forward(queue["phone"],queue["chat"],queue["message_id"])
+		
+		except Exception as e:
+			
+			log(str(e))
 	return
 
 clear()
