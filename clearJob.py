@@ -91,8 +91,6 @@ def forward(phone,chatids,message_id):
 
 	return
 
-
-# @set_timeout(60, after_timeout)  # 限时 60 秒超时
 def clear():
 	
 	queue = queue_obj.findOne({})
