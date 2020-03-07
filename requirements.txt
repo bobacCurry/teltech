@@ -3,3 +3,4 @@ PyJWT==1.7.1
 pymongo==3.9.0
 Pyrogram==0.16.0
 redis==3.3.11
+timeout_decorator==0.4.1

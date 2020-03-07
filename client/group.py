@@ -248,7 +248,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":str(e) }
 
-	def add_chat_members(self,chatid,users = []):
+	def add_chat_members(self,chatid,user):
 
 		if not self.is_authorized:
 			
@@ -260,7 +260,7 @@ class Group(Index):
 
 		try:
 			
-			ret = self.app.add_chat_members(chatid,users)
+			ret = self.app.add_chat_members(chatid,user)
 
 			return { "success":True,"msg":ret }
 

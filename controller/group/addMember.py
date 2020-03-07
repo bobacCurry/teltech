@@ -116,9 +116,9 @@ def NewChatUser(phone,target):
 
 	for chat in chatinfo['msg']:
 		
-		if chat['status'] == 'member' and not chat['user']['is_bot'] and not chat['user']['is_deleted']:
+		if chat['status'] == 'member' and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['username']:
 
-			target_chatids.append(chat['user']['id'])
+			target_chatids.append(chat['user']['username'])
 
 	del group_obj
 
@@ -228,9 +228,9 @@ def AddChatUser(chatid,_id):
 
 	for chat in chatinfo:
 		
-		if chat['status'] == 'member' and not chat['user']['is_self'] and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['id'] not in uids and chat['user']['id'] not in success and chat['user']['id'] not in fail:
+		if  chat['user']['username'] and chat['status'] == 'member' and not chat['user']['is_self'] and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['username'] not in uids and chat['user']['username'] not in success and chat['user']['username'] not in fail:
 
-			uids.append(chat['user']['id'])
+			uids.append(chat['user']['username'])
 
 	del group_obj
 
