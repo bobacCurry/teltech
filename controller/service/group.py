@@ -8,6 +8,8 @@ from client.group import Group
 
 from model.Group import GroupModel
 
+from model.Client import Client
+
 from controller.account.auth import token_decode
 
 service_group = Blueprint('service_group',__name__)
@@ -38,21 +40,61 @@ def before_request():
 @service_group.route('/create_group',methods=['POST'])
 def create_group():
 
+	data = request.form or request.get_json()
+
 	try:
 
-		data['title'],data['description']
+		data['title'],data['description'],data['phone']
 
 	except Exception as e:
 		
 		return { "success":False, "msg":"请求数据缺失" }
 
-	group = Group()
+	client_obj = Client()
 
-	ret = group.create_supergroup(title,description)
+	exist = client_obj.findOne({'uid':request.user['user_id'],'phone':data['phone']})
 
-	print(ret)
+	if not exist:
+		
+		return { "success":False, "msg":"tg号不存在" } 
 
-	return ret
+	group = Group(data['phone'])
+
+	ret = group.create_supergroup(data['title'],data['description'])
+
+	if not ret["success"]:
+
+		return ret
+
+	group_obj = GroupModel()
+
+	permissions = {
+
+		'can_send_messages':ret['msg']['permissions']['can_send_messages'],
+
+		'can_send_media_messages':ret['msg']['permissions']['can_send_media_messages'],
+
+		'can_send_other_messages':ret['msg']['permissions']['can_send_other_messages'],
+
+		'can_add_web_page_previews':ret['msg']['permissions']['can_add_web_page_previews'],
+
+		'can_send_polls':ret['msg']['permissions']['can_send_polls'],
+
+		'can_change_info':ret['msg']['permissions']['can_change_info'],
+
+		'can_invite_users':ret['msg']['permissions']['can_invite_users'],
+
+		'can_pin_messages':ret['msg']['permissions']['can_pin_messages'],
+
+	}
+
+	ret1 = group_obj.insert({'uid':request.user['user_id'],'phone':data['phone'],'id':ret['msg']['id'],'title':data['title'],'description':data['description'],'permissions':permissions})
+
+	if not ret1["success"]:
+		
+		return ret1
+
+	return { "success":True, "msg":"创建成功" } 
 
 @service_group.route('/get_chat_info/<chatid>',methods=['GET'])
 def get_chat_info(chatid):

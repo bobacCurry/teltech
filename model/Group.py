@@ -21,10 +21,10 @@ class GroupModel(Base):
 			'pinned_message':'',
 			'members_count':0,
 			'restrictions':[],
-			'permissions':[],
+			'permissions':{},
+			'admins':[],
 			'bots':[]
 		}
 
 		self.timeStamp = False
-
 		

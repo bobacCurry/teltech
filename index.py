@@ -21,6 +21,8 @@ from controller.service.chat import service_chat
 
 from controller.service.vip import service_vip
 
+from controller.service.group import service_group
+
 from controller.admin.order import admin_order
 
 from controller.admin.chat import admin_chat
@@ -48,6 +50,8 @@ app.register_blueprint(service_client,url_prefix='/service/client')
 app.register_blueprint(service_chat,url_prefix='/service/chat')
 
 app.register_blueprint(service_vip,url_prefix='/service/vip')
+
+app.register_blueprint(service_group,url_prefix='/service/group')
 
 app.register_blueprint(admin_order,url_prefix='/admin/order')
 

@@ -14,7 +14,7 @@ class Group(Index):
 			
 			return { "success":False,"msg":"客户端:"+self.phone+"未验证" }
 
-		if not title or title.strip():
+		if not title or not title.strip():
 			
 			return { "success":True,"msg":"请设置标题" }
 

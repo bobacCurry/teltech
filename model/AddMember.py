@@ -19,9 +19,7 @@ class AddMember(Base):
 			# 拉成功的人
 			'success':[],
 			# 拉失败的人
-			'fail':[],
-			
-			'status':0
+			'fail':[]
 		}
 
 		self.timeStamp = False

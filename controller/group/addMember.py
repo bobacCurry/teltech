@@ -10,42 +10,49 @@ from client.group import Group
 
 from client.message import Message
 
+from client.group import Group
+
 group_add_member = Blueprint('group_add_member',__name__)
 
-def typeof(variate):
+def addUser(phone,target,addids):
+	
+	group_obj = Group(phone)
 
-	type1=None
-	
-	if isinstance(variate,int):
-	
-		type1 = "int"
-	
-	elif isinstance(variate,str):
-	
-		type1 = "str"
-	
-	elif isinstance(variate,float):
-	
-		type1 = "float"
-	
-	elif isinstance(variate,list):
-	
-		type1 = "list"
-	
-	elif isinstance(variate,tuple):
-	
-		type1 = "tuple"
-	
-	elif isinstance(variate,dict):
-	
-		type1 = "dict"
-	
-	elif isinstance(variate,set):
-	
-		type1 = "set"
-	
-	return type1
+	success = []
 
+	fail = []
+
+	i = 0
+
+	for uid in addids:
+		
+		addinfo = group_obj.add_chat_members(target,uid)
+
+		print(addinfo,uid)
+
+		if addinfo['success']:
+			
+			success.append(uid)
+
+		else:
+
+			if '[420 FLOOD_WAIT_X]' in addinfo['msg']:
+				
+				break
+
+			elif '[400 PEER_FLOOD]' in addinfo['msg']:
+
+				break
+
+			else:
+
+				fail.append(uid)
+
+		i = i + 1
+
+	print({'success':success,'fail':fail,'last':addids[i:]})
+
+	return {'success':success,'fail':fail,'last':addids[i:]}
 
 @group_add_member.before_request
 def before_request():
@@ -216,8 +223,6 @@ def AddChatUser(chatid,_id):
 		
 		offset = x*200
 
-		print(offset)
-
 		info = group_obj.get_chat_members(chatid,offset)
 
 		if info['success']:
@@ -237,3 +242,46 @@ def AddChatUser(chatid,_id):
 	ret = add_member_obj.update({'uid':request.user['user_id'],'_id':_id},{ 'chatids': chatids,'uids': uids })
 
 	return ret
+
+
+@group_add_member.route('/add_run/<_id>',methods=['POST'])
+def AddRun(_id):
+
+	add_member_obj = AddMember()
+
+	add_item = add_member_obj.findOne({"_id":_id,'uid':request.user['user_id']})
+
+	if not add_item:
+		
+		return {'success':False,'msg':'拉人服务不存在'}
+
+	phones = add_item['phone']
+
+	uids = add_item['uids']
+
+	success = add_item['success']
+
+	fail = add_item['fail']
+
+	for phone in phones:
+
+		addids = uids[0:50]
+
+		if not len(addids):
+			
+			break
+
+		uids = uids[50:]
+
+		ret = addUser(phone,add_item['target'],addids)
+
+		success = success + ret['success']
+
+		fail = fail + ret['fail']
+
+		uids = uids + ret['last']
+
+	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
+
+	return ret
+

@@ -46,38 +46,40 @@ def adduser(phone,addids):
 
 	return {'success':success,'fail':fail,'last':addids[i:]}
 
-add_member_obj = AddMember()
+def run(_id):
 
-add_item = add_member_obj.findOne({'status':0})
+	add_member_obj = AddMember()
 
-status = 0
+	add_item = add_member_obj.findOne({"_id":_id})
 
-phones = add_item['phone']
+	if not add_item:
+		
+		return {'success':False,'msg':'拉人服务不存在'}
 
-uids = add_item['uids']
+	phones = add_item['phone']
 
-success = add_item['success']
+	uids = add_item['uids']
 
-fail = add_item['fail']
+	success = add_item['success']
 
-for phone in phones:
+	fail = add_item['fail']
 
-	uids = uids[20:]
+	for phone in phones:
 
-	addids = uids[0:20]
+		uids = uids[50:]
 
-	ret = adduser(phone,addids)
+		addids = uids[0:50]
 
-	success = success + ret['success']
+		ret = adduser(phone,addids)
 
-	fail = fail + ret['fail']
+		success = success + ret['success']
 
-	uids = uids + ret['last']
+		fail = fail + ret['fail']
 
-add_member_obj = AddMember()
+		uids = uids + ret['last']
 
-ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'status':status })
+	add_member_obj = AddMember()
 
-print(ret)
+	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
 
-sys.exit()
+	return ret
