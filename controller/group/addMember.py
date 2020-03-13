@@ -265,13 +265,13 @@ def AddRun(_id):
 
 	for phone in phones:
 
-		addids = uids[0:50]
+		addids = uids[0:20]
 
 		if not len(addids):
 			
 			break
 
-		uids = uids[50:]
+		uids = uids[20:]
 
 		ret = addUser(phone,add_item['target'],addids)
 
