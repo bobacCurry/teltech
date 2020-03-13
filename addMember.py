@@ -83,3 +83,13 @@ def run(_id):
 	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
 
 	return ret
+
+_id = sys.argv[1]
+
+print(_id)
+
+ret = run(_id)
+
+print(ret)
+
+sys.exit()
