@@ -19,7 +19,13 @@ class AddMember(Base):
 			# 拉成功的人
 			'success':[],
 			# 拉失败的人
-			'fail':[]
+			'fail':[],
+			# 本日第几次执行
+			'count':0,
+			# 下次执行时间
+			'nexttime':0,
+			# 开启拉人服务
+			'status':0
 		}
 
 		self.timeStamp = False

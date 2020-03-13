@@ -115,3 +115,33 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 		})	
 	}
 })
+
+let clearAdd = schedule.scheduleJob('* */5 * * * *', async () => {
+
+	const cmd_clear_add = 'python3 addMember.py'
+
+	const child_clearAdd = child_process.exec(cmd_clear_add,function (error, stdout, stderr) {
+	
+		if (error) {
+
+			log('child_error:' + JSON.stringify(error),childnum)
+
+		}
+
+		if(stdout){
+
+			log('child_stdout: ' + stdout,childnum)
+		}
+	})
+
+	child_clearJob.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+	})	
+})
+
+let clearAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
+
+
+
+})

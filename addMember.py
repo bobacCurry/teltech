@@ -6,6 +6,8 @@ import sys
 
 from client.group import Group
 
+import time
+
 def adduser(phone,target,addids):
 	
 	group_obj = Group(phone)
@@ -46,15 +48,15 @@ def adduser(phone,target,addids):
 
 	return {'success':success,'fail':fail,'last':addids[i:]}
 
-def run(_id):
+def run():
 
 	add_member_obj = AddMember()
 
-	add_item = add_member_obj.findOne({"_id":_id})
+	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$gt':time.time()},'uids': {'$size': {'$gt':0}},'status':1})
 
 	if not add_item:
 		
-		return {'success':False,'msg':'拉人服务不存在'}
+		return {'success':False,'msg':'暂无拉人服务'}
 
 	phones = add_item['phone']
 
@@ -80,15 +82,17 @@ def run(_id):
 
 	add_member_obj = AddMember()
 
-	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
+	count = add_item['count'] + 1
+
+	if count==3:
+		
+		nexttime = time.time() + 24*3600 + 600
+
+	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime})
 
 	return ret
 
-_id = sys.argv[1]
-
-print(_id)
-
-ret = run(_id)
+ret = run()
 
 print(ret)
 
