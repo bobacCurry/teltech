@@ -6,7 +6,7 @@ import sys
 
 from client.group import Group
 
-def adduser(phone,addids):
+def adduser(phone,target,addids):
 	
 	group_obj = Group(phone)
 
@@ -18,7 +18,7 @@ def adduser(phone,addids):
 
 	for uid in addids:
 		
-		addinfo = group_obj.add_chat_members(add_item['target'],uid)
+		addinfo = group_obj.add_chat_members(target,uid)
 
 		print(addinfo)
 
@@ -70,7 +70,7 @@ def run(_id):
 
 		addids = uids[0:30]
 
-		ret = adduser(phone,addids)
+		ret = adduser(phone,add_item['target'],addids)
 
 		success = success + ret['success']
 
