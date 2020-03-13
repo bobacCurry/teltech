@@ -244,8 +244,8 @@ def AddChatUser(chatid,_id):
 	return ret
 
 
-@group_add_member.route('/add_run/<_id>',methods=['POST'])
-def AddRun(_id):
+@group_add_member.route('/add_run/<_id>/<status>',methods=['POST'])
+def AddRun(_id,status):
 
 	add_member_obj = AddMember()
 
@@ -255,33 +255,33 @@ def AddRun(_id):
 		
 		return {'success':False,'msg':'拉人服务不存在'}
 
-	phones = add_item['phone']
+	# phones = add_item['phone']
 
-	uids = add_item['uids']
+	# uids = add_item['uids']
 
-	success = add_item['success']
+	# success = add_item['success']
 
-	fail = add_item['fail']
+	# fail = add_item['fail']
 
-	for phone in phones:
+	# for phone in phones:
 
-		addids = uids[0:20]
+	# 	addids = uids[0:20]
 
-		if not len(addids):
+	# 	if not len(addids):
 			
-			break
+	# 		break
 
-		uids = uids[20:]
+	# 	uids = uids[20:]
 
-		ret = addUser(phone,add_item['target'],addids)
+	# 	ret = addUser(phone,add_item['target'],addids)
 
-		success = success + ret['success']
+	# 	success = success + ret['success']
 
-		fail = fail + ret['fail']
+	# 	fail = fail + ret['fail']
 
-		uids = uids + ret['last']
+	# 	uids = uids + ret['last']
 
-	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
+	ret = add_member_obj.update({'_id':add_item['_id']},{'status':int(status)})
 
 	return ret
 

@@ -35,88 +35,88 @@ let log = (error) => {
 	)
 }
 
-let addChat = schedule.scheduleJob('0 */10 * * * *', async () => {
+// let addChat = schedule.scheduleJob('0 */10 * * * *', async () => {
 	
-	const cmd_add_chat = 'python3 addChat.py'
+// 	const cmd_add_chat = 'python3 addChat.py'
 
-	const child_addChat = child_process.exec(cmd_add_chat,function (error, stdout, stderr) {})
+// 	const child_addChat = child_process.exec(cmd_add_chat,function (error, stdout, stderr) {})
 
-	child_addChat.on('exit', (code, signal) => {
+// 	child_addChat.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- addChat`)
+// 		log(`exit code ${code} child process exited with signal ${signal} -- addChat`)
 
-	})
-})
+// 	})
+// })
 
-let clearChat = schedule.scheduleJob('10 * * * * *', async () => {
+// let clearChat = schedule.scheduleJob('10 * * * * *', async () => {
 	
-	const cmd_clear_chat = 'python3 clearChat.py'
+// 	const cmd_clear_chat = 'python3 clearChat.py'
 
-	const child_clearChat = child_process.exec(cmd_clear_chat,function (error, stdout, stderr) {})
+// 	const child_clearChat = child_process.exec(cmd_clear_chat,function (error, stdout, stderr) {})
 
-	child_clearChat.on('exit', (code, signal) => {
+// 	child_clearChat.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- clearChat`)
+// 		log(`exit code ${code} child process exited with signal ${signal} -- clearChat`)
 
-	})
-})
+// 	})
+// })
 
-let addJob = schedule.scheduleJob('0 * * * * *', async () => {
+// let addJob = schedule.scheduleJob('0 * * * * *', async () => {
 
-	const cmd_add_job = 'python3 addJob.py'
+// 	const cmd_add_job = 'python3 addJob.py'
 
-	const child_addJob = child_process.exec(cmd_add_job,{},function (error, stdout, stderr) {})
+// 	const child_addJob = child_process.exec(cmd_add_job,{},function (error, stdout, stderr) {})
 
-	child_addJob.on('exit', (code, signal) => {
+// 	child_addJob.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- addJob`)
-	})
-})
+// 		log(`exit code ${code} child process exited with signal ${signal} -- addJob`)
+// 	})
+// })
 
-let childnum = 0
+// let childnum = 0
 
-let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
+// let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 
-	let maxnum = env.maxnum
+// 	let maxnum = env.maxnum
 
-	if (childnum<maxnum) {
+// 	if (childnum<maxnum) {
 
-		childnum = childnum + 1
+// 		childnum = childnum + 1
 
-		console.log(childnum,'开始执行')
+// 		console.log(childnum,'开始执行')
 
-		const cmd_clear_job = 'python3 clearJob.py'
+// 		const cmd_clear_job = 'python3 clearJob.py'
 
-		// {timeout:60000},
+// 		// {timeout:60000},
 
-		const child_clearJob = child_process.exec(cmd_clear_job,function (error, stdout, stderr) {
+// 		const child_clearJob = child_process.exec(cmd_clear_job,function (error, stdout, stderr) {
 		
-			if (error) {
+// 			if (error) {
 
-				log('child_error:' + JSON.stringify(error),childnum)
+// 				log('child_error:' + JSON.stringify(error),childnum)
 
-				console.log('child_error:' + JSON.stringify(error),childnum)
+// 				console.log('child_error:' + JSON.stringify(error),childnum)
 
-			}
+// 			}
 
-			if(stdout){
+// 			if(stdout){
 
-				log('child_stdout: ' + stdout,childnum)
-			}
-		})
+// 				log('child_stdout: ' + stdout,childnum)
+// 			}
+// 		})
 
-		child_clearJob.on('exit', (code, signal) => {
+// 		child_clearJob.on('exit', (code, signal) => {
 
-			console.log(childnum,'结束执行')
+// 			console.log(childnum,'结束执行')
 
-			childnum = childnum - 1
+// 			childnum = childnum - 1
 
-			log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
-		})	
-	}
-})
+// 			log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+// 		})	
+// 	}
+// })
 
-let clearAdd = schedule.scheduleJob('* */5 * * * *', async () => {
+let clearAdd = schedule.scheduleJob('0 */5 * * * *', async () => {
 
 	const cmd_clear_add = 'python3 addMember.py'
 
@@ -124,24 +124,45 @@ let clearAdd = schedule.scheduleJob('* */5 * * * *', async () => {
 	
 		if (error) {
 
-			log('child_error:' + JSON.stringify(error),childnum)
+			log('child_error:' + JSON.stringify(error))
 
 		}
 
 		if(stdout){
 
-			log('child_stdout: ' + stdout,childnum)
+			console.log(stdout)
+
+			log('child_stdout: ' + stdout)
 		}
 	})
 
-	child_clearJob.on('exit', (code, signal) => {
+	child_clearAdd.on('exit', (code, signal) => {
 
 		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
 	})	
 })
 
-let clearAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
+let resetAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
 
+	const cmd_reset_add = 'python3 resetMember.py'
 
+	const child_resetAdd = child_process.exec(cmd_reset_add,function (error, stdout, stderr) {
+	
+		if (error) {
+
+			log('child_error:' + JSON.stringify(error))
+
+		}
+
+		if(stdout){
+
+			log('child_stdout: ' + stdout)
+		}
+	})
+
+	child_resetAdd.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+	})
 
 })

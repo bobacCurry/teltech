@@ -52,7 +52,7 @@ def run():
 
 	add_member_obj = AddMember()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$gt':time.time()},'uids': {'$size': {'$gt':0}},'status':1})
+	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$lt':time.time()},'uids': {'$size': {'$gt':0}},'status':1})
 
 	if not add_item:
 		
@@ -88,7 +88,13 @@ def run():
 		
 		nexttime = time.time() + 24*3600 + 600
 
-	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime})
+	status = 1
+
+	if len(uids) == 0:
+		
+		status = 0
+
+	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime,'status':status})
 
 	return ret
 
