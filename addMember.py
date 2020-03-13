@@ -66,9 +66,9 @@ def run(_id):
 
 	for phone in phones:
 
-		uids = uids[30:]
+		uids = uids[20:]
 
-		addids = uids[0:30]
+		addids = uids[0:20]
 
 		ret = adduser(phone,add_item['target'],addids)
 

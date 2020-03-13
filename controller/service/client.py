@@ -10,6 +10,8 @@ from model.Push import Push
 
 from model.AddChat import AddChat
 
+from model.AddMember import AddMember
+
 from client.user import User
 
 import os
@@ -46,6 +48,8 @@ def delUserClient(phone):
 
 	client_obj = Client()
 
+	add_obj = AddMember()
+
 	client_exist = client_obj.findOne({'phone':phone,"uid":request.user["user_id"]})
 
 	if not client_exist:
@@ -61,6 +65,8 @@ def delUserClient(phone):
 		return { "success":False, "msg":"TG账号目前有绑定正在运行的服务，请先停止的服务" }
 
 	ret = client_obj.remove({'phone':phone,"uid":request.user["user_id"]})
+
+	add_obj.updateSelf({'phone':phone},{'$pull':{'phone':phone}})
 
 	if not ret['success']:
 		
