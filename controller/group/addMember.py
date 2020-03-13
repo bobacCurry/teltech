@@ -28,7 +28,7 @@ def addUser(phone,target,addids):
 		
 		addinfo = group_obj.add_chat_members(target,uid)
 
-		print(addinfo,uid)
+		print(addinfo,uid,phone)
 
 		if addinfo['success']:
 			
@@ -280,8 +280,6 @@ def AddRun(_id):
 		fail = fail + ret['fail']
 
 		uids = uids + ret['last']
-
-		print(phone,success,fail)
 
 	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
 
