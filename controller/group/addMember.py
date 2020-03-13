@@ -281,6 +281,8 @@ def AddRun(_id):
 
 		uids = uids + ret['last']
 
+		print(phone,success,fail)
+
 	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail})
 
 	return ret
