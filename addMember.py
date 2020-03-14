@@ -56,7 +56,7 @@ def run():
 
 	add_member_obj = AddMember()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
+	add_item = add_member_obj.findOne({'count':{'$lt':4},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
@@ -76,9 +76,9 @@ def run():
 			
 			break
 
-		uids = uids[20:]
+		uids = uids[15:]
 
-		addids = uids[0:20]
+		addids = uids[0:15]
 
 		ret = adduser(phone,add_item['target'],addids)
 
@@ -94,7 +94,7 @@ def run():
 
 	nexttime = 0
 
-	if count==3:
+	if count==4:
 		
 		nexttime = int(time.time()) + 24*3600 + 600
 
