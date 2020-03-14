@@ -38,6 +38,10 @@ def adduser(phone,target,addids):
 
 				break
 
+			elif '[400 USER_BANNED_IN_CHANNEL]' in addinfo['msg']:
+
+				break
+
 			else:
 
 				fail.append(uid)
