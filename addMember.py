@@ -52,7 +52,7 @@ def run():
 
 	add_member_obj = AddMember()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$lt':time.time()},'uids': {'$size': {'$gt':0}},'status':1})
+	add_item = add_member_obj.findOne({'count':{'$lt':3},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
@@ -67,6 +67,10 @@ def run():
 	fail = add_item['fail']
 
 	for phone in phones:
+
+		if len(uids) == 0:
+			
+			break
 
 		uids = uids[20:]
 
@@ -84,9 +88,11 @@ def run():
 
 	count = add_item['count'] + 1
 
+	nexttime = 0
+
 	if count==3:
 		
-		nexttime = time.time() + 24*3600 + 600
+		nexttime = int(time.time()) + 24*3600 + 600
 
 	status = 1
 
