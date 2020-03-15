@@ -50,8 +50,6 @@ def addUser(phone,target,addids):
 
 		i = i + 1
 
-	print({'success':success,'fail':fail,'last':addids[i:]})
-
 	return {'success':success,'fail':fail,'last':addids[i:]}
 
 @group_add_member.before_request
@@ -75,6 +73,14 @@ def getChatUser():
 	add_member_obj = AddMember()
 
 	data = add_member_obj.find({'uid':request.user['user_id']})
+
+	for key,item in enumerate(data):
+		
+		data[key]['uids'] = len(item['uids'])
+
+		data[key]['success'] = len(item['success'])
+
+		data[key]['fail'] = len(item['fail'])
 
 	return { "success":True, "msg":data }
 
@@ -244,44 +250,18 @@ def AddChatUser(chatid,_id):
 	return ret
 
 
-@group_add_member.route('/add_run/<_id>/<status>',methods=['POST'])
-def AddRun(_id,status):
+# @group_add_member.route('/add_run/<_id>/<status>',methods=['POST'])
+# def AddRun(_id,status):
 
-	add_member_obj = AddMember()
+# 	add_member_obj = AddMember()
 
-	add_item = add_member_obj.findOne({"_id":_id,'uid':request.user['user_id']})
+# 	add_item = add_member_obj.findOne({"_id":_id,'uid':request.user['user_id']})
 
-	if not add_item:
+# 	if not add_item:
 		
-		return {'success':False,'msg':'拉人服务不存在'}
+# 		return {'success':False,'msg':'拉人服务不存在'}
 
-	# phones = add_item['phone']
+# 	ret = add_member_obj.update({'_id':add_item['_id']},{'status':int(status)})
 
-	# uids = add_item['uids']
-
-	# success = add_item['success']
-
-	# fail = add_item['fail']
-
-	# for phone in phones:
-
-	# 	addids = uids[0:20]
-
-	# 	if not len(addids):
-			
-	# 		break
-
-	# 	uids = uids[20:]
-
-	# 	ret = addUser(phone,add_item['target'],addids)
-
-	# 	success = success + ret['success']
-
-	# 	fail = fail + ret['fail']
-
-	# 	uids = uids + ret['last']
-
-	ret = add_member_obj.update({'_id':add_item['_id']},{'status':int(status)})
-
-	return ret
+# 	return ret
 
