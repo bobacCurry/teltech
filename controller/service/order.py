@@ -6,6 +6,8 @@ from model.Client import Client
 
 from model.Order import Order
 
+from model.AddMoney import AddMoney
+
 from model.Push import Push
 
 from model.Chat import Chat
@@ -77,6 +79,25 @@ def add_group_order():
 
 	return ret
 
+
+@service_order.route('/add_money_order',methods=['POST'])
+def add_money_order():
+
+	data = request.form or request.get_json()
+
+	try:
+
+		data['money'],data['memo']
+
+	except Exception as e:
+		
+		return { "success":False, "msg":"请求数据缺失" }
+
+	add_obj = AddMoney()
+
+	ret = add_obj.insert({'uid':request.user['user_id'],'money':data['money'],'memo':data['memo']})
+
+	return ret
 
 @service_order.route('/add_personal_order',methods=['POST'])
 def add_personal_order():

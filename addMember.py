@@ -1,5 +1,7 @@
 from model.AddMember import AddMember
 
+from model.User import User
+
 import multiprocessing
 
 import sys
@@ -34,11 +36,19 @@ def adduser(phone,target,addids):
 				
 				break
 
-			elif '[400 PEER_FLOOD]' in addinfo['msg']:
+			elif '[400 PEER_FLOOD' in addinfo['msg']:
 
 				break
 
-			elif '[400 USER_BANNED_IN_CHANNEL]' in addinfo['msg']:
+			elif '[400 CHAT_ID_INVALID' in addinfo['msg']:
+
+				break
+
+			elif '[400 CHAT_ADMIN_REQUIRED' in addinfo['msg']:
+
+				break
+
+			elif '[400 CHAT_ADMIN_REQUIRED' in addinfo['msg']:
 
 				break
 
@@ -56,11 +66,21 @@ def run():
 
 	add_member_obj = AddMember()
 
+	user_obj = User()
+
 	add_item = add_member_obj.findOne({'count':{'$lt':4},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
 		return {'success':False,'msg':'暂无拉人服务'}
+
+	user = user_obj.findOne({'_id':add_item['uid']})
+
+	if user['money']<1000:
+		
+		add_member_obj.update({'_id':add_item['_id']},{'status':0})
+		
+		return {'success':False,'msg':user['account']+' 金额不足'}
 
 	phones = add_item['phone']
 
@@ -69,6 +89,8 @@ def run():
 	success = add_item['success']
 
 	fail = add_item['fail']
+
+	cost = 0
 
 	for phone in phones:
 
@@ -87,8 +109,8 @@ def run():
 		fail = fail + ret['fail']
 
 		uids = uids + ret['last']
-
-	add_member_obj = AddMember()
+		# 发广告花费
+		cost = cost + len(ret['success'])
 
 	count = add_item['count'] + 1
 
@@ -96,13 +118,17 @@ def run():
 
 	if count==4:
 		
-		nexttime = int(time.time()) + 24*3600 + 600
+		nexttime = int(time.time()) + 24*3600 + 1800
 
 	status = 1
 
 	if len(uids) == 0:
 		
 		status = 0
+
+	money = user['money'] - cost*3
+
+	user_obj.update({'_id':add_item['uid']},{'money':money})
 
 	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime,'status':status})
 

@@ -6,6 +6,8 @@ from model.AddMember import AddMember
 
 from model.Client import Client
 
+from model.User import User
+
 from client.group import Group
 
 from client.message import Message
@@ -147,12 +149,23 @@ def NewChatUser(phone,target):
 
 	return ret
 
+@group_add_member.route('/del_chat_user/<_id>',methods=['POST'])
+def DelChatUser(_id):
+
+	add_member_obj = AddMember()
+
+	ret = add_member_obj.remove({'_id':_id,'uid':request.user['user_id']})
+
+	return ret
+
 @group_add_member.route('/add_chat_phone/<phone>/<_id>',methods=['POST'])
 def AddChatPhone(phone,_id):
 
 		# 客户端是否在群里
 
 	add_member_obj = AddMember()
+
+	client_obj = Client()
 
 	add_member = add_member_obj.findOne({'uid':request.user['user_id'],'_id':_id})
 
@@ -176,13 +189,34 @@ def AddChatPhone(phone,_id):
 
 		if '[403 CHAT_WRITE_FORBIDDEN]' in send_ret['msg']:
 			
-			return { "success":False, "msg":"暂未加入该群" }
+			return { "success":False, "msg":"暂未加入该群，请先加入" }
+
+		if 'check @SpamBot' in send_ret['msg']:
+
+			client_obj.update({'phone':phone},{'status':2})
+
+			return { "success":False, "msg":"TG号被spam" }
+
+		if '未验证' in send_ret["msg"]:
+
+			client_obj.update({'phone':phone},{'status':4,"used":0})
+
+			return { "success":False, "msg":"TG号验证失效" }
 
 		return send_ret
 
 	del message_obj
 
 	ret = add_member_obj.updatePush({'uid':request.user['user_id'],'_id':_id},{ 'phone': phone })
+
+	return ret
+
+@group_add_member.route('/del_chat_phone/<_id>/<phone>',methods=['POST'])
+def DelChatPhone(_id,phone):
+
+	add_member_obj = AddMember()
+
+	ret = add_member_obj.updateSelf({'_id':_id,'uid':request.user['user_id']},{'$pull':{'phone':phone}})
 
 	return ret
 
@@ -223,7 +257,7 @@ def AddChatUser(chatid,_id):
 
 		return count
 
-	time = int(count['msg']/200)
+	time = int(count['msg']/200) + 1
 
 	for x in range(0,time):
 		
@@ -236,6 +270,7 @@ def AddChatUser(chatid,_id):
 			for i in info['msg']:
 				
 				chatinfo.append(i)
+
 
 	for chat in chatinfo:
 		
@@ -250,18 +285,26 @@ def AddChatUser(chatid,_id):
 	return ret
 
 
-# @group_add_member.route('/add_run/<_id>/<status>',methods=['POST'])
-# def AddRun(_id,status):
+@group_add_member.route('/add_run/<_id>/<status>',methods=['POST'])
+def AddRun(_id,status):
 
-# 	add_member_obj = AddMember()
+	add_member_obj = AddMember()
 
-# 	add_item = add_member_obj.findOne({"_id":_id,'uid':request.user['user_id']})
+	user_obj = User()
 
-# 	if not add_item:
+	user = user_obj.findOne({'_id':request.user['user_id']})
+
+	if user['money']<1000 and int(status):
 		
-# 		return {'success':False,'msg':'拉人服务不存在'}
+		return {'success':False,'msg':'金额不足，服务保底金额1000金币'}
 
-# 	ret = add_member_obj.update({'_id':add_item['_id']},{'status':int(status)})
+	add_item = add_member_obj.findOne({"_id":_id,'uid':request.user['user_id']})
 
-# 	return ret
+	if not add_item:
+		
+		return {'success':False,'msg':'拉人服务不存在'}
+
+	ret = add_member_obj.update({'_id':add_item['_id']},{'status':int(status)})
+
+	return ret
 

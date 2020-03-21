@@ -111,18 +111,7 @@ def start_order(_id):
 	return { "success":True, "msg":"订单开启成功" }
 
 
+@admin_order.route('/start_order/<_id>',methods=['POST'])
+def add_money(_id):
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	pass
