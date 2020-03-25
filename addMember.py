@@ -98,9 +98,9 @@ def run():
 			
 			break
 
-		uids = uids[15:]
-
 		addids = uids[0:15]
+		
+		uids = uids[15:]
 
 		ret = adduser(phone,add_item['target'],addids)
 
