@@ -118,7 +118,7 @@ def run():
 
 	if count==4:
 		
-		nexttime = int(time.time()) + 24*3600 + 1800
+		nexttime = int(time.time()) + 24*3600 + 600
 
 	status = 1
 
@@ -135,7 +135,5 @@ def run():
 	return ret
 
 ret = run()
-
-print(ret)
 
 sys.exit()

@@ -116,7 +116,7 @@ let clearJob = schedule.scheduleJob('*/10 * * * * *', async () => {
 	}
 })
 
-let clearAdd = schedule.scheduleJob('0 */5 * * * *', async () => {
+let clearAdd = schedule.scheduleJob('0 */10 * * * *', async () => {
 
 	const cmd_clear_add = 'python3 addMember.py'
 
@@ -129,8 +129,6 @@ let clearAdd = schedule.scheduleJob('0 */5 * * * *', async () => {
 		}
 
 		if(stdout){
-
-			console.log(stdout)
 
 			log('child_stdout: ' + stdout)
 		}
