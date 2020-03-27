@@ -135,7 +135,7 @@ class Base:
 
 		try:
 
-			self.db.update(query,{"$set":document})
+			self.db.update(query,{"$set":document},False,True)
 
 			return { "success":True, "msg":"更新成功" }
 
@@ -149,7 +149,7 @@ class Base:
 
 		try:
 
-			self.db.update(query,{"$push":document})
+			self.db.update(query,{"$push":document},False,True)
 
 			return { "success":True, "msg":"更新成功" }
 
