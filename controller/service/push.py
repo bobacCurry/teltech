@@ -250,11 +250,11 @@ def update(_id):
 		
 		if '[401 USER_DEACTIVATED_BAN]' in  message_ret["msg"]:
 			
-			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':3,"used":0})
+			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':3})
 
 		elif '未验证' in message_ret["msg"]:
 
-			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':4,"used":0})
+			client_obj.update({'phone':data['phone'],'uid':request.user['user_id']},{'status':4})
 
 		return message_ret
 
@@ -324,6 +324,10 @@ def changeStatus(_id):
 		if client['status']==3:
 			
 			return { "success":False, "msg":"TG账号已被ban，请确认账号是正常的" }
+
+		if client['status']==4:
+			
+			return { "success":False, "msg":"TG账号验证失效，请确认账号是正常的" }
 
 	ret = push_obj.update({"_id":_id,'uid':request.user['user_id']},{"status":status})
 

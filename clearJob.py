@@ -73,7 +73,7 @@ def forward(phone,chatids,message_id):
 
 			elif '未验证' in ret["msg"]:
 
-				client_obj.update({'phone':phone},{'status':4,"used":0})
+				client_obj.update({'phone':phone},{'status':4})
 
 				push_obj.update({'phone':phone},{'status':0})
 

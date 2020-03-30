@@ -197,9 +197,15 @@ def AddChatPhone(phone,_id):
 
 			return { "success":False, "msg":"TG号被spam" }
 
+		if '[401 USER_DEACTIVATED_BAN]' in send_ret['msg']:
+
+			client_obj.update({'phone':phone},{'status':3})
+
+			return { "success":False, "msg":"TG账号已被ban，请确认账号是正常的" }			
+
 		if '未验证' in send_ret["msg"]:
 
-			client_obj.update({'phone':phone},{'status':4,"used":0})
+			client_obj.update({'phone':phone},{'status':4})
 
 			return { "success":False, "msg":"TG号验证失效" }
 
