@@ -17,3 +17,5 @@ env.py
 env.js
 
 node_modules/
+
+unknown_errors.txt
