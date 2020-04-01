@@ -18,6 +18,8 @@ add_obj = AddChat()
 
 clear_obj = AddQueue()
 
+client_obj = Client()
+
 def logger(info):
 	
 	today=datetime.date.today()
@@ -28,6 +30,18 @@ def logger(info):
 	
 	logging.info(info)
 
+
+def auth_check(add_item,clear,ret):
+	
+	logger(ret)
+
+	client_obj.update({'phone':add_item['phone']},{'status':4})
+
+	clear_obj.remove({"_id":clear['_id']})
+
+	add_obj.update({'_id':add_item['_id']},{'msg':'号码验证失败，请确认号码是否被ban','status':1})
+
+	return
 
 def add_runner(add_item,clear):
 
@@ -51,7 +65,11 @@ def add_runner(add_item,clear):
 
 		ret0 = chat.send_message(chatid,'.')
 
-		# if ret0['success'] == False and '[403 CHAT_WRITE_FORBIDDEN]' in ret0['msg']:
+		if '未验证' in ret0["msg"]:
+
+			auth_check(add_item,clear,ret0["msg"])
+
+			break
 
 		if not ret0['success']:
 
@@ -77,7 +95,11 @@ def add_runner(add_item,clear):
 
 				else:
 
-					logger(add_item['phone'] + '-' + ret['msg'])
+					if '未验证' in ret["msg"]:
+
+						auth_check(add_item,clear,ret["msg"])
+
+						break
 
 					fail.append(chatid)
 
