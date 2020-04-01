@@ -77,6 +77,8 @@ def add_runner(add_item,clear):
 
 				else:
 
+					logger(add_item['phone'] + '-' + ret['msg'])
+
 					fail.append(chatid)
 
 		else:
@@ -110,8 +112,6 @@ def clearQueue():
 		if add_item:
 			
 			ret = add_runner(add_item,clear)
-
-			logger(ret['msg'])
 
 	return 
 
