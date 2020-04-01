@@ -84,3 +84,21 @@ def getAddChat(page):
 	data = add_obj.find({'uid':request.user['user_id']},skip=skip,limit=limit,sort="_id")
 
 	return {'success':True,'msg':data}
+
+@service_vip.route('/del_add_chat/<_id>',methods=['POST'])
+def delAddChat(_id):
+
+	add_obj = AddChat()
+
+	ret = add_obj.remove({'_id':_id,'uid':request.user['user_id']})
+
+	return ret
+
+@service_vip.route('/update_add_chat/<_id>',methods=['POST'])
+def updateAddChat(_id):
+
+	add_obj = AddChat()
+
+	ret = add_obj.update({'_id':_id,'uid':request.user['user_id']},{'status':0,'msg':''})
+
+	return ret
