@@ -2,8 +2,6 @@ from model.AddMember import AddMember
 
 from model.User import User
 
-import multiprocessing
-
 import sys
 
 from client.group import Group

@@ -65,12 +65,6 @@ def add_runner(add_item,clear):
 
 		ret0 = chat.send_message(chatid,'.')
 
-		if '未验证' in ret0["msg"]:
-
-			auth_check(add_item,clear,ret0["msg"])
-
-			break
-
 		if not ret0['success']:
 
 			ret = chat.join_chat(chatid)
