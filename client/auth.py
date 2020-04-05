@@ -6,13 +6,39 @@ from cache.index import Cache
 
 from time import sleep
 
+from model.Proxy import Proxy
+
+from client.proxyTest import ProxyTest
+
 class Auth:
 
-	def __init__(self, phone):
+	def __init__(self,phone,proxy_enable=None):
 
-		# ,proxy=dict(hostname="127.0.0.1",port=1080)
+		proxy = None
 
-		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone)
+		if proxy_enable:
+
+			proxy_obj = Proxy()
+			
+			proxy_list = proxy_obj.find({},limit=1,sort='ping')
+
+			if len(proxy_list):
+				
+				test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
+
+				test_ret = test_obj.Check()
+
+				if test_ret['success']:
+					
+					proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
+
+				else:
+
+					proxy_obj.remove({'_id':proxy_list[0]['_id']})
+
+		print(proxy)
+
+		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone,proxy=proxy)
 
 		self.phone_code_hash = None
 

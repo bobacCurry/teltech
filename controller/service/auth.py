@@ -36,7 +36,7 @@ def send_code(phone):
 
 	Cache.delete(key)
 
-	auth_obj = Auth(phone)
+	auth_obj = Auth(phone,True)
 
 	ret = auth_obj.auth()
 

@@ -8,8 +8,6 @@ from model.Proxy import Proxy
 
 from client.proxyTest import ProxyTest
 
-import random
-
 class Index:
 
 	def __init__(self,phone,proxy_enable=None):
