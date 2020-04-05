@@ -2,7 +2,7 @@ from client.index import Index
 
 class Chat(Index):
 
-	def __init__(self,phone,,proxy_enable=None):
+	def __init__(self,phone,proxy_enable=None):
 
 		super().__init__(phone,proxy_enable)
 
