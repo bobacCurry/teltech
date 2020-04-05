@@ -136,7 +136,7 @@ let clearAdd = schedule.scheduleJob('0 */10 * * * *', async () => {
 
 	child_clearAdd.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+		log(`exit code ${code} child process exited with signal ${signal} -- clearAdd`)
 	})	
 })
 
@@ -160,7 +160,7 @@ let resetAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
 
 	child_resetAdd.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+		log(`exit code ${code} child process exited with signal ${signal} -- resetMember`)
 	})
 
 })
@@ -185,6 +185,6 @@ let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
 
 	child_Proxy.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+		log(`exit code ${code} child process exited with signal ${signal} -- getProxy`)
 	})	
 })

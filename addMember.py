@@ -8,8 +8,6 @@ from client.group import Group
 
 import time
 
-import timeout_decorator
-
 def adduser(phone,target,addids):
 
 	group_obj = Group(phone,True)
