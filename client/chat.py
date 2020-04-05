@@ -2,9 +2,9 @@ from client.index import Index
 
 class Chat(Index):
 
-	def __init__(self,phone):
+	def __init__(self,phone,,proxy_enable=None):
 
-		super().__init__(phone)
+		super().__init__(phone,proxy_enable)
 
 	def get_chat(self,chat_id):
 

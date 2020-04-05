@@ -69,7 +69,19 @@ class Base:
 			
 			return { "success":False, "msg":str(e) }
 
-	def find(self,query,projection=None,skip=None,limit=None,sort=None):
+	def insertMany(self,document):
+		
+		try:
+			
+			self.db.insert_many(document)
+
+			return {"success":True, "msg":"创建成功"}
+
+		except Exception as e:
+			
+			return { "success":False, "msg":str(e) }
+
+	def find(self,query={},projection=None,skip=None,limit=None,sort=None):
 
 		try:
 			
@@ -87,8 +99,6 @@ class Base:
 
 			if sort:
 
-				print(sort)
-
 				data.sort(sort)
 
 			data_filter = self.id_to_str(data)
@@ -99,7 +109,19 @@ class Base:
 			
 			return []
 
-	def findOne(self,query,projection=None):
+	def count(self,query={}):
+		
+		try:
+			
+			count = self.db.find(query).count()
+
+			return count
+
+		except Exception as e:
+			
+			return 0
+
+	def findOne(self,query={},projection=None,sort=None):
 
 		try:
 			

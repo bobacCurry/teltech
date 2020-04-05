@@ -13,13 +13,9 @@ class Proxy(Base):
 			
 			"port":0,
 
-			"username":"",
+			"ping":0,
 
-			"password":"",
-
-			"minute":0,
-			
-			"status":0
+			"minute":0
 		}
 
 		self.timeStamp = False

@@ -8,9 +8,11 @@ from client.group import Group
 
 import time
 
+import timeout_decorator
+
 def adduser(phone,target,addids):
-	
-	group_obj = Group(phone)
+
+	group_obj = Group(phone,True)
 
 	success = []
 
@@ -22,7 +24,7 @@ def adduser(phone,target,addids):
 		
 		addinfo = group_obj.add_chat_members(target,uid)
 
-		print(addinfo)
+		print(phone,addinfo['msg'])
 
 		if addinfo['success']:
 			
@@ -55,8 +57,6 @@ def adduser(phone,target,addids):
 				fail.append(uid)
 
 		i = i + 1
-
-	print({'success':success,'fail':fail,'last':addids[i:]})
 
 	return {'success':success,'fail':fail,'last':addids[i:]}
 
@@ -100,7 +100,17 @@ def run():
 		
 		uids = uids[15:]
 
-		ret = adduser(phone,add_item['target'],addids)
+		ret = {}
+
+		try:
+			
+			ret = adduser(phone,add_item['target'],addids)
+
+		except Exception as e:
+			
+			print(e)
+
+			ret = {'success':[],'fail':[],'last':addids}
 
 		success = success + ret['success']
 

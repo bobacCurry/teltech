@@ -2,9 +2,9 @@ from client.index import Index
 
 class Message(Index):
 
-	def __init__(self,phone):
+	def __init__(self,phone,proxy_enable=None):
 
-		super().__init__(phone)
+		super().__init__(phone,proxy_enable)
 
 	def send_message(self,chat_id,text,parse_mode="html"):
 

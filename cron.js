@@ -164,3 +164,27 @@ let resetAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
 	})
 
 })
+
+let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
+
+	const cmd_proxy = 'python3 getProxy.py'
+
+	const child_Proxy = child_process.exec(cmd_proxy,function (error, stdout, stderr) {
+	
+		if (error) {
+
+			log('child_error:' + JSON.stringify(error))
+
+		}
+
+		if(stdout){
+
+			log('child_stdout: ' + stdout)
+		}
+	})
+
+	child_Proxy.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- clearJob`)
+	})	
+})

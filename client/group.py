@@ -4,9 +4,9 @@ from pyrogram import ChatPermissions
 
 class Group(Index):
 
-	def __init__(self,phone):
+	def __init__(self,phone,proxy_enable=None):
 
-		super().__init__(phone)
+		super().__init__(phone,proxy_enable)
 
 	def create_supergroup(self,title,description=''):
 
