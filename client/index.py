@@ -20,27 +20,21 @@ class Index:
 
 			proxy_obj = Proxy()
 			
-			count = proxy_obj.count()
+			proxy_list = proxy_obj.find({},limit=1,sort='ping')
 
-			if count:
-
-				skip = random.randint(0,count-1)
+			if len(proxy_list):
 				
-				proxy_list = proxy_obj.find({},skip=skip,limit=1,sort='ping')
+				test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
 
-				if len(proxy_list):
+				test_ret = test_obj.Check()
+
+				if test_ret['success']:
 					
-					test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
+					proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
 
-					test_ret = test_obj.Check()
+				else:
 
-					if test_ret['success']:
-						
-						proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
-
-					else:
-
-						proxy_obj.remove({'_id':proxy_list[0]['_id']})
+					proxy_obj.remove({'_id':proxy_list[0]['_id']})
 
 		print(proxy)
 
