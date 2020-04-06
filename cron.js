@@ -188,3 +188,28 @@ let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
 		log(`exit code ${code} child process exited with signal ${signal} -- getProxy`)
 	})	
 })
+
+let resetPush = schedule.scheduleJob('0 0 0 * * *', async () => {
+
+	const cmd_reset_push = 'python3 resetPush.py'
+
+	const child_resetPush = child_process.exec(cmd_reset_push,function (error, stdout, stderr) {
+	
+		if (error) {
+
+			log('child_error:' + JSON.stringify(error))
+
+		}
+
+		if(stdout){
+
+			log('child_stdout: ' + stdout)
+		}
+	})
+
+	child_resetPush.on('exit', (code, signal) => {
+
+		log(`exit code ${code} child process exited with signal ${signal} -- resetPush`)
+	})
+
+})

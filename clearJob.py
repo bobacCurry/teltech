@@ -10,8 +10,6 @@ from model.Push import Push
 
 import datetime
 
-import time
-
 import logging
 
 from client.message import Message
