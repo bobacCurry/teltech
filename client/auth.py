@@ -10,6 +10,8 @@ from model.Proxy import Proxy
 
 from client.proxyTest import ProxyTest
 
+import random
+
 class Auth:
 
 	def __init__(self,phone,proxy_enable=None):
@@ -20,21 +22,29 @@ class Auth:
 
 			proxy_obj = Proxy()
 			
-			proxy_list = proxy_obj.find({},limit=1,sort='ping')
+			count = proxy_obj.count()
 
-			if len(proxy_list):
-				
-				test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
+			if count:
 
-				test_ret = test_obj.Check()
+				skip = random.randint(0,count-1)
 
-				if test_ret['success']:
+				print(skip)
+
+				proxy_list = proxy_obj.find({},skip=skip,limit=1,sort='ping')
+
+				if len(proxy_list):
 					
-					proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
+					test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
 
-				else:
+					test_ret = test_obj.Check()
 
-					proxy_obj.remove({'_id':proxy_list[0]['_id']})
+					if test_ret['success']:
+						
+						proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
+
+					else:
+
+						proxy_obj.remove({'_id':proxy_list[0]['_id']})
 
 		print(proxy)
 

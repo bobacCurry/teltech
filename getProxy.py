@@ -53,7 +53,7 @@ for row in rows:
 		
 		break
 
-	if ping > 1500:
+	if ping > 1000:
 		
 		continue
 
@@ -65,7 +65,7 @@ if len(proxys):
 	
 	proxy_obj.insertMany(proxys)
 
-clearTime = addTime - 180
+clearTime = addTime - 160
 
 proxy_obj.remove({"time":{"$lt":clearTime}})
 
