@@ -36,7 +36,7 @@ def adduser(phone,target,addids):
 		
 		addinfo = group_obj.add_chat_members(target,uid)
 
-		logger(addinfo['msg'])
+		logger(phone+':'+addinfo['msg'])
 
 		if addinfo['success']:
 			
