@@ -8,6 +8,18 @@ from client.group import Group
 
 import time
 
+import logging
+
+def logger(info):
+	
+	today=datetime.date.today()
+
+	filename = 'log/'+'cron'+'-'+str(today)+'.log'
+
+	logging.basicConfig(level=logging.INFO,filename=filename,format='%(asctime)s - %(message)s')
+	
+	logging.info(info)
+
 def adduser(phone,target,addids):
 
 	group_obj = Group(phone,True)
@@ -22,7 +34,7 @@ def adduser(phone,target,addids):
 		
 		addinfo = group_obj.add_chat_members(target,uid)
 
-		print(phone,addinfo['msg'])
+		logger(phone+':'+addinfo['msg'])
 
 		if addinfo['success']:
 			
@@ -124,7 +136,7 @@ def run():
 
 	if count==4:
 		
-		nexttime = int(time.time()) + 24*3600 + 600
+		nexttime = int(time.time()) + 24*3600 + 1800
 
 	status = 1
 
