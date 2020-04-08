@@ -110,6 +110,32 @@ def start_order(_id):
 
 	return { "success":True, "msg":"订单开启成功" }
 
+@admin_order.route('/del_order/<_id>',methods=['POST'])
+def del_order(_id):
+
+	order_obj = Order()
+
+	order = order_obj.findOne({"_id":_id,"status":0})
+
+	if not order:
+		
+		return  { "success":False, "msg":"暂无该待审核订单" }
+
+	push_obj = Push()
+
+	push = push_obj.findOne({"_id":order["sid"]})
+
+	if not push:
+		
+		return  { "success":False, "msg":"服务不存在" }
+
+	ret = order_obj.update({"_id":_id},{"status":-1})
+
+	if not ret["success"]:
+		
+		return  { "success":False, "msg":"订单更新失败" }
+
+	return { "success":True, "msg":"订单开启成功" }
 
 @admin_order.route('/start_order/<_id>',methods=['POST'])
 def add_money(_id):
