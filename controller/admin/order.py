@@ -127,7 +127,7 @@ def del_order(_id):
 		
 		return  { "success":False, "msg":"订单更新失败" }
 
-	return { "success":True, "msg":"订单开启成功" }
+	return { "success":True, "msg":"订单已删除" }
 
 @admin_order.route('/start_order/<_id>',methods=['POST'])
 def add_money(_id):
