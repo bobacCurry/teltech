@@ -121,14 +121,6 @@ def del_order(_id):
 		
 		return  { "success":False, "msg":"暂无该待审核订单" }
 
-	push_obj = Push()
-
-	push = push_obj.findOne({"_id":order["sid"]})
-
-	if not push:
-		
-		return  { "success":False, "msg":"服务不存在" }
-
 	ret = order_obj.update({"_id":_id},{"status":-1})
 
 	if not ret["success"]:
