@@ -30,8 +30,6 @@ def addUser(phone,target,addids):
 		
 		addinfo = group_obj.add_chat_members(target,uid)
 
-		print(addinfo,uid,phone)
-
 		if addinfo['success']:
 			
 			success.append(uid)
@@ -123,17 +121,29 @@ def NewChatUser(phone,target):
 
 	group_obj = Group(phone)
 
-	chatinfo = group_obj.get_chat_members(target)
+	count = group_obj.get_chat_members_count(target)
 
-	if not chatinfo['success']:
+	if not count['success']:
+
+		return count
+
+	limit = 200
+
+	time = int(count['msg']/limit) + 1
+
+	for x in range(0,time):
 		
-		return chatinfo
+		offset = x*limit
 
-	for chat in chatinfo['msg']:
-		
-		if chat['status'] == 'member' and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['username']:
+		info = group_obj.get_chat_members(target,offset,limit)
 
-			target_chatids.append(chat['user']['username'])
+		if info['success']:
+
+			for i in info['msg']:
+
+				if i['user']['username']:
+					
+					target_chatids.append(i['user']['username'])
 
 	del group_obj
 
@@ -263,13 +273,15 @@ def AddChatUser(chatid,_id):
 
 		return count
 
-	time = int(count['msg']/200) + 1
+	limit = 200
+
+	time = int(count['msg']/limit) + 1
 
 	for x in range(0,time):
 		
-		offset = x*200
+		offset = x*limit
 
-		info = group_obj.get_chat_members(chatid,offset)
+		info = group_obj.get_chat_members(chatid,offset,limit)
 
 		if info['success']:
 
@@ -277,9 +289,8 @@ def AddChatUser(chatid,_id):
 				
 				chatinfo.append(i)
 
-
 	for chat in chatinfo:
-		
+
 		if  chat['user']['username'] and chat['status'] == 'member' and not chat['user']['is_self'] and not chat['user']['is_bot'] and not chat['user']['is_deleted'] and chat['user']['username'] not in uids and chat['user']['username'] not in success and chat['user']['username'] not in fail:
 
 			uids.append(chat['user']['username'])

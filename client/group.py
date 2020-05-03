@@ -262,7 +262,7 @@ class Group(Index):
 			
 			ret = self.app.add_chat_members(chatid,user)
 
-			return { "success":True,"msg":'拉人成功'+user }
+			return { "success":True,"msg":'拉人成功'+str(user) }
 
 		except Exception as e:
 			
