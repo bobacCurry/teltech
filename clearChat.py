@@ -30,7 +30,6 @@ def logger(info):
 	
 	logging.info(info)
 
-
 def auth_check(add_item,clear,ret):
 	
 	logger(ret)

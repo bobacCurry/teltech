@@ -78,7 +78,7 @@ def run():
 
 	user_obj = User()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':4},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
+	add_item = add_member_obj.findOne({'count':{'$lt':10},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
@@ -108,9 +108,9 @@ def run():
 			
 			break
 
-		addids = uids[0:15]
+		addids = uids[0:10]
 		
-		uids = uids[15:]
+		uids = uids[10:]
 
 		ret = {}
 
@@ -136,9 +136,9 @@ def run():
 
 	nexttime = 0
 
-	if count==4:
+	if count==10:
 		
-		nexttime = int(time.time()) + 24*3600 + 1800
+		nexttime = int(time.time()) + 24*3600
 
 	status = 1
 
