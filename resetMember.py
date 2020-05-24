@@ -4,6 +4,6 @@ import sys
 
 add_member_obj = AddMember()
 
-add_member_obj.updateSelf({'count':10},{'$set':{ 'count':0 }})
+add_member_obj.updateSelf({'count':20},{'$set':{ 'count':0 }})
 
 sys.exit()

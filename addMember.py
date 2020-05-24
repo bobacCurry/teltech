@@ -78,7 +78,7 @@ def run():
 
 	user_obj = User()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':10},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
+	add_item = add_member_obj.findOne({'count':{'$lt':20},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
@@ -136,9 +136,9 @@ def run():
 
 	nexttime = 0
 
-	if count==10:
+	if count==20:
 		
-		nexttime = int(time.time()) + 24*3600
+		nexttime = int(time.time()) + 14*3600
 
 	status = 1
 
