@@ -140,30 +140,30 @@ let clearAdd = schedule.scheduleJob('0 */30 * * * *', async () => {
 	})	
 })
 
-let resetAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
+// let resetAdd = schedule.scheduleJob('0 0 0 * * *', async () => {
 
-	const cmd_reset_add = 'python3 resetMember.py'
+// 	const cmd_reset_add = 'python3 resetMember.py'
 
-	const child_resetAdd = child_process.exec(cmd_reset_add,function (error, stdout, stderr) {
+// 	const child_resetAdd = child_process.exec(cmd_reset_add,function (error, stdout, stderr) {
 	
-		if (error) {
+// 		if (error) {
 
-			log('child_error:' + JSON.stringify(error))
+// 			log('child_error:' + JSON.stringify(error))
 
-		}
+// 		}
 
-		if(stdout){
+// 		if(stdout){
 
-			log('child_stdout: ' + stdout)
-		}
-	})
+// 			log('child_stdout: ' + stdout)
+// 		}
+// 	})
 
-	child_resetAdd.on('exit', (code, signal) => {
+// 	child_resetAdd.on('exit', (code, signal) => {
 
-		log(`exit code ${code} child process exited with signal ${signal} -- resetMember`)
-	})
+// 		log(`exit code ${code} child process exited with signal ${signal} -- resetMember`)
+// 	})
 
-})
+// })
 
 // let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
 

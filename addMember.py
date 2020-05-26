@@ -78,7 +78,9 @@ def run():
 
 	user_obj = User()
 
-	add_item = add_member_obj.findOne({'count':{'$lt':20},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
+	# add_item = add_member_obj.findOne({'count':{'$lt':20},'nexttime':{'$lt':time.time()},'status':1,'$where':"this.uids.length>0"})
+
+	add_item = add_member_obj.findOne({'status':1,'$where':"this.uids.length>0"})
 
 	if not add_item:
 		
@@ -132,13 +134,13 @@ def run():
 		# 发广告花费
 		cost = cost + len(ret['success'])
 
-	count = add_item['count'] + 1
+	# count = add_item['count'] + 1
 
-	nexttime = 0
+	# nexttime = 0
 
-	if count==20:
+	# if count==20:
 		
-		nexttime = int(time.time()) + 14*3600
+	# 	nexttime = int(time.time()) + 14*3600
 
 	status = 1
 
@@ -150,7 +152,9 @@ def run():
 
 	user_obj.update({'_id':add_item['uid']},{'money':money})
 
-	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime,'status':status})
+	# ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'count':count,'nexttime':nexttime,'status':status})
+
+	ret = add_member_obj.update({'_id':add_item['_id']},{ 'uids': uids,'success':success,'fail':fail,'status':status})
 
 	return ret
 
