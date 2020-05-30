@@ -165,29 +165,29 @@ let clearAdd = schedule.scheduleJob('0 0 * * * *', async () => {
 
 // })
 
-// let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
+let getProxy = schedule.scheduleJob('0 */3 * * * *', async () => {
 
-// 	const cmd_proxy = 'python3 getProxy.py'
+	const cmd_proxy = 'python3 getProxy.py'
 
-// 	const child_Proxy = child_process.exec(cmd_proxy,function (error, stdout, stderr) {
+	const child_Proxy = child_process.exec(cmd_proxy,function (error, stdout, stderr) {
 	
-// 		if (error) {
+		if (error) {
 
-// 			log('child_error:' + JSON.stringify(error))
+			log('child_error:' + JSON.stringify(error))
 
-// 		}
+		}
 
-// 		if(stdout){
+		if(stdout){
 
-// 			log('child_stdout: ' + stdout)
-// 		}
-// 	})
+			log('child_stdout: ' + stdout)
+		}
+	})
 
-// 	child_Proxy.on('exit', (code, signal) => {
+	child_Proxy.on('exit', (code, signal) => {
 
-// 		log(`exit code ${code} child process exited with signal ${signal} -- getProxy`)
-// 	})	
-// })
+		log(`exit code ${code} child process exited with signal ${signal} -- getProxy`)
+	})	
+})
 
 let resetPush = schedule.scheduleJob('0 0 0 * * *', async () => {
 

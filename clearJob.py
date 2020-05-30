@@ -40,7 +40,7 @@ def logger(info):
 
 	return
 
-@timeout_decorator.timeout(50, use_signals=False)
+@timeout_decorator.timeout(120, use_signals=False)
 def forward(phone,chatids,message_id):
 	
 	message = Message(phone)
