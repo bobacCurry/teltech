@@ -53,6 +53,8 @@ def forward(phone,chatids,message_id):
 
 		ret = message.forward_message(chatid,'me',message_id)
 
+		print(ret)
+
 		if ret['success']:
 			
 			log = log + '-' + chatid + '（success）'
