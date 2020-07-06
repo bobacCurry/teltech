@@ -27,7 +27,7 @@ from controller.admin.order import admin_order
 
 from controller.admin.chat import admin_chat
 
-from controller.admin.proxy import admin_proxy
+# from controller.admin.proxy import admin_proxy
 
 from controller.admin.user import admin_user
 
@@ -57,7 +57,7 @@ app.register_blueprint(admin_order,url_prefix='/admin/order')
 
 app.register_blueprint(admin_chat,url_prefix='/admin/chat')
 
-app.register_blueprint(admin_proxy,url_prefix='/admin/proxy')
+# app.register_blueprint(admin_proxy,url_prefix='/admin/proxy')
 
 app.register_blueprint(admin_user,url_prefix='/admin/user')
 
