@@ -56,7 +56,7 @@ def add_runner(add_item,clear):
 
 	for chatid in add_item['chatids']:
 
-		if count>=5:
+		if count>=3:
 
 			clear_obj.remove({"_id":clear['_id']})
 			
