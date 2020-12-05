@@ -1,6 +1,6 @@
 from model.Proxy import Proxy
 
-from bs4 import BeautifulSoup
+from bs import BeautifulSoup
 
 import requests
 
@@ -10,7 +10,7 @@ import sys
 
 try:
 	
-	ret = requests.get('https://www.firexproxy.com/en',timeout=10)
+	ret = requests.get('http://www.jindousms.com/#/admin/sms/sms-service',timeout=10)
 
 	status_code = ret.status_code
 
@@ -28,45 +28,44 @@ text = ret.text
 
 bs = BeautifulSoup(text,"html.parser") # 缩进格式
 
-rowgroup = bs.find_all(role="rowgroup")[1]
+rowgroup = bs.find_all(role="tr")
 
+print(rowgroup)
 
-rows = rowgroup.find_all(role="row")
+# proxys = []
 
-proxys = []
+# addTime = int(time.time())
 
-addTime = int(time.time())
-
-for row in rows:
+# for row in rows:
 	
-	cell = row.find_all(role="cell")
+# 	cell = row.find_all(role="cell")
 
-	ip = cell[1].get_text()
+# 	ip = cell[1].get_text()
 
-	port = int(cell[2].get_text())
+# 	port = int(cell[2].get_text())
 
-	protocol = cell[3].get_text()
+# 	protocol = cell[3].get_text()
 
-	ping = int(cell[4].get_text())
+# 	ping = int(cell[4].get_text())
 
-	if protocol !='SOCKS5':
+# 	if protocol !='SOCKS5':
 		
-		break
+# 		break
 
-	if ping > 1000:
+# 	if ping > 1000:
 		
-		continue
+# 		continue
 
-	proxys.append({"ip":ip,"port":port,"ping":ping,"time":addTime})
+# 	proxys.append({"ip":ip,"port":port,"ping":ping,"time":addTime})
 
-proxy_obj = Proxy()
+# proxy_obj = Proxy()
 
-if len(proxys):
+# if len(proxys):
 	
-	proxy_obj.insertMany(proxys)
+# 	proxy_obj.insertMany(proxys)
 
-clearTime = addTime - 160
+# clearTime = addTime - 160
 
-proxy_obj.remove({"time":{"$lt":clearTime}})
+# proxy_obj.remove({"time":{"$lt":clearTime}})
 
 sys.exit()

@@ -1,11 +1,5 @@
-from client.group import Group
+import re
 
-def get_chat(chatid):
-	
-	group = Group('639776884112')
+ret = re.findall(r'\d{5}', 'hello 42 I\'m a 32231 string 30')
 
-	return group.get_chat(chatid)
-
-ret = get_chat('MeiShiShuo')
-
-print(ret['msg']['members_count'],ret['msg']['permissions'])
+print(ret[0])

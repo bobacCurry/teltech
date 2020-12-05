@@ -16,39 +16,37 @@ class Auth:
 
 	def __init__(self,phone,proxy_enable=None):
 
-		proxy = None
+		# proxy = None
 
-		if proxy_enable:
+		# if proxy_enable:
 
-			proxy_obj = Proxy()
+		# 	proxy_obj = Proxy()
 			
-			count = proxy_obj.count()
+		# 	count = proxy_obj.count()
 
-			if count:
+		# 	if count:
 
-				skip = random.randint(0,count-1)
+		# 		skip = random.randint(0,count-1)
 
-				print(skip)
+		# 		proxy_list = proxy_obj.find({},skip=skip,limit=1,sort='ping')
 
-				proxy_list = proxy_obj.find({},skip=skip,limit=1,sort='ping')
-
-				if len(proxy_list):
+		# 		if len(proxy_list):
 					
-					test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
+		# 			test_obj = ProxyTest(proxy_list[0]['ip'],proxy_list[0]['port'])
 
-					test_ret = test_obj.Check()
+		# 			test_ret = test_obj.Check()
 
-					if test_ret['success']:
+		# 			if test_ret['success']:
 						
-						proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
+		# 				proxy = dict(hostname=proxy_list[0]['ip'],port=proxy_list[0]['port'])
 
-					else:
+		# 			else:
 
-						proxy_obj.remove({'_id':proxy_list[0]['_id']})
+		# 				proxy_obj.remove({'_id':proxy_list[0]['_id']})
 
-		print(proxy)
+		# ,proxy=proxy
 
-		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone,proxy=proxy)
+		self.app = Client(phone,APIID,APIHASH,workdir='./session/',phone_number=phone)
 
 		self.phone_code_hash = None
 
@@ -106,7 +104,13 @@ class Auth:
 
 			ret = self.app.sign_in(self.phone_number,self.phone_code_hash,phone_code)
 
-			return {"success":True,"msg":ret}
+			if type(ret).__name__=='TermsOfService':
+
+				_ret = self.sign_up()
+
+				return _ret
+
+			return ret
 
 		except Exception as e:
 
@@ -116,6 +120,22 @@ class Auth:
 
 			return {"success":False,"msg":str(e)}
 	
+	def sign_up(self):
+
+		try:
+
+			sleep(10)
+
+			name = ''.join(random.sample(['z','y','x','w','v','u','t','s','r','q','p','o','n','m','l','k','j','i','h','g','f','e','d','c','b','a'], 5))
+
+			ret = self.app.sign_up(self.phone_number,self.phone_code_hash,name,'')
+
+			return {"success":True,"msg":ret}
+
+		except Exception as e:
+
+			return {"success":False,"msg":str(e)}		
+
 	def logout(self):
 		
 		try:
